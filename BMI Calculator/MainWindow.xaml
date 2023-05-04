@@ -12,12 +12,13 @@
         <CheckBox Content="Male" Name="cb_male" HorizontalAlignment="Left" Margin="67,86,0,0" VerticalAlignment="Top" Checked="cb_male_Checked"/>
         <CheckBox Content="Female" Name="cb_female" HorizontalAlignment="Left" Margin="179,86,0,0" VerticalAlignment="Top" Checked="cb_female_Checked"/>
         <Label Content="Age" HorizontalAlignment="Left" Margin="67,120,0,0" VerticalAlignment="Top" Width="52"/>
-        <TextBox HorizontalAlignment="Left" Margin="67,151,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="tb_age" HorizontalAlignment="Left" Margin="67,151,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Label Content="Height&#xD;&#xA;" HorizontalAlignment="Left" Margin="67,174,0,0" VerticalAlignment="Top" Width="91" Height="37"/>
-        <TextBox HorizontalAlignment="Left" Margin="67,216,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="tb_height" HorizontalAlignment="Left" Margin="67,216,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Label Content="Weight" HorizontalAlignment="Left" Margin="67,242,0,0" VerticalAlignment="Top" Width="60"/>
-        <TextBox HorizontalAlignment="Left" Margin="67,273,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Result:" HorizontalAlignment="Left" Margin="395,57,0,0" VerticalAlignment="Top" Height="27" Width="49" RenderTransformOrigin="0.536,-1.764"/>
+        <TextBox Name="tb_weight" HorizontalAlignment="Left" Margin="67,273,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Label  Content="Your Result:" HorizontalAlignment="Left" Margin="395,57,0,0" VerticalAlignment="Top" Height="27" Width="86" RenderTransformOrigin="0.536,-1.764"/>
+        <Label  Name="lbl_result" Content="" HorizontalAlignment="Left" Margin="395,115,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.928,-1.392" Height="131" Width="154"/>
 
 
     </Grid>

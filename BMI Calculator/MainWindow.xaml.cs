@@ -23,6 +23,8 @@ namespace BMI_Calculator
      
         bool isMale = false;
         bool isFemale = false;
+        float weight;
+        float height;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,13 +32,21 @@ namespace BMI_Calculator
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
+            weight = float.Parse(tb_weight.Text);
+            height = float.Parse(tb_height.Text);
+            lbl_result.Content = calculateBmi(weight, height);
+
             if (isMale)
             {
-                // put function calculating bmi for male
+                // Put some male figure picture
+             
+
             }
             else if (isFemale)
             {
-                // function calculating bmi for male
+                // Put some female figure picture
+
             }
         }
 
@@ -58,6 +68,16 @@ namespace BMI_Calculator
                 isFemale= true;
                 cb_male.IsChecked = false ;
             }
+        }
+
+        float calculateBmi(float fweight, float fheight)
+        {
+            float bmi = 0;
+
+            bmi = (fweight / fheight) / fheight * 10000;  // bmi formula 
+
+
+            return bmi;
         }
     }
 }
