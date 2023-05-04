@@ -7,11 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="425" Width="670">
     <Grid Margin="0,0,0,12" RenderTransformOrigin="0.498,0.528">
-        <Button Content="Calculate your BMI" HorizontalAlignment="Left" Margin="67,315,0,36" Width="120"/>
+        <Button Content="Calculate your BMI" HorizontalAlignment="Left" Margin="67,315,0,36" Width="120" Click="Button_Click"/>
         <Label Content="Gender&#xD;&#xA;" HorizontalAlignment="Left" Margin="67,57,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
-        <CheckBox Content="Male
-                  " HorizontalAlignment="Left" Margin="67,86,0,0" VerticalAlignment="Top"/>
-        <CheckBox Content="Female" HorizontalAlignment="Left" Margin="179,86,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Male" Name="cb_male" HorizontalAlignment="Left" Margin="67,86,0,0" VerticalAlignment="Top" Checked="cb_male_Checked"/>
+        <CheckBox Content="Female" Name="cb_female" HorizontalAlignment="Left" Margin="179,86,0,0" VerticalAlignment="Top" Checked="cb_female_Checked"/>
         <Label Content="Age" HorizontalAlignment="Left" Margin="67,120,0,0" VerticalAlignment="Top" Width="52"/>
         <TextBox HorizontalAlignment="Left" Margin="67,151,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Label Content="Height&#xD;&#xA;" HorizontalAlignment="Left" Margin="67,174,0,0" VerticalAlignment="Top" Width="91" Height="37"/>
