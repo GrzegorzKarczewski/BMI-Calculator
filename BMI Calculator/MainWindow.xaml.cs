@@ -35,7 +35,25 @@ namespace BMI_Calculator
 
             weight = float.Parse(tb_weight.Text);
             height = float.Parse(tb_height.Text);
-            lbl_result.Content = calculateBmi(weight, height);
+            double bmi =  Math.Round(calculateBmi(weight, height), 1);
+
+            lbl_result.FontSize = 34;
+            lbl_result.Content = bmi;
+            if (bmi > 18.5 && bmi < 24.9)
+            {
+                lbl_result.Foreground = Brushes.Green;
+                
+            }
+            if (bmi < 18.5)
+            {
+                lbl_result.Foreground = Brushes.LightBlue;
+            }
+            if (bmi >= 25)
+            {
+                lbl_result.Foreground = Brushes.OrangeRed;
+            }
+
+
 
             if (isMale)
             {
@@ -70,9 +88,10 @@ namespace BMI_Calculator
             }
         }
 
-        float calculateBmi(float fweight, float fheight)
+        double calculateBmi(double fweight, double fheight)
         {
-            float bmi = 0;
+            // local variable for returning value
+            double bmi = 0;
 
             bmi = (fweight / fheight) / fheight * 10000;  // bmi formula 
 
