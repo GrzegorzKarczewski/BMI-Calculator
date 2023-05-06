@@ -23,7 +23,7 @@ The project is built using C# and the Windows Presentation Foundation (WPF) fram
 BMI Calculator is useful because it:
 
 - Provides a user-friendly interface for calculating BMI
-- Supports both male and female users
+- Supports both male and female users [BMI calculations for both genders are the same, it just change the ui based on gender]
 - Displays results in a visually appealing format with color-coded BMI ranges
 
 This project aims to make BMI calculation quick, easy, and accessible for users.
