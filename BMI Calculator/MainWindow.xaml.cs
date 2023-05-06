@@ -104,6 +104,8 @@ namespace BMI_Calculator
                 bitmap.BeginInit();
 
                 bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_fat.png");
+                
+                // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
                 //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
 
                 bitmap.EndInit();    
@@ -120,6 +122,21 @@ namespace BMI_Calculator
             {
                 isFemale= true;
                 cb_male.IsChecked = false ;
+
+                Image maleImage = new Image();
+                maleImage.Height = genderImage.Height - 5;
+                maleImage.Width = genderImage.Width - 5;
+
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+
+                bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_regular.png");
+
+                // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+
+                bitmap.EndInit();
+                genderImage.Source = bitmap;
+
             }
         }
 
