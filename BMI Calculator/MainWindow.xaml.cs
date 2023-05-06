@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,14 @@ namespace BMI_Calculator
         float weight;
         float height;
 
+
+        enum weightType
+        {
+            weightLow,
+            weightNormal,
+            weightHigh
+        }
+
         public MainWindow()
         {
 
@@ -53,39 +62,172 @@ namespace BMI_Calculator
             {
                 lbl_result.Foreground = Brushes.Green;
                 isWeightLow = true;
-                
-                
+                if (isMale)
+                {
+                    setPersonImage(weightType.weightNormal, 0);
+                }
+                else { setPersonImage(weightType.weightNormal, 1); }
+
             }
             if (bmi < 18.5)
             {
                 lbl_result.Foreground = Brushes.LightBlue;
                 isWeightOK = true;
+                if (isMale)
+                {
+                    setPersonImage(weightType.weightLow, 0);
+                }
+                else { setPersonImage(weightType.weightLow, 1); }
             }
             if (bmi >= 25)
             {
                 lbl_result.Foreground = Brushes.OrangeRed;
                 isWeightHigh = true;
+                if (isMale)
+                {
+                    setPersonImage(weightType.weightHigh, 0);
+                }
+                else { setPersonImage(weightType.weightHigh, 1); }
             }
 
             // TODO: insert function here to change the type of image depending on weight and gender
 
-            setPersonImage();
-            if (isMale)
-            {
-                
-             
-
-            }
-            else if (isFemale)
-            {
-                // Put some female figure picture
-
-            }
+          
         }
 
-        private void setPersonImage()
+        private void setPersonImage(weightType weightType, int gender)
         {
-           // populate this
+           // weightype shold be always of enum WeightType
+           // gender is 0 for man, 1 for woman
+           switch (weightType)
+            {
+                case weightType.weightLow:
+                    if (gender == 0)
+                    {
+                        // put image of too skinny man
+                        Image maleImage = new Image();
+                        maleImage.Height = genderImage.Height - 5;
+                        maleImage.Width = genderImage.Width - 5;
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+
+                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_skinny.png");
+
+                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+
+                        bitmap.EndInit();
+                        genderImage.Source = bitmap;
+                        return;
+                    }
+                    else
+                    {
+                        // put image of skinny lady
+                        Image femaleImage = new Image();
+                        femaleImage.Height = genderImage.Height - 5;
+                        femaleImage.Width = genderImage.Width - 5;
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+
+                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_skinny.png");
+
+                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+
+                        bitmap.EndInit();
+                        genderImage.Source = bitmap;
+
+
+                    }
+                    
+                    return;
+                case weightType.weightNormal:
+                    if (gender == 0)
+                    {
+                        // put image of too skinny man
+                        Image maleImage = new Image();
+                        maleImage.Height = genderImage.Height - 5;
+                        maleImage.Width = genderImage.Width - 5;
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+
+                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_regular.png");
+
+                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+
+                        bitmap.EndInit();
+                        genderImage.Source = bitmap;
+                        return;
+                    }
+                    else
+                    {
+                        // put image of skinny lady
+                        Image femaleImage = new Image();
+                        femaleImage.Height = genderImage.Height - 5;
+                        femaleImage.Width = genderImage.Width - 5;
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+
+                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_regular.png");
+
+                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+
+                        bitmap.EndInit();
+                        genderImage.Source = bitmap;
+
+
+                    }
+                    return;
+                case weightType.weightHigh:
+                    if (gender == 0)
+                    {
+                        // put image of too skinny man
+                        Image maleImage = new Image();
+                        maleImage.Height = genderImage.Height - 5;
+                        maleImage.Width = genderImage.Width - 5;
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+
+                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_fat.png");
+
+                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+
+                        bitmap.EndInit();
+                        genderImage.Source = bitmap;
+                        return;
+                    }
+                    else
+                    {
+                        // put image of skinny lady
+                        Image femaleImage = new Image();
+                        femaleImage.Height = genderImage.Height - 5;
+                        femaleImage.Width = genderImage.Width - 5;
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+
+                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_fat.png");
+
+                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+
+                        bitmap.EndInit();
+                        genderImage.Source = bitmap;
+
+
+                    }
+                    return;
+                   
+            }
+
         }
 
         private void cb_male_Checked(object sender, RoutedEventArgs e)
