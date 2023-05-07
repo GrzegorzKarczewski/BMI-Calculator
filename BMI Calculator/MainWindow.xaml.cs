@@ -31,7 +31,7 @@ namespace BMI_Calculator
         float height;
 
 
-        enum weightType
+        enum WeightType
         {
             weightLow,
             weightNormal,
@@ -58,15 +58,17 @@ namespace BMI_Calculator
 
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
+
+
             if (bmi > 18.5 && bmi < 24.9)
             {
                 lbl_result.Foreground = Brushes.Green;
                 isWeightOK = true;
                 if (isMale)
                 {
-                    setPersonImage(weightType.weightNormal, 0);
+                    SetPersonImage(WeightType.weightNormal, 0);
                 }
-                else { setPersonImage(weightType.weightNormal, 1); }
+                else { SetPersonImage(WeightType.weightNormal, 1); }
 
             }
             if (bmi < 18.5)
@@ -75,9 +77,9 @@ namespace BMI_Calculator
                 isWeightLow = true;
                 if (isMale)
                 {
-                    setPersonImage(weightType.weightLow, 0);
+                    SetPersonImage(WeightType.weightLow, 0);
                 }
-                else { setPersonImage(weightType.weightLow, 1); }
+                else { SetPersonImage(WeightType.weightLow, 1); }
             }
             if (bmi >= 25)
             {
@@ -85,27 +87,24 @@ namespace BMI_Calculator
                 isWeightHigh = true;
                 if (isMale)
                 {
-                    setPersonImage(weightType.weightHigh, 0);
+                    SetPersonImage(WeightType.weightHigh, 0);
                 }
-                else { setPersonImage(weightType.weightHigh, 1); }
+                else { SetPersonImage(WeightType.weightHigh, 1); }
             }
-
-            // TODO: insert function here to change the type of image depending on weight and gender
-
           
         }
 
-        private void setPersonImage(weightType weightType, int gender)
+        private void SetPersonImage(WeightType weightType, int gender)
         {
            // weightype shold be always of enum WeightType
            // gender is 0 for man, 1 for woman
            switch (weightType)
             {
-                case weightType.weightLow:
+                case WeightType.weightLow:
                     if (gender == 0)
                     {
                         // put image of too skinny man
-                        Image maleImage = new Image();
+                        Image maleImage = new();
                         maleImage.Height = genderImage.Height - 5;
                         maleImage.Width = genderImage.Width - 5;
 
@@ -124,7 +123,7 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new Image();
+                        Image femaleImage = new ();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
@@ -143,11 +142,11 @@ namespace BMI_Calculator
                     }
                     
                     return;
-                case weightType.weightNormal:
+                case WeightType.weightNormal:
                     if (gender == 0)
                     {
                         // put image of too skinny man
-                        Image maleImage = new Image();
+                        Image maleImage = new();
                         maleImage.Height = genderImage.Height - 5;
                         maleImage.Width = genderImage.Width - 5;
 
@@ -166,7 +165,7 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new Image();
+                        Image femaleImage = new ();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
@@ -184,11 +183,11 @@ namespace BMI_Calculator
 
                     }
                     return;
-                case weightType.weightHigh:
+                case WeightType.weightHigh:
                     if (gender == 0)
                     {
                         // put image of too skinny man
-                        Image maleImage = new Image();
+                        Image maleImage = new ();
                         maleImage.Height = genderImage.Height - 5;
                         maleImage.Width = genderImage.Width - 5;
 
@@ -207,7 +206,7 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new Image();
+                        Image femaleImage = new I();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
@@ -285,12 +284,12 @@ namespace BMI_Calculator
             }
         }
 
-        double calculateBmi(double fweight, double fheight)
+       static double calculateBmi(double dweight, double dheight)
         {
             // local variable for returning value
             double bmi = 0;
 
-            bmi = (fweight / fheight) / fheight * 10000;  // bmi formula 
+            bmi = (dweight / dheight) / dheight * 10000;  // bmi formula 
 
 
             return bmi;
