@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
 using System.Linq;
@@ -12,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BMI_Calculator
 {
@@ -111,10 +111,8 @@ namespace BMI_Calculator
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
 
-                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_skinny.png");
-
-                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_skinny.png");
+                        bitmap.UriSource = new Uri(imagePath);
 
                         bitmap.EndInit();
                         genderImage.Source = bitmap;
@@ -130,10 +128,8 @@ namespace BMI_Calculator
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
 
-                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_skinny.png");
-
-                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_skinny.png");
+                        bitmap.UriSource = new Uri(imagePath);
 
                         bitmap.EndInit();
                         genderImage.Source = bitmap;
@@ -153,10 +149,8 @@ namespace BMI_Calculator
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
 
-                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_regular.png");
-
-                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_regular.png");
+                        bitmap.UriSource = new Uri(imagePath);
 
                         bitmap.EndInit();
                         genderImage.Source = bitmap;
@@ -172,10 +166,8 @@ namespace BMI_Calculator
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
 
-                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_regular.png");
-
-                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_regular.png");
+                        bitmap.UriSource = new Uri(imagePath);
 
                         bitmap.EndInit();
                         genderImage.Source = bitmap;
@@ -194,10 +186,8 @@ namespace BMI_Calculator
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
 
-                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_fat.png");
-
-                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_fat.png");
+                        bitmap.UriSource = new Uri(imagePath);
 
                         bitmap.EndInit();
                         genderImage.Source = bitmap;
@@ -206,17 +196,15 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new I();
+                        Image femaleImage = new ();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
 
-                        bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_fat.png");
-
-                        // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                        //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
+                        string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_fat.png");
+                        bitmap.UriSource = new Uri(imagePath);
 
                         bitmap.EndInit();
                         genderImage.Source = bitmap;

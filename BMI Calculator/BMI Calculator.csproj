@@ -9,7 +9,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\female_fat.png" />
+    <None Remove="Images\female_regular.png" />
+    <None Remove="Images\female_skinny.png" />
+    <None Remove="Images\male_fat.png" />
+    <None Remove="Images\male_regular.png" />
+    <None Remove="Images\male_skinny.png" />
     <None Remove="male_regular.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\female_fat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\female_regular.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\female_skinny.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\male_fat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\male_regular.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\male_skinny.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
