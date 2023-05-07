@@ -1,0 +1,38 @@
+{
+  "underweight_tips": [
+    "Gradually increase calorie intake.",
+    "Prioritize nutrient-dense foods.",
+    "Eat smaller, frequent meals.",
+    "Include healthy fats daily.",
+    "Add smoothies and shakes.",
+    "Emphasize lean proteins.",
+    "Include strength training.",
+    "Avoid skipping meals.",
+    "Add healthy snacks.",
+    "Track progress consistently."
+  ],
+  "healthy_weight_tips": [
+    "Maintain balanced diet.",
+    "Eat a variety of foods.",
+    "Stay physically active.",
+    "Hydrate throughout the day.",
+    "Manage stress effectively.",
+    "Prioritize sleep quality.",
+    "Monitor portion sizes.",
+    "Limit processed foods.",
+    "Be mindful of snacking.",
+    "Regular health check-ups."
+  ],
+  "overweight_tips": [
+    "Set realistic goals.",
+    "Reduce portion sizes.",
+    "Incorporate more veggies.",
+    "Limit sugary beverages.",
+    "Focus on lean proteins.",
+    "Opt for whole grains.",
+    "Prioritize regular exercise.",
+    "Avoid late-night snacking.",
+    "Track daily food intake.",
+    "Seek support & motivation."
+  ]
+}

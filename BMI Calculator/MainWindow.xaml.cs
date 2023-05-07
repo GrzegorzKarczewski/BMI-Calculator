@@ -13,9 +13,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Newtonsoft.Json;
 
 namespace BMI_Calculator
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -64,6 +66,9 @@ namespace BMI_Calculator
             {
                 lbl_result.Foreground = Brushes.Green;
                 isWeightOK = true;
+
+                GiveTipsForBMI(WeightType.weightNormal);
+
                 if (isMale)
                 {
                     SetPersonImage(WeightType.weightNormal, 0);
@@ -75,6 +80,9 @@ namespace BMI_Calculator
             {
                 lbl_result.Foreground = Brushes.LightBlue;
                 isWeightLow = true;
+               
+                GiveTipsForBMI(WeightType.weightLow);
+
                 if (isMale)
                 {
                     SetPersonImage(WeightType.weightLow, 0);
@@ -85,6 +93,9 @@ namespace BMI_Calculator
             {
                 lbl_result.Foreground = Brushes.OrangeRed;
                 isWeightHigh = true;
+
+                GiveTipsForBMI(WeightType.weightHigh);
+
                 if (isMale)
                 {
                     SetPersonImage(WeightType.weightHigh, 0);
@@ -281,6 +292,45 @@ namespace BMI_Calculator
 
 
             return bmi;
+        }
+         void GiveTipsForBMI(WeightType weightType)
+        {
+            string json = String.Empty;
+            try
+            {
+                 json = File.ReadAllText("tips.json");
+            }
+            catch ( IOException e) {
+                //MessageBox.Show(e.ToString());
+            }
+            finally
+            {
+                if (json == null) {
+                    json = "Try to eat Healthy!";
+                }
+            }
+
+            BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
+            string bmiCategory = String.Empty;
+
+            switch (weightType) {
+                case WeightType.weightLow:
+                    bmiCategory = "underweight_tips";
+                    break;
+                case WeightType.weightHigh:
+                    bmiCategory = "overweight_tips";
+                    break;
+                case WeightType.weightNormal:
+                    bmiCategory = "healthy_weight_tips";
+                    break;
+
+            }
+            List<string> selectedTipsList = (List<string>)typeof(BMITips).GetProperty(bmiCategory).GetValue(tips);
+
+            Random random = new Random();
+            int randomIndex = random.Next(0, selectedTipsList.Count);
+            string randomTip = selectedTipsList[randomIndex];
+            lbl_tipscontent.Content = randomTip;
         }
     }
 }

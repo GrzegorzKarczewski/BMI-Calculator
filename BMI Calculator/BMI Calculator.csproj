@@ -16,6 +16,7 @@
     <None Remove="Images\male_regular.png" />
     <None Remove="Images\male_skinny.png" />
     <None Remove="male_regular.jpg" />
+    <None Remove="tips.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,10 +38,14 @@
     <Content Include="Images\male_skinny.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="tips.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
