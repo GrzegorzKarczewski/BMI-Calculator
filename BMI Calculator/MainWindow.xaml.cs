@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace BMI_Calculator
 {
@@ -23,7 +24,7 @@ namespace BMI_Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-     
+
         bool isMale = false;
         bool isFemale = false;
         bool isWeightOK = false;
@@ -51,12 +52,23 @@ namespace BMI_Calculator
             tb_weight.MaxLength = 4;
         }
 
+
+
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+            /// <summary>
+            /// Calculates the BMI using the user's input for weight and height, then updates the UI with the result,
+            /// provides a tip based on the BMI, and changes the displayed image accordingly.
+            /// This function is triggered when the user clicks the "Calculate BMI" button.
+            /// </summary>
+            /// <param name="sender">The source of the event.</param>
+            /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
+
             weight = float.Parse(tb_weight.Text);
             height = float.Parse(tb_height.Text);
-            double bmi =  Math.Round(calculateBmi(weight, height), 1);
+            double bmi = Math.Round(calculateBmi(weight, height), 1);
 
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
@@ -65,7 +77,7 @@ namespace BMI_Calculator
             if (bmi > 18.5 && bmi < 24.9)
             {
                 lbl_result.Foreground = Brushes.Green;
-                isWeightOK = true;
+               
 
                 GiveTipsForBMI(WeightType.weightNormal);
 
@@ -79,8 +91,8 @@ namespace BMI_Calculator
             if (bmi < 18.5)
             {
                 lbl_result.Foreground = Brushes.LightBlue;
-                isWeightLow = true;
-               
+             
+
                 GiveTipsForBMI(WeightType.weightLow);
 
                 if (isMale)
@@ -92,7 +104,6 @@ namespace BMI_Calculator
             if (bmi >= 25)
             {
                 lbl_result.Foreground = Brushes.OrangeRed;
-                isWeightHigh = true;
 
                 GiveTipsForBMI(WeightType.weightHigh);
 
@@ -102,14 +113,22 @@ namespace BMI_Calculator
                 }
                 else { SetPersonImage(WeightType.weightHigh, 1); }
             }
-          
+
         }
 
         private void SetPersonImage(WeightType weightType, int gender)
         {
-           // weightype shold be always of enum WeightType
-           // gender is 0 for man, 1 for woman
-           switch (weightType)
+
+            /// <summary>
+            /// Updates the displayed image based on the user's weight type and gender.
+            /// The function takes the WeightType enum value and an integer representing the gender (0 for male, 1 for female),
+            /// and changes the image source accordingly using the images stored in the "Images" folder.
+            /// </summary>
+            /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
+            /// <param name="gender">An integer representing the user's gender (0 for male, 1 for female).</param>
+
+
+            switch (weightType)
             {
                 case WeightType.weightLow:
                     if (gender == 0)
@@ -132,7 +151,7 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new ();
+                        Image femaleImage = new();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
@@ -147,7 +166,7 @@ namespace BMI_Calculator
 
 
                     }
-                    
+
                     return;
                 case WeightType.weightNormal:
                     if (gender == 0)
@@ -170,7 +189,7 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new ();
+                        Image femaleImage = new();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
@@ -190,7 +209,7 @@ namespace BMI_Calculator
                     if (gender == 0)
                     {
                         // put image of too skinny man
-                        Image maleImage = new ();
+                        Image maleImage = new();
                         maleImage.Height = genderImage.Height - 5;
                         maleImage.Width = genderImage.Width - 5;
 
@@ -207,7 +226,7 @@ namespace BMI_Calculator
                     else
                     {
                         // put image of skinny lady
-                        Image femaleImage = new ();
+                        Image femaleImage = new();
                         femaleImage.Height = genderImage.Height - 5;
                         femaleImage.Width = genderImage.Width - 5;
 
@@ -223,7 +242,7 @@ namespace BMI_Calculator
 
                     }
                     return;
-                   
+
             }
 
         }
@@ -234,7 +253,7 @@ namespace BMI_Calculator
             if (cb_male.IsChecked == true)
             {
                 isMale = true;
-                
+
                 cb_female.IsChecked = false;
                 isFemale = false;
                 /*
@@ -254,7 +273,7 @@ namespace BMI_Calculator
                 genderImage.Source = bitmap;                
                 */
 
-            } 
+            }
         }
 
         private void cb_female_Checked(object sender, RoutedEventArgs e)
@@ -262,30 +281,30 @@ namespace BMI_Calculator
             // This is checking if female is checked and unsets male to be safe
             if (cb_female.IsChecked == true)
             {
-                isFemale= true;
+                isFemale = true;
                 isMale = false;
-                cb_male.IsChecked = false ;
-/*
-                Image maleImage = new Image();
-                maleImage.Height = genderImage.Height - 5;
-                maleImage.Width = genderImage.Width - 5;
+                cb_male.IsChecked = false;
+                /*
+                                Image maleImage = new Image();
+                                maleImage.Height = genderImage.Height - 5;
+                                maleImage.Width = genderImage.Width - 5;
 
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
+                                BitmapImage bitmap = new BitmapImage();
+                                bitmap.BeginInit();
 
-                bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_regular.png");
+                                bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_regular.png");
 
-                // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
+                                // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
 
-                bitmap.EndInit();
-                genderImage.Source = bitmap;
-                */
+                                bitmap.EndInit();
+                                genderImage.Source = bitmap;
+                                */
             }
         }
 
-       static double calculateBmi(double dweight, double dheight)
+        static double calculateBmi(double dweight, double dheight)
         {
-            // local variable for returning value
+
             double bmi = 0;
 
             bmi = (dweight / dheight) / dheight * 10000;  // bmi formula 
@@ -293,19 +312,33 @@ namespace BMI_Calculator
 
             return bmi;
         }
-         void GiveTipsForBMI(WeightType weightType)
+
+
+
+        void GiveTipsForBMI(WeightType weightType)
         {
+            /// <summary>
+            /// Provides a random tip based on the user's weight type (underweight, healthy, or overweight).
+            /// The tips are read from a JSON file named "tips.json", which should contain three categories
+            /// of tips: underweight_tips, healthy_weight_tips, and overweight_tips.
+            /// If an error occurs while reading the file or the file is not found, a default tip is displayed.
+            /// </summary>
+            /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
+
+
             string json = String.Empty;
             try
             {
-                 json = File.ReadAllText("tips.json");
+                json = File.ReadAllText("tips.json");
             }
-            catch ( IOException e) {
+            catch (IOException e)
+            {
                 //MessageBox.Show(e.ToString());
             }
             finally
             {
-                if (json == null) {
+                if (json == null)
+                {
                     json = "Try to eat Healthy!";
                 }
             }
@@ -313,7 +346,8 @@ namespace BMI_Calculator
             BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
             string bmiCategory = String.Empty;
 
-            switch (weightType) {
+            switch (weightType)
+            {
                 case WeightType.weightLow:
                     bmiCategory = "underweight_tips";
                     break;
