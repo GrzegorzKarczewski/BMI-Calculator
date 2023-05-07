@@ -61,7 +61,7 @@ namespace BMI_Calculator
             if (bmi > 18.5 && bmi < 24.9)
             {
                 lbl_result.Foreground = Brushes.Green;
-                isWeightLow = true;
+                isWeightOK = true;
                 if (isMale)
                 {
                     setPersonImage(weightType.weightNormal, 0);
@@ -72,7 +72,7 @@ namespace BMI_Calculator
             if (bmi < 18.5)
             {
                 lbl_result.Foreground = Brushes.LightBlue;
-                isWeightOK = true;
+                isWeightLow = true;
                 if (isMale)
                 {
                     setPersonImage(weightType.weightLow, 0);
@@ -236,8 +236,10 @@ namespace BMI_Calculator
             if (cb_male.IsChecked == true)
             {
                 isMale = true;
+                
                 cb_female.IsChecked = false;
-
+                isFemale = false;
+                /*
                 Image maleImage = new Image();
                 maleImage.Height = genderImage.Height -5;
                 maleImage.Width = genderImage.Width -5 ;
@@ -252,7 +254,7 @@ namespace BMI_Calculator
 
                 bitmap.EndInit();    
                 genderImage.Source = bitmap;                
-
+                */
 
             } 
         }
@@ -263,8 +265,9 @@ namespace BMI_Calculator
             if (cb_female.IsChecked == true)
             {
                 isFemale= true;
+                isMale = false;
                 cb_male.IsChecked = false ;
-
+/*
                 Image maleImage = new Image();
                 maleImage.Height = genderImage.Height - 5;
                 maleImage.Width = genderImage.Width - 5;
@@ -278,7 +281,7 @@ namespace BMI_Calculator
 
                 bitmap.EndInit();
                 genderImage.Source = bitmap;
-
+                */
             }
         }
 
