@@ -27,9 +27,6 @@ namespace BMI_Calculator
 
         bool isMale = false;
         bool isFemale = false;
-        bool isWeightOK = false;
-        bool isWeightLow = false;
-        bool isWeightHigh = false;
         float weight;
         float height;
 
@@ -50,6 +47,7 @@ namespace BMI_Calculator
             tb_age.MaxLength = 2;
             tb_height.MaxLength = 3;
             tb_weight.MaxLength = 4;
+
         }
 
 
@@ -68,6 +66,7 @@ namespace BMI_Calculator
 
             weight = float.Parse(tb_weight.Text);
             height = float.Parse(tb_height.Text);
+            
             double bmi = Math.Round(calculateBmi(weight, height), 1);
 
             lbl_result.FontSize = 34;
