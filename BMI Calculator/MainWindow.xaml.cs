@@ -119,6 +119,7 @@ namespace BMI_Calculator
                 else { SetPersonImage(WeightType.weightHigh, 1); }
             }
 
+            MessageBox.Show(name + " " + age + " " + weight + " " + height + " " + bmi);
             LoadOrSaveUsersDatabase(name, age, weight, height, bmi);
 
             // TODO: Creating ui input for name or uniqe login, 
@@ -363,7 +364,7 @@ namespace BMI_Calculator
             UserRepository userRepository = new UserRepository(connectionString);
             UserData newUser = new UserData
             {
-                Name = "John Doe",
+                Name = name,
                 Age = age,
                 Weight = weight,
                 Height = height,
@@ -372,9 +373,8 @@ namespace BMI_Calculator
             userRepository.AddUser(newUser);
 
 
-
             // Get user data by name
-            string userName = "John Doe";
+            string userName = name;
             UserData user = userRepository.GetUserByName(userName);
 
             if (user != null)

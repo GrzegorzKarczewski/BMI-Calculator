@@ -27,7 +27,7 @@ namespace BMI_Calculator
             {
                 connection.Open();
 
-                var cmd = new SQLiteCommand("INSERT INTO Users (Name, Weight, Height, BMI) VALUES (@Name,@Age @Weight, @Height, @BMI)", connection);
+                var cmd = new SQLiteCommand("INSERT INTO Users (Name, Age, Weight, Height, BMI) VALUES (@Name,@Age, @Weight, @Height, @BMI)", connection);
 
                 cmd.Parameters.AddWithValue("@Name", user.Name);
                 cmd.Parameters.AddWithValue("@Age", user.Age);

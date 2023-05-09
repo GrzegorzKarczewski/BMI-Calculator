@@ -28,7 +28,7 @@ namespace BMI_Calculator
                 CREATE TABLE IF NOT EXISTS Users (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     Name TEXT NOT NULL,
-                    Age REAL,
+                    Age INTEGER,
                     Weight REAL,
                     Height REAL,
                     BMI REAL

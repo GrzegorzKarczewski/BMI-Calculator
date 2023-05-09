@@ -23,7 +23,7 @@
         <Image Name ="genderImage" HorizontalAlignment="Left" Height="225" Margin="528,56,0,0" VerticalAlignment="Top" Width="110"/>
         <Label Name="lbl_tipscontent" Content="" HorizontalAlignment="Left" Margin="320,250,0,0" VerticalAlignment="Top" Height="111" Width="193"/>
         <Label Name ="lbl_name" Content="Name:" HorizontalAlignment="Left" Margin="67,38,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tb_name" HorizontalAlignment="Left" Margin="67,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="tb_name" HorizontalAlignment="Left" Margin="67,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
 
 
     </Grid>
