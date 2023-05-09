@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Newtonsoft.Json;
 using System.Xml.Linq;
+using System.Data.SQLite;
 
 namespace BMI_Calculator
 {
@@ -27,8 +28,10 @@ namespace BMI_Calculator
 
         bool isMale = false;
         bool isFemale = false;
+        string name = string.Empty;
         float weight;
         float height;
+        int age;
 
 
         enum WeightType
@@ -64,8 +67,11 @@ namespace BMI_Calculator
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
 
+            name = tb_name.Text;
             weight = float.Parse(tb_weight.Text);
             height = float.Parse(tb_height.Text);
+            age = int.Parse(tb_age.Text);
+
             
             double bmi = Math.Round(calculateBmi(weight, height), 1);
 
@@ -113,7 +119,15 @@ namespace BMI_Calculator
                 else { SetPersonImage(WeightType.weightHigh, 1); }
             }
 
+            LoadOrSaveUsersDatabase(name, age, weight, height, bmi);
+
+            // TODO: Creating ui input for name or uniqe login, 
+
+           
+
         }
+
+     
 
         private void SetPersonImage(WeightType weightType, int gender)
         {
@@ -255,22 +269,6 @@ namespace BMI_Calculator
 
                 cb_female.IsChecked = false;
                 isFemale = false;
-                /*
-                Image maleImage = new Image();
-                maleImage.Height = genderImage.Height -5;
-                maleImage.Width = genderImage.Width -5 ;
-
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-
-                bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\male_fat.png");
-                
-                // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-                //bitmap.UriSource = new Uri("alpha-mask-3070291_640.png", UriKind.Relative)
-
-                bitmap.EndInit();    
-                genderImage.Source = bitmap;                
-                */
 
             }
         }
@@ -282,22 +280,7 @@ namespace BMI_Calculator
             {
                 isFemale = true;
                 isMale = false;
-                cb_male.IsChecked = false;
-                /*
-                                Image maleImage = new Image();
-                                maleImage.Height = genderImage.Height - 5;
-                                maleImage.Width = genderImage.Width - 5;
-
-                                BitmapImage bitmap = new BitmapImage();
-                                bitmap.BeginInit();
-
-                                bitmap.UriSource = new Uri(@"D:\coding\BMI Calculator\BMI Calculator\bin\Debug\net6.0-windows\female_regular.png");
-
-                                // TODO: for the final version of the program, images needs to be stored in the same catalogue as .exe file
-
-                                bitmap.EndInit();
-                                genderImage.Source = bitmap;
-                                */
+                cb_male.IsChecked = false;         
             }
         }
 
@@ -364,6 +347,48 @@ namespace BMI_Calculator
             int randomIndex = random.Next(0, selectedTipsList.Count);
             string randomTip = selectedTipsList[randomIndex];
             lbl_tipscontent.Content = randomTip;
+        }
+
+
+        void LoadOrSaveUsersDatabase(string name, int age, double weight, double height, double bmi)
+        {
+            string databaseFile = "UserData.db";
+            string connectionString = $"Data Source={databaseFile};Version=3;";
+
+            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();
+
+            // Testing adding new user
+            // Add a new user to the Users table
+            UserRepository userRepository = new UserRepository(connectionString);
+            UserData newUser = new UserData
+            {
+                Name = "John Doe",
+                Age = age,
+                Weight = weight,
+                Height = height,
+                BMI = bmi
+            };
+            userRepository.AddUser(newUser);
+
+
+
+            // Get user data by name
+            string userName = "John Doe";
+            UserData user = userRepository.GetUserByName(userName);
+
+            if (user != null)
+            {
+                MessageBox.Show($"User: {user.Name} " +
+                $"Age: {user.Age} " +
+                $"Weight: {user.Weight} " +
+                $"Height: {user.Height}  " +
+               $"BMI: {user.BMI}");
+            }
+            else
+            {
+                MessageBox.Show($"User '{userName}' not found.");
+            }
         }
     }
 }
