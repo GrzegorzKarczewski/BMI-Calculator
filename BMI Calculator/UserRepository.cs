@@ -82,9 +82,9 @@ namespace BMI_Calculator
 
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        users.Add(reader.GetString(reader.GetOrdinal("Name")));
+                        users.Add(reader.GetString(0));
                     }
 
                 }

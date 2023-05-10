@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using Newtonsoft.Json;
 using System.Xml.Linq;
 using System.Data.SQLite;
+using System.Windows.Documents.DocumentStructures;
 
 namespace BMI_Calculator
 {
@@ -32,6 +33,7 @@ namespace BMI_Calculator
         float weight;
         float height;
         int age;
+        string mostRecentUser = "mostRecentUser";
 
 
         enum WeightType
@@ -51,6 +53,8 @@ namespace BMI_Calculator
             tb_height.MaxLength = 3;
             tb_weight.MaxLength = 4;
 
+            LoadUsersOnStart();
+            LoadDataFromMostRecentUser();
         }
 
 
@@ -72,7 +76,7 @@ namespace BMI_Calculator
             height = float.Parse(tb_height.Text);
             age = int.Parse(tb_age.Text);
 
-            
+
             double bmi = Math.Round(calculateBmi(weight, height), 1);
 
             lbl_result.FontSize = 34;
@@ -82,7 +86,7 @@ namespace BMI_Calculator
             if (bmi > 18.5 && bmi < 24.9)
             {
                 lbl_result.Foreground = Brushes.Green;
-               
+
 
                 GiveTipsForBMI(WeightType.weightNormal);
 
@@ -118,11 +122,11 @@ namespace BMI_Calculator
             }
 
             MessageBox.Show(name + " " + age + " " + weight + " " + height + " " + bmi);
-            LoadOrSaveUsersDatabase(name, age, weight, height, bmi);  
+            LoadOrSaveUsersDatabase(name, age, weight, height, bmi);
 
         }
 
-     
+
 
         private void SetPersonImage(WeightType weightType, int gender)
         {
@@ -275,7 +279,7 @@ namespace BMI_Calculator
             {
                 isFemale = true;
                 isMale = false;
-                cb_male.IsChecked = false;         
+                cb_male.IsChecked = false;
             }
         }
 
@@ -366,8 +370,8 @@ namespace BMI_Calculator
             };
             userRepository.AddUser(newUser);
 
-
-            // Get user data by name
+            GSettings.AddUpdateAppSettings(mostRecentUser, name);
+            /*// Get user data by name
             string userName = name;
             UserData user = userRepository.GetUserByName(userName);
 
@@ -382,21 +386,63 @@ namespace BMI_Calculator
             else
             {
                 MessageBox.Show($"User '{userName}' not found.");
-            }
+            }*/
             lb_users.Items.Clear();
             List<string> lastusers = userRepository.GetUsers();
             foreach (string users in lastusers)
             {
                 lb_users.Items.Add(users);
-                
+                // For some reason lb_users are not showin, 
             }
-            MessageBox.Show(lb_users.Items.ToString()); 
-            MainGrid.Children.Add(lb_users);
+
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
+        public void LoadUsersOnStart()
+        {
+            string databaseFile = "UserData.db";
+            string connectionString = $"Data Source={databaseFile};Version=3;";
+
+            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();
+
+            UserRepository userRepository = new UserRepository(connectionString);
+
+            lb_users.Items.Clear();
+            List<string> lastusers = userRepository.GetUsers();
+            foreach (string users in lastusers)
+            {
+                lb_users.Items.Add(users);
+            }
+
+        }
+
+        public void LoadDataFromMostRecentUser()
+        {
+            string name = GSettings.ReadSetting(mostRecentUser);
+
+            string databaseFile = "UserData.db";
+            string connectionString = $"Data Source={databaseFile};Version=3;";
+
+            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();
+
+            UserRepository userRepository = new UserRepository(connectionString);
+            UserData user = userRepository.GetUserByName(name);
+
+            if (user != null)
+            {
+                tb_name.Text = user.Name;
+                tb_age.Text = user.Age.ToString();
+                tb_weight.Text = user.Weight.ToString();
+                tb_height.Text = user.Height.ToString();
+                lbl_result.Content = user.BMI;
+
+            }
+        }
     }
+    
 }
