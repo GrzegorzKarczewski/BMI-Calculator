@@ -70,5 +70,26 @@ namespace BMI_Calculator
             return user;
         }
 
+        public List<string> GetUsers()
+        {
+
+            List<string> users = new List<string>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var cmd = new SQLiteCommand("SELECT DISTINCT Name from Users", connection);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        users.Add(reader.GetString(reader.GetOrdinal("Name")));
+                    }
+
+                }
+            }
+            return users;
+        }
     }
 }

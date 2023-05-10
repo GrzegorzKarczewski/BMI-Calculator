@@ -96,8 +96,6 @@ namespace BMI_Calculator
             if (bmi < 18.5)
             {
                 lbl_result.Foreground = Brushes.LightBlue;
-             
-
                 GiveTipsForBMI(WeightType.weightLow);
 
                 if (isMale)
@@ -120,11 +118,7 @@ namespace BMI_Calculator
             }
 
             MessageBox.Show(name + " " + age + " " + weight + " " + height + " " + bmi);
-            LoadOrSaveUsersDatabase(name, age, weight, height, bmi);
-
-            // TODO: Creating ui input for name or uniqe login, 
-
-           
+            LoadOrSaveUsersDatabase(name, age, weight, height, bmi);  
 
         }
 
@@ -389,6 +383,20 @@ namespace BMI_Calculator
             {
                 MessageBox.Show($"User '{userName}' not found.");
             }
+            lb_users.Items.Clear();
+            List<string> lastusers = userRepository.GetUsers();
+            foreach (string users in lastusers)
+            {
+                lb_users.Items.Add(users);
+                
+            }
+            MessageBox.Show(lb_users.Items.ToString()); 
+            MainGrid.Children.Add(lb_users);
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

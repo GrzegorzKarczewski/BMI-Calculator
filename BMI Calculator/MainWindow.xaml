@@ -8,12 +8,12 @@
         Title="BMI Calculator" Height="425" Width="670">
     <Grid x:Name ="MainGrid" Margin="0,0,0,12" RenderTransformOrigin="0.498,0.528">
         <Button Content="Calculate your BMI" HorizontalAlignment="Left" Margin="67,315,0,36" Width="120" Click="Button_Click"/>
-        <Label Content="Gender&#xD;&#xA;" HorizontalAlignment="Left" Margin="67,83,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
+        <Label Content="Gender&#xD;&#xA;" HorizontalAlignment="Left" Margin="64,83,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
         <CheckBox Content="Male" Name="cb_male" HorizontalAlignment="Left" Margin="67,112,0,0" VerticalAlignment="Top" Checked="cb_male_Checked"/>
         <CheckBox Content="Female" Name="cb_female" HorizontalAlignment="Left" Margin="127,112,0,0" VerticalAlignment="Top" Checked="cb_female_Checked" RenderTransformOrigin="0.508,1.8"/>
-        <Label Content="Age" HorizontalAlignment="Left" Margin="67,132,0,0" VerticalAlignment="Top" Width="52"/>
+        <Label Content="Age" HorizontalAlignment="Left" Margin="64,132,0,0" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.067,0.535"/>
         <TextBox Name="tb_age" HorizontalAlignment="Left" Margin="67,163,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Height [cm]" HorizontalAlignment="Left" Margin="67,0,0,0" VerticalAlignment="Center" Width="91" Height="25"/>
+        <Label Content="Height [cm]" HorizontalAlignment="Left" Margin="65,191,0,0" VerticalAlignment="Top" Width="91" Height="25"/>
         <TextBox Name="tb_height" HorizontalAlignment="Left" Margin="67,216,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Label Content="Weight [kg]" HorizontalAlignment="Left" Margin="67,242,0,0" VerticalAlignment="Top" Width="70"/>
         <TextBox Name="tb_weight" HorizontalAlignment="Left" Margin="67,273,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
@@ -22,8 +22,9 @@
         <Label Content="Tips:" HorizontalAlignment="Left" Margin="320,208,0,0" VerticalAlignment="Top" Width="34"/>
         <Image Name ="genderImage" HorizontalAlignment="Left" Height="225" Margin="528,56,0,0" VerticalAlignment="Top" Width="110"/>
         <Label Name="lbl_tipscontent" Content="" HorizontalAlignment="Left" Margin="320,250,0,0" VerticalAlignment="Top" Height="111" Width="193"/>
-        <Label Name ="lbl_name" Content="Name:" HorizontalAlignment="Left" Margin="67,38,0,0" VerticalAlignment="Top"/>
+        <Label Name ="lbl_name" Content="Name:" HorizontalAlignment="Left" Margin="64,38,0,0" VerticalAlignment="Top"/>
         <TextBox Name="tb_name" HorizontalAlignment="Left" Margin="67,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <ListBox Name ="lb_users" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="205,62,355,313" SelectionChanged="ListBox_SelectionChanged"/>
 
 
     </Grid>
