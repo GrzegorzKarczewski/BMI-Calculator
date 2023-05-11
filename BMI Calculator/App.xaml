@@ -3,7 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:BMI_Calculator"
              StartupUri="MainWindow.xaml">
+   
+
     <Application.Resources>
-         
+        <ResourceDictionary>
+         <Color x:Key="SystemAccentColor">#107C10</Color>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

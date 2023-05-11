@@ -392,13 +392,18 @@ namespace BMI_Calculator
             foreach (string users in lastusers)
             {
                 lb_users.Items.Add(users);
-                // For some reason lb_users are not showin, 
             }
 
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // TODO: If clicked on the list, load name, height, age and gender of user
+            //       leave weight for user to calculate again
+
+            string name = lb_users.SelectedItem.ToString();
+            if (name != null)
+                LoadUsersOnSelectionChanged(name);
 
         }
         public void LoadUsersOnStart()
@@ -440,9 +445,35 @@ namespace BMI_Calculator
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();
                 lbl_result.Content = user.BMI;
+                // TODO: introduce checking if user is female to set checkbox
+                //       make a function that sets the style for bmi score here and other functions
 
             }
         }
+
+        public void LoadUsersOnSelectionChanged(string name)
+        {
+
+
+            string databaseFile = "UserData.db";
+            string connectionString = $"Data Source={databaseFile};Version=3;";
+
+            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();
+
+            UserRepository userRepository = new UserRepository(connectionString);
+            UserData user = userRepository.GetUserByName(name);
+
+            if (user != null)
+            {
+                tb_name.Text = user.Name;
+                tb_age.Text = user.Age.ToString();
+                tb_weight.Text = user.Weight.ToString();
+                tb_height.Text = user.Height.ToString();
+                lbl_result.Content = user.BMI;
+
+            }
+        }
+
     }
-    
 }
