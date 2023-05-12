@@ -420,8 +420,8 @@ namespace BMI_Calculator
         public void LoadUsersOnStart()
         {
             
-            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-            initializer.Initialize();
+           /* DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();*/
 
             UserRepository userRepository = new UserRepository(connectionString);
 
@@ -438,8 +438,8 @@ namespace BMI_Calculator
         {
             string name = GSettings.ReadSetting(mostRecentUser);
 
-            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-            initializer.Initialize();
+          /*  DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();*/
 
             UserRepository userRepository = new UserRepository(connectionString);
             UserData user = userRepository.GetUserByName(name);
@@ -455,6 +455,9 @@ namespace BMI_Calculator
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();
                 lbl_result.Content = Math.Round(user.BMI, 1);
+                // TODO: Database needs to store WeighType of saved user,
+                // to be passed when read from db to set
+                // ChangeLabelBMIScoreStyle(WeightType someweighttype);
 
             }
         }
@@ -462,8 +465,8 @@ namespace BMI_Calculator
         public void LoadUsersOnSelectionChanged(string name)
         {
 
-            DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-            initializer.Initialize();
+            /*DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
+            initializer.Initialize();*/
 
             UserRepository userRepository = new UserRepository(connectionString);
             UserData user = userRepository.GetUserByName(name);
