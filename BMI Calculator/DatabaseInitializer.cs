@@ -28,10 +28,12 @@ namespace BMI_Calculator
                 CREATE TABLE IF NOT EXISTS Users (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     Name TEXT NOT NULL,
+                    Gender TEXT NOT NULL,
                     Age INTEGER,
                     Weight REAL,
                     Height REAL,
-                    BMI REAL
+                    BMI REAL,
+                    Timestamp TEXT NOT NULL
                 );";
 
                 using (var cmd = new SQLiteCommand(createUsersTable, connection))

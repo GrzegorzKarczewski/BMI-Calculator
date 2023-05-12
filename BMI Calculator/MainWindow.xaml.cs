@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.Xml.Linq;
 using System.Data.SQLite;
 using System.Windows.Documents.DocumentStructures;
+using System.Reflection.PortableExecutable;
 
 namespace BMI_Calculator
 {
@@ -30,6 +31,7 @@ namespace BMI_Calculator
         bool isMale = false;
         bool isFemale = false;
         string name = string.Empty;
+        string gender = string.Empty;
         float weight;
         float height;
         int age;
@@ -75,6 +77,11 @@ namespace BMI_Calculator
             weight = float.Parse(tb_weight.Text);
             height = float.Parse(tb_height.Text);
             age = int.Parse(tb_age.Text);
+            if (cb_male.IsChecked == true)
+                gender = "Male";
+            if (cb_female.IsChecked == true)
+                gender = "Female";
+
 
 
             double bmi = Math.Round(calculateBmi(weight, height), 1);
@@ -121,8 +128,7 @@ namespace BMI_Calculator
                 else { SetPersonImage(WeightType.weightHigh, 1); }
             }
 
-            MessageBox.Show(name + " " + age + " " + weight + " " + height + " " + bmi);
-            LoadOrSaveUsersDatabase(name, age, weight, height, bmi);
+            LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
 
         }
 
@@ -268,6 +274,7 @@ namespace BMI_Calculator
 
                 cb_female.IsChecked = false;
                 isFemale = false;
+                gender = "Male";
 
             }
         }
@@ -280,7 +287,9 @@ namespace BMI_Calculator
                 isFemale = true;
                 isMale = false;
                 cb_male.IsChecked = false;
+                gender = "Female";
             }
+
         }
 
         static double calculateBmi(double dweight, double dheight)
@@ -349,7 +358,7 @@ namespace BMI_Calculator
         }
 
 
-        void LoadOrSaveUsersDatabase(string name, int age, double weight, double height, double bmi)
+        void LoadOrSaveUsersDatabase(string name, string gender, int age, double weight, double height, double bmi)
         {
             string databaseFile = "UserData.db";
             string connectionString = $"Data Source={databaseFile};Version=3;";
@@ -363,10 +372,13 @@ namespace BMI_Calculator
             UserData newUser = new UserData
             {
                 Name = name,
+                Gender = gender,
                 Age = age,
                 Weight = weight,
                 Height = height,
-                BMI = bmi
+                BMI = bmi,
+                Timestamp = DateTime.Now
+
             };
             userRepository.AddUser(newUser);
 
@@ -441,6 +453,10 @@ namespace BMI_Calculator
             if (user != null)
             {
                 tb_name.Text = user.Name;
+                if (user.Gender == "Male")
+                    cb_male.IsChecked = true;
+                if (user.Gender == "Female")
+                    cb_female.IsChecked = true;
                 tb_age.Text = user.Age.ToString();
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();
@@ -467,6 +483,10 @@ namespace BMI_Calculator
             if (user != null)
             {
                 tb_name.Text = user.Name;
+                if (user.Gender == "Male")
+                    cb_male.IsChecked = true;
+                if (user.Gender == "Female")
+                    cb_female.IsChecked = true;
                 tb_age.Text = user.Age.ToString();
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();

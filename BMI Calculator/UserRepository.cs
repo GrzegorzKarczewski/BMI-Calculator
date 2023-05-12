@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.SQLite;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 
 
 namespace BMI_Calculator
@@ -27,13 +20,15 @@ namespace BMI_Calculator
             {
                 connection.Open();
 
-                var cmd = new SQLiteCommand("INSERT INTO Users (Name, Age, Weight, Height, BMI) VALUES (@Name,@Age, @Weight, @Height, @BMI)", connection);
+                var cmd = new SQLiteCommand("INSERT INTO Users (Name, Gender, Age, Weight, Height, BMI, Timestamp) VALUES (@Name, @Gender, @Age, @Weight, @Height, @BMI, @Timestamp)", connection);
 
                 cmd.Parameters.AddWithValue("@Name", user.Name);
+                cmd.Parameters.AddWithValue("@Gender", user.Gender);
                 cmd.Parameters.AddWithValue("@Age", user.Age);
                 cmd.Parameters.AddWithValue("@Weight", user.Weight);
                 cmd.Parameters.AddWithValue("@Height", user.Height);
                 cmd.Parameters.AddWithValue("@BMI", user.BMI);
+                cmd.Parameters.AddWithValue("@Timestamp", user.Timestamp.ToString("s"));
 
                 cmd.ExecuteNonQuery();
             }
@@ -58,10 +53,12 @@ namespace BMI_Calculator
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Gender = reader.GetString(reader.GetOrdinal("Gender")),
                             Age = reader.GetInt32(reader.GetOrdinal("Age")),
                             Weight = reader.GetFloat(reader.GetOrdinal("Weight")),
                             Height = reader.GetFloat(reader.GetOrdinal("Height")),
-                            BMI = reader.GetFloat(reader.GetOrdinal("BMI"))
+                            BMI = reader.GetFloat(reader.GetOrdinal("BMI")),
+                            Timestamp = DateTime.Parse(reader.GetString(7))
                         };
                     }
                 }
