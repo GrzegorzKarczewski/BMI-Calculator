@@ -16,6 +16,7 @@ namespace BMI_Calculator
         public double Weight { get; set; }
         public double Height { get; set; }
         public double BMI { get; set; }
+        //public enum WeightType { get; set; }
         public DateTime Timestamp { get; set; }
 
     }

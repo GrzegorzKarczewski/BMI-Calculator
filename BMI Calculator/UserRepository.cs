@@ -6,6 +6,31 @@ using System.Data.SQLite;
 namespace BMI_Calculator
 {
     public class UserRepository
+    /*
+    The `UserRepository` class is responsible for the data access operations related to the `Users` table in a SQLite database.
+  
+    The class constructor accepts a connection string parameter, which is used to establish a connection with the database.
+
+    There are three main methods in this class:
+
+    1. `AddUser(UserData user)`: This method takes a `UserData` object as a parameter and inserts its properties into the `Users` table. 
+    The `UserData` object contains details such as Name, Gender, Age, Weight, Height, BMI, and Timestamp. 
+    The Timestamp is converted to a string format before being inserted into the table.
+
+    2. `GetUserByName(string name)`: This method accepts a `name` parameter and returns a `UserData` object. 
+    The method queries the `Users` table in the database for a row where the `Name` column matches the given `name` parameter. 
+    If such a row is found, the method populates a new `UserData` object with the row's data and returns it. 
+    If no such row is found, the method returns null.
+
+    3. `GetUsers()`: This method queries the `Users` table for distinct user names and returns a list of these names. 
+    If no users are found, it returns an empty list.
+
+    All database connections are properly disposed of using `using` blocks to ensure that resources are freed after use.
+    */
+
+
+
+
     {
         private string _connectionString;
 

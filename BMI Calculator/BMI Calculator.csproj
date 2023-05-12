@@ -6,6 +6,7 @@
     <RootNamespace>BMI_Calculator</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\window-icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,10 +17,14 @@
     <None Remove="Images\male_regular.png" />
     <None Remove="Images\male_skinny.png" />
     <None Remove="male_regular.jpg" />
+    <None Remove="Resources\accessibility.png" />
     <None Remove="tips.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\window-icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\female_fat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

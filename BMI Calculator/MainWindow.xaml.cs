@@ -18,6 +18,7 @@ using System.Xml.Linq;
 using System.Data.SQLite;
 using System.Windows.Documents.DocumentStructures;
 using System.Reflection.PortableExecutable;
+using System.Globalization;
 
 namespace BMI_Calculator
 {
@@ -32,13 +33,14 @@ namespace BMI_Calculator
         bool isFemale = false;
         string name = string.Empty;
         string gender = string.Empty;
-        float weight;
-        float height;
+        double weight;
+        double height;
         int age;
         string mostRecentUser = "mostRecentUser";
+        static int currentWeightType = 0;
 
 
-        enum WeightType
+       public enum WeightType
         {
             weightLow,
             weightNormal,
@@ -74,8 +76,8 @@ namespace BMI_Calculator
             /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
 
             name = tb_name.Text;
-            weight = float.Parse(tb_weight.Text);
-            height = float.Parse(tb_height.Text);
+            weight = double.Parse(tb_weight.Text, CultureInfo.InvariantCulture);
+            height = double.Parse(tb_height.Text);
             age = int.Parse(tb_age.Text);
             if (cb_male.IsChecked == true)
                 gender = "Male";
@@ -84,7 +86,7 @@ namespace BMI_Calculator
 
 
 
-            double bmi = Math.Round(calculateBmi(weight, height), 1);
+            double bmi = calculateBmi(weight, height);
 
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
@@ -92,10 +94,10 @@ namespace BMI_Calculator
 
             if (bmi > 18.5 && bmi < 24.9)
             {
-                lbl_result.Foreground = Brushes.Green;
 
-
+                ChangeLabelBMIScore(WeightType.weightNormal);
                 GiveTipsForBMI(WeightType.weightNormal);
+                currentWeightType = 1;
 
                 if (isMale)
                 {
@@ -106,8 +108,9 @@ namespace BMI_Calculator
             }
             if (bmi < 18.5)
             {
-                lbl_result.Foreground = Brushes.LightBlue;
+                ChangeLabelBMIScore(WeightType.weightLow);
                 GiveTipsForBMI(WeightType.weightLow);
+                currentWeightType = 0;
 
                 if (isMale)
                 {
@@ -117,9 +120,10 @@ namespace BMI_Calculator
             }
             if (bmi >= 25)
             {
-                lbl_result.Foreground = Brushes.OrangeRed;
 
+                ChangeLabelBMIScore(WeightType.weightHigh);
                 GiveTipsForBMI(WeightType.weightHigh);
+                currentWeightType = 2;
 
                 if (isMale)
                 {
@@ -300,7 +304,7 @@ namespace BMI_Calculator
             bmi = (dweight / dheight) / dheight * 10000;  // bmi formula 
 
 
-            return bmi;
+            return Math.Round(bmi,1);
         }
 
 
@@ -383,22 +387,7 @@ namespace BMI_Calculator
             userRepository.AddUser(newUser);
 
             GSettings.AddUpdateAppSettings(mostRecentUser, name);
-            /*// Get user data by name
-            string userName = name;
-            UserData user = userRepository.GetUserByName(userName);
-
-            if (user != null)
-            {
-                MessageBox.Show($"User: {user.Name} " +
-                $"Age: {user.Age} " +
-                $"Weight: {user.Weight} " +
-                $"Height: {user.Height}  " +
-               $"BMI: {user.BMI}");
-            }
-            else
-            {
-                MessageBox.Show($"User '{userName}' not found.");
-            }*/
+            
             lb_users.Items.Clear();
             List<string> lastusers = userRepository.GetUsers();
             foreach (string users in lastusers)
@@ -460,9 +449,7 @@ namespace BMI_Calculator
                 tb_age.Text = user.Age.ToString();
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();
-                lbl_result.Content = user.BMI;
-                // TODO: introduce checking if user is female to set checkbox
-                //       make a function that sets the style for bmi score here and other functions
+                lbl_result.Content = Math.Round(user.BMI, 1);
 
             }
         }
@@ -490,10 +477,68 @@ namespace BMI_Calculator
                 tb_age.Text = user.Age.ToString();
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();
-                lbl_result.Content = user.BMI;
+                lbl_result.Content = Math.Round(user.BMI,1);
+
+                {
+                    if (user.BMI > 18.5 && user.BMI < 24.9)
+                    {
+
+                        ChangeLabelBMIScore(WeightType.weightNormal);
+                        GiveTipsForBMI(WeightType.weightNormal);
+
+                        if (isMale)
+                        {
+                            SetPersonImage(WeightType.weightNormal, 0);
+                        }
+                        else { SetPersonImage(WeightType.weightNormal, 1); }
+
+                    }
+                    if (user.BMI < 18.5)
+                    {
+                        ChangeLabelBMIScore(WeightType.weightLow);
+                        GiveTipsForBMI(WeightType.weightLow);
+
+                        if (isMale)
+                        {
+                            SetPersonImage(WeightType.weightLow, 0);
+                        }
+                        else { SetPersonImage(WeightType.weightLow, 1); }
+                    }
+                    if (user.BMI >= 25)
+                    {
+
+                        ChangeLabelBMIScore(WeightType.weightHigh);
+                        GiveTipsForBMI(WeightType.weightHigh);
+
+                        if (isMale)
+                        {
+                            SetPersonImage(WeightType.weightHigh, 0);
+                        }
+                        else { SetPersonImage(WeightType.weightHigh, 1); }
+                    }
+                }
+            }
+
+        }
+
+        public void ChangeLabelBMIScore(WeightType weightType)
+        {
+           
+            lbl_result.FontSize = 34;
+            lbl_result.FontWeight = FontWeights.Bold;
+            switch (weightType)
+            {
+                case WeightType.weightLow:
+                    lbl_result.Foreground = Brushes.LightBlue;
+                    return;
+                case WeightType.weightNormal:
+                    lbl_result.Foreground = Brushes.Green;
+                    return;
+                case WeightType.weightHigh:
+                    lbl_result.Foreground = Brushes.OrangeRed;
+                    return;
 
             }
         }
-
     }
 }
