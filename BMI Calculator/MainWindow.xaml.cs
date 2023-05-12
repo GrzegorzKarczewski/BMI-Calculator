@@ -39,8 +39,12 @@ namespace BMI_Calculator
         string mostRecentUser = "mostRecentUser";
         static int currentWeightType = 0;
 
+        // Database global constants
+        static string databaseFile = "UserData.db";
+        static string connectionString = $"Data Source={databaseFile};Version=3;";
 
-       public enum WeightType
+
+        public enum WeightType
         {
             weightLow,
             weightNormal,
@@ -68,12 +72,20 @@ namespace BMI_Calculator
         {
 
             /// <summary>
-            /// Calculates the BMI using the user's input for weight and height, then updates the UI with the result,
-            /// provides a tip based on the BMI, and changes the displayed image accordingly.
-            /// This function is triggered when the user clicks the "Calculate BMI" button.
+            /// The `Button_Click` event is triggered when the "Calculate BMI" button is clicked by the user.
+            /// This function first extracts the user's inputs, including name, weight, height, age, and gender from the UI.
+            /// It then calculates the BMI using the user's input for weight and height.
+            ///
+            /// Depending on the BMI range, it performs the following operations:
+            /// - Updates the UI with the calculated BMI, changing the font size to 34.
+            /// - Adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
+            /// - Changes the displayed image based on the BMI category and the user's gender.
+            /// 
+            /// Finally, it saves the user's data, including the calculated BMI, into the database.
             /// </summary>
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
+
 
             name = tb_name.Text;
             weight = double.Parse(tb_weight.Text, CultureInfo.InvariantCulture);
@@ -95,7 +107,7 @@ namespace BMI_Calculator
             if (bmi > 18.5 && bmi < 24.9)
             {
 
-                ChangeLabelBMIScore(WeightType.weightNormal);
+                ChangeLabelBMIScoreStyle(WeightType.weightNormal);
                 GiveTipsForBMI(WeightType.weightNormal);
                 currentWeightType = 1;
 
@@ -108,7 +120,7 @@ namespace BMI_Calculator
             }
             if (bmi < 18.5)
             {
-                ChangeLabelBMIScore(WeightType.weightLow);
+                ChangeLabelBMIScoreStyle(WeightType.weightLow);
                 GiveTipsForBMI(WeightType.weightLow);
                 currentWeightType = 0;
 
@@ -121,7 +133,7 @@ namespace BMI_Calculator
             if (bmi >= 25)
             {
 
-                ChangeLabelBMIScore(WeightType.weightHigh);
+                ChangeLabelBMIScoreStyle(WeightType.weightHigh);
                 GiveTipsForBMI(WeightType.weightHigh);
                 currentWeightType = 2;
 
@@ -364,9 +376,7 @@ namespace BMI_Calculator
 
         void LoadOrSaveUsersDatabase(string name, string gender, int age, double weight, double height, double bmi)
         {
-            string databaseFile = "UserData.db";
-            string connectionString = $"Data Source={databaseFile};Version=3;";
-
+           
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
@@ -409,8 +419,7 @@ namespace BMI_Calculator
         }
         public void LoadUsersOnStart()
         {
-            string databaseFile = "UserData.db";
-            string connectionString = $"Data Source={databaseFile};Version=3;";
+            
 
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
@@ -429,9 +438,6 @@ namespace BMI_Calculator
         public void LoadDataFromMostRecentUser()
         {
             string name = GSettings.ReadSetting(mostRecentUser);
-
-            string databaseFile = "UserData.db";
-            string connectionString = $"Data Source={databaseFile};Version=3;";
 
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
@@ -457,10 +463,6 @@ namespace BMI_Calculator
         public void LoadUsersOnSelectionChanged(string name)
         {
 
-
-            string databaseFile = "UserData.db";
-            string connectionString = $"Data Source={databaseFile};Version=3;";
-
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
@@ -483,7 +485,7 @@ namespace BMI_Calculator
                     if (user.BMI > 18.5 && user.BMI < 24.9)
                     {
 
-                        ChangeLabelBMIScore(WeightType.weightNormal);
+                        ChangeLabelBMIScoreStyle(WeightType.weightNormal);
                         GiveTipsForBMI(WeightType.weightNormal);
 
                         if (isMale)
@@ -495,7 +497,7 @@ namespace BMI_Calculator
                     }
                     if (user.BMI < 18.5)
                     {
-                        ChangeLabelBMIScore(WeightType.weightLow);
+                        ChangeLabelBMIScoreStyle(WeightType.weightLow);
                         GiveTipsForBMI(WeightType.weightLow);
 
                         if (isMale)
@@ -507,7 +509,7 @@ namespace BMI_Calculator
                     if (user.BMI >= 25)
                     {
 
-                        ChangeLabelBMIScore(WeightType.weightHigh);
+                        ChangeLabelBMIScoreStyle(WeightType.weightHigh);
                         GiveTipsForBMI(WeightType.weightHigh);
 
                         if (isMale)
@@ -521,7 +523,7 @@ namespace BMI_Calculator
 
         }
 
-        public void ChangeLabelBMIScore(WeightType weightType)
+        public void ChangeLabelBMIScoreStyle(WeightType weightType)
         {
            
             lbl_result.FontSize = 34;
