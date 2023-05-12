@@ -46,9 +46,9 @@ namespace BMI_Calculator
 
         public enum WeightType
         {
-            weightLow,
-            weightNormal,
-            weightHigh
+            WeightLow,
+            WeightNormal,
+            WeightHigh
         }
 
         public MainWindow()
@@ -107,42 +107,42 @@ namespace BMI_Calculator
             if (bmi > 18.5 && bmi < 24.9)
             {
 
-                ChangeLabelBMIScoreStyle(WeightType.weightNormal);
-                GiveTipsForBMI(WeightType.weightNormal);
+                ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
+                GiveTipsForBMI(WeightType.WeightNormal);
                 currentWeightType = 1;
 
                 if (isMale)
                 {
-                    SetPersonImage(WeightType.weightNormal, 0);
+                    SetPersonImage(WeightType.WeightNormal, 0);
                 }
-                else { SetPersonImage(WeightType.weightNormal, 1); }
+                else { SetPersonImage(WeightType.WeightNormal, 1); }
 
             }
             if (bmi < 18.5)
             {
-                ChangeLabelBMIScoreStyle(WeightType.weightLow);
-                GiveTipsForBMI(WeightType.weightLow);
+                ChangeLabelBMIScoreStyle(WeightType.WeightLow);
+                GiveTipsForBMI(WeightType.WeightLow);
                 currentWeightType = 0;
 
                 if (isMale)
                 {
-                    SetPersonImage(WeightType.weightLow, 0);
+                    SetPersonImage(WeightType.WeightLow, 0);
                 }
-                else { SetPersonImage(WeightType.weightLow, 1); }
+                else { SetPersonImage(WeightType.WeightLow, 1); }
             }
             if (bmi >= 25)
             {
 
-                ChangeLabelBMIScoreStyle(WeightType.weightHigh);
-                GiveTipsForBMI(WeightType.weightHigh);
+                ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
+                GiveTipsForBMI(WeightType.WeightHigh);
                 currentWeightType = 2;
 
                 if (isMale)
                 {
-                    SetPersonImage(WeightType.weightHigh, 0);
+                    SetPersonImage(WeightType.WeightHigh, 0);
                 }
-                else { SetPersonImage(WeightType.weightHigh, 1); }
-            }
+                else { SetPersonImage(WeightType.WeightHigh, 1); }
+            }   
 
             LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
 
@@ -164,7 +164,7 @@ namespace BMI_Calculator
 
             switch (weightType)
             {
-                case WeightType.weightLow:
+                case WeightType.WeightLow:
                     if (gender == 0)
                     {
                         // put image of too skinny man
@@ -202,7 +202,7 @@ namespace BMI_Calculator
                     }
 
                     return;
-                case WeightType.weightNormal:
+                case WeightType.WeightNormal:
                     if (gender == 0)
                     {
                         // put image of too skinny man
@@ -239,7 +239,7 @@ namespace BMI_Calculator
 
                     }
                     return;
-                case WeightType.weightHigh:
+                case WeightType.WeightHigh:
                     if (gender == 0)
                     {
                         // put image of too skinny man
@@ -354,13 +354,13 @@ namespace BMI_Calculator
 
             switch (weightType)
             {
-                case WeightType.weightLow:
+                case WeightType.WeightLow:
                     bmiCategory = "underweight_tips";
                     break;
-                case WeightType.weightHigh:
+                case WeightType.WeightHigh:
                     bmiCategory = "overweight_tips";
                     break;
-                case WeightType.weightNormal:
+                case WeightType.WeightNormal:
                     bmiCategory = "healthy_weight_tips";
                     break;
 
@@ -420,7 +420,6 @@ namespace BMI_Calculator
         public void LoadUsersOnStart()
         {
             
-
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
@@ -485,38 +484,38 @@ namespace BMI_Calculator
                     if (user.BMI > 18.5 && user.BMI < 24.9)
                     {
 
-                        ChangeLabelBMIScoreStyle(WeightType.weightNormal);
-                        GiveTipsForBMI(WeightType.weightNormal);
+                        ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
+                        GiveTipsForBMI(WeightType.WeightNormal);
 
                         if (isMale)
                         {
-                            SetPersonImage(WeightType.weightNormal, 0);
+                            SetPersonImage(WeightType.WeightNormal, 0);
                         }
-                        else { SetPersonImage(WeightType.weightNormal, 1); }
+                        else { SetPersonImage(WeightType.WeightNormal, 1); }
 
                     }
                     if (user.BMI < 18.5)
                     {
-                        ChangeLabelBMIScoreStyle(WeightType.weightLow);
-                        GiveTipsForBMI(WeightType.weightLow);
+                        ChangeLabelBMIScoreStyle(WeightType.WeightLow);
+                        GiveTipsForBMI(WeightType.WeightLow);
 
                         if (isMale)
                         {
-                            SetPersonImage(WeightType.weightLow, 0);
+                            SetPersonImage(WeightType.WeightLow, 0);
                         }
-                        else { SetPersonImage(WeightType.weightLow, 1); }
+                        else { SetPersonImage(WeightType.WeightLow, 1); }
                     }
                     if (user.BMI >= 25)
                     {
 
-                        ChangeLabelBMIScoreStyle(WeightType.weightHigh);
-                        GiveTipsForBMI(WeightType.weightHigh);
+                        ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
+                        GiveTipsForBMI(WeightType.WeightHigh);
 
                         if (isMale)
                         {
-                            SetPersonImage(WeightType.weightHigh, 0);
+                            SetPersonImage(WeightType.WeightHigh, 0);
                         }
-                        else { SetPersonImage(WeightType.weightHigh, 1); }
+                        else { SetPersonImage(WeightType.WeightHigh, 1); }
                     }
                 }
             }
@@ -530,13 +529,13 @@ namespace BMI_Calculator
             lbl_result.FontWeight = FontWeights.Bold;
             switch (weightType)
             {
-                case WeightType.weightLow:
+                case WeightType.WeightLow:
                     lbl_result.Foreground = Brushes.LightBlue;
                     return;
-                case WeightType.weightNormal:
+                case WeightType.WeightNormal:
                     lbl_result.Foreground = Brushes.Green;
                     return;
-                case WeightType.weightHigh:
+                case WeightType.WeightHigh:
                     lbl_result.Foreground = Brushes.OrangeRed;
                     return;
 
