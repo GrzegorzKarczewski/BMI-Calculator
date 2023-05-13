@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BMI_Calculator"
         mc:Ignorable="d"
         Title="BMI Calculator" Height="500" Width="670">
-    <Grid x:Name ="MainGrid" Margin="0,0,0,12" RenderTransformOrigin="0.498,0.528" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+    <Grid x:Name ="MainGrid" Margin="0,0,0,12" RenderTransformOrigin="0.498,0.528">
         <Button Content="Calculate your BMI" HorizontalAlignment="Left" Margin="55,404,0,20" Width="120" Click="Button_Click"/>
         <Label Content="Gender&#xD;&#xA;" HorizontalAlignment="Left" Margin="52,172,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
         <CheckBox Content="Male" Name="cb_male" HorizontalAlignment="Left" Margin="55,201,0,0" VerticalAlignment="Top" Checked="cb_male_Checked" BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"/>

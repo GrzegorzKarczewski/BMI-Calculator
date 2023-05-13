@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
+using System.Xml.Linq;
 
 
 namespace BMI_Calculator
@@ -53,6 +56,7 @@ namespace BMI_Calculator
                 cmd.Parameters.AddWithValue("@Weight", user.Weight);
                 cmd.Parameters.AddWithValue("@Height", user.Height);
                 cmd.Parameters.AddWithValue("@BMI", user.BMI);
+
                 cmd.Parameters.AddWithValue("@Timestamp", user.Timestamp.ToString("s"));
 
                 cmd.ExecuteNonQuery();
@@ -66,8 +70,7 @@ namespace BMI_Calculator
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 connection.Open();
-
-                var cmd = new SQLiteCommand("SELECT * FROM Users WHERE Name = @Name", connection);
+                var cmd = new SQLiteCommand("SELECT * FROM Users WHERE Name = @Name ORDER BY timestamp DESC LIMIT 1", connection);
                 cmd.Parameters.AddWithValue("@Name", name);
 
                 using (var reader = cmd.ExecuteReader())

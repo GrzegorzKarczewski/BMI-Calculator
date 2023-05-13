@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using static BMI_Calculator.MainWindow;
 
 namespace BMI_Calculator
 {
@@ -16,7 +17,6 @@ namespace BMI_Calculator
         public double Weight { get; set; }
         public double Height { get; set; }
         public double BMI { get; set; }
-        //public enum WeightType { get; set; }
         public DateTime Timestamp { get; set; }
 
     }

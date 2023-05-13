@@ -38,6 +38,7 @@ namespace BMI_Calculator
         int age;
         string mostRecentUser = "mostRecentUser";
         static int currentWeightType = 0;
+        static string currentName = string.Empty;
 
         // Database global constants
         static string databaseFile = "UserData.db";
@@ -57,7 +58,8 @@ namespace BMI_Calculator
             InitializeComponent();
 
             // Restricting input fields for reasonable values (lazy way)
-            tb_age.MaxLength = 2;
+            tb_name.MaxLength = 20; // I dont think there is a reason to make it longer
+            tb_age.MaxLength = 3;
             tb_height.MaxLength = 3;
             tb_weight.MaxLength = 4;
 
@@ -88,66 +90,79 @@ namespace BMI_Calculator
 
 
             name = tb_name.Text;
+          
             weight = double.Parse(tb_weight.Text, CultureInfo.InvariantCulture);
             height = double.Parse(tb_height.Text);
             age = int.Parse(tb_age.Text);
+            bool isNameString = string.IsNullOrEmpty(name);
+            bool isWeightDouble = double.TryParse(weight.ToString(), out double result_weight);
+            bool isHeightDouble = double.TryParse(height.ToString(), out double result_height);
+            bool isAgeInt = int.TryParse(age.ToString(), out int result_age);
+
+
             if (cb_male.IsChecked == true)
                 gender = "Male";
             if (cb_female.IsChecked == true)
                 gender = "Female";
 
-
-
-            double bmi = calculateBmi(weight, height);
-
-            lbl_result.FontSize = 34;
-            lbl_result.Content = bmi;
-
-
-            if (bmi > 18.5 && bmi < 24.9)
+            // Execute the calculations only if input data are proper
+            if (isNameString == false && isAgeInt && isHeightDouble && isWeightDouble)
             {
 
-                ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
-                GiveTipsForBMI(WeightType.WeightNormal);
-                currentWeightType = 1;
+                double bmi = calculateBmi(weight, height);
 
-                if (isMale)
+                lbl_result.FontSize = 34;
+                lbl_result.Content = bmi;
+
+
+                if (bmi > 18.5 && bmi < 24.9)
                 {
-                    SetPersonImage(WeightType.WeightNormal, 0);
+
+                    ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
+                    GiveTipsForBMI(WeightType.WeightNormal);
+                    currentWeightType = 1;
+
+                    if (isMale)
+                    {
+                        SetPersonImage(WeightType.WeightNormal, 0);
+                    }
+                    else { SetPersonImage(WeightType.WeightNormal, 1); }
+
                 }
-                else { SetPersonImage(WeightType.WeightNormal, 1); }
+                if (bmi < 18.5)
+                {
+                    ChangeLabelBMIScoreStyle(WeightType.WeightLow);
+                    GiveTipsForBMI(WeightType.WeightLow);
+                    currentWeightType = 0;
+
+                    if (isMale)
+                    {
+                        SetPersonImage(WeightType.WeightLow, 0);
+                    }
+                    else { SetPersonImage(WeightType.WeightLow, 1); }
+                }
+                if (bmi >= 25)
+                {
+
+                    ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
+                    GiveTipsForBMI(WeightType.WeightHigh);
+                    currentWeightType = 2;
+
+                    if (isMale)
+                    {
+                        SetPersonImage(WeightType.WeightHigh, 0);
+                    }
+                    else { SetPersonImage(WeightType.WeightHigh, 1); }
+                }
+
+                LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
 
             }
-            if (bmi < 18.5)
+            else
             {
-                ChangeLabelBMIScoreStyle(WeightType.WeightLow);
-                GiveTipsForBMI(WeightType.WeightLow);
-                currentWeightType = 0;
-
-                if (isMale)
-                {
-                    SetPersonImage(WeightType.WeightLow, 0);
-                }
-                else { SetPersonImage(WeightType.WeightLow, 1); }
+                MessageBox.Show("Check your information, some of them are incorrect!");
             }
-            if (bmi >= 25)
-            {
-
-                ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
-                GiveTipsForBMI(WeightType.WeightHigh);
-                currentWeightType = 2;
-
-                if (isMale)
-                {
-                    SetPersonImage(WeightType.WeightHigh, 0);
-                }
-                else { SetPersonImage(WeightType.WeightHigh, 1); }
-            }   
-
-            LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
-
         }
-
 
 
         private void SetPersonImage(WeightType weightType, int gender)
@@ -380,7 +395,6 @@ namespace BMI_Calculator
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
-            // Testing adding new user
             // Add a new user to the Users table
             UserRepository userRepository = new UserRepository(connectionString);
             UserData newUser = new UserData
@@ -411,17 +425,16 @@ namespace BMI_Calculator
         {
             // TODO: If clicked on the list, load name, height, age and gender of user
             //       leave weight for user to calculate again
-
-            string name = lb_users.SelectedItem.ToString();
-            if (name != null)
-                LoadUsersOnSelectionChanged(name);
-
+            if (lb_users.SelectedItem != null)
+            {
+                currentName = lb_users.SelectedItem.ToString();
+                if (currentName != null)
+                    LoadUsersOnSelectionChanged(currentName);
+            }
         }
         public void LoadUsersOnStart()
         {
-            
-           /* DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-            initializer.Initialize();*/
+          
 
             UserRepository userRepository = new UserRepository(connectionString);
 
@@ -431,15 +444,13 @@ namespace BMI_Calculator
             {
                 lb_users.Items.Add(users);
             }
+            currentName = mostRecentUser;
 
         }
 
         public void LoadDataFromMostRecentUser()
         {
             string name = GSettings.ReadSetting(mostRecentUser);
-
-          /*  DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-            initializer.Initialize();*/
 
             UserRepository userRepository = new UserRepository(connectionString);
             UserData user = userRepository.GetUserByName(name);
@@ -465,14 +476,14 @@ namespace BMI_Calculator
         public void LoadUsersOnSelectionChanged(string name)
         {
 
-            /*DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-            initializer.Initialize();*/
+          
 
             UserRepository userRepository = new UserRepository(connectionString);
             UserData user = userRepository.GetUserByName(name);
 
             if (user != null)
             {
+                double bmi = Math.Round(user.BMI, 1); ;
                 tb_name.Text = user.Name;
                 if (user.Gender == "Male")
                     cb_male.IsChecked = true;
@@ -481,10 +492,10 @@ namespace BMI_Calculator
                 tb_age.Text = user.Age.ToString();
                 tb_weight.Text = user.Weight.ToString();
                 tb_height.Text = user.Height.ToString();
-                lbl_result.Content = Math.Round(user.BMI,1);
+                lbl_result.Content = bmi;
 
                 {
-                    if (user.BMI > 18.5 && user.BMI < 24.9)
+                    if (bmi > 18.5 && bmi < 24.9)
                     {
 
                         ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
@@ -497,7 +508,7 @@ namespace BMI_Calculator
                         else { SetPersonImage(WeightType.WeightNormal, 1); }
 
                     }
-                    if (user.BMI < 18.5)
+                    if (bmi < 18.5)
                     {
                         ChangeLabelBMIScoreStyle(WeightType.WeightLow);
                         GiveTipsForBMI(WeightType.WeightLow);
@@ -508,7 +519,7 @@ namespace BMI_Calculator
                         }
                         else { SetPersonImage(WeightType.WeightLow, 1); }
                     }
-                    if (user.BMI >= 25)
+                    if (bmi >= 25)
                     {
 
                         ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
