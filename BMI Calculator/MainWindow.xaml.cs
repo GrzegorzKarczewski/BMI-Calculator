@@ -404,7 +404,7 @@ namespace BMI_Calculator
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
-            // updatint Users table
+            // updating Users table
             UserRepository userRepository = new UserRepository(connectionString);
             UserData newUser = new UserData
             {
