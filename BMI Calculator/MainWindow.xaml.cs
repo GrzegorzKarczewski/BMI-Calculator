@@ -72,15 +72,17 @@ namespace BMI_Calculator
         {
 
             /// <summary>
-            /// The `Button_Click` event is triggered when the "Calculate BMI" button is clicked by the user.
-            /// This function first extracts the user's inputs, including name, weight, height, age, and gender from the UI.
-            /// It then calculates the BMI using the user's input for weight and height.
+            /// The `Button_Click` event is triggered when the user clicks the button.
+            /// This function first validates the user's inputs, including name, weight, height, and age from the UI.
+            /// If the inputs are valid, it calculates the BMI using the user's weight and height.
             ///
             /// Depending on the BMI range, it performs the following operations:
             /// - Updates the UI with the calculated BMI, changing the font size to 34.
             /// - Adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
             /// - Changes the displayed image based on the BMI category and the user's gender.
             /// 
+            /// If the inputs are invalid, it shows a MessageBox with an error message specific to the invalid input.
+            ///
             /// Finally, it saves the user's data, including the calculated BMI, into the database.
             /// </summary>
             /// <param name="sender">The source of the event.</param>
@@ -89,14 +91,15 @@ namespace BMI_Calculator
 
 
 
+
             // Taking input and checking if correct values are entered
-          
+
             bool isWeightDouble = double.TryParse(tb_weight.Text, out double result_weight);
             bool isHeightDouble = double.TryParse(tb_height.Text, out double result_height);
             bool isAgeInt = int.TryParse(tb_age.Text, out int result_age);
             bool isNameNotString = string.IsNullOrEmpty(tb_name.Text);
 
-
+            // setting gender values for db and later use
             if (cb_male.IsChecked == true)
                 gender = "Male";
             if (cb_female.IsChecked == true)
@@ -400,7 +403,20 @@ namespace BMI_Calculator
 
         void LoadOrSaveUsersDatabase(string name, string gender, int age, double weight, double height, double bmi)
         {
-           
+
+            /// <summary>
+            /// This function initializes a new database connection using the provided connection string.
+            /// It then creates a new user repository to interact with the Users table in the database.
+            ///
+            /// A new user data object is created with the provided name, gender, age, weight, height, and BMI. 
+            /// The current timestamp is also recorded. This new user data is then added to the Users table in the database.
+            ///
+            /// The function also updates the application settings to record the most recent user.
+            ///
+            /// Finally, the function clears and repopulates the user list in the UI with the updated list of users from the database.
+            /// </summary>
+
+
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
