@@ -89,15 +89,14 @@ namespace BMI_Calculator
             /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
 
 
-            name = tb_name.Text;
+
+
+            // Taking input and checking if correct values are entered
           
-            weight = double.Parse(tb_weight.Text, CultureInfo.InvariantCulture);
-            height = double.Parse(tb_height.Text);
-            age = int.Parse(tb_age.Text);
-            bool isNameString = string.IsNullOrEmpty(name);
-            bool isWeightDouble = double.TryParse(weight.ToString(), out double result_weight);
-            bool isHeightDouble = double.TryParse(height.ToString(), out double result_height);
-            bool isAgeInt = int.TryParse(age.ToString(), out int result_age);
+            bool isWeightDouble = double.TryParse(tb_weight.Text, out double result_weight);
+            bool isHeightDouble = double.TryParse(tb_height.Text, out double result_height);
+            bool isAgeInt = int.TryParse(tb_age.Text, out int result_age);
+            bool isNameNotString = string.IsNullOrEmpty(tb_name.Text);
 
 
             if (cb_male.IsChecked == true)
@@ -106,8 +105,13 @@ namespace BMI_Calculator
                 gender = "Female";
 
             // Execute the calculations only if input data are proper
-            if (isNameString == false && isAgeInt && isHeightDouble && isWeightDouble)
+            if (isNameNotString == false && isAgeInt && isHeightDouble && isWeightDouble)
             {
+
+                name = tb_name.Text;
+                weight = double.Parse(tb_weight.Text, CultureInfo.InvariantCulture);
+                height = double.Parse(tb_height.Text);
+                age = int.Parse(tb_age.Text, NumberStyles.Integer);
 
                 double bmi = calculateBmi(weight, height);
 
@@ -160,7 +164,14 @@ namespace BMI_Calculator
             }
             else
             {
-                MessageBox.Show("Check your information, some of them are incorrect!");
+                if (!isWeightDouble)
+                MessageBox.Show("Check your weight, you entered incorrect format of weight!");
+                if (!isHeightDouble)
+                    MessageBox.Show("Check your height, you entered incorrect format of height!");
+                if (!isAgeInt)
+                    MessageBox.Show("Check your age, you entered incorrect format of age!");
+                if (isNameNotString)
+                    MessageBox.Show("Check your name, you should use real name!");
             }
         }
 
