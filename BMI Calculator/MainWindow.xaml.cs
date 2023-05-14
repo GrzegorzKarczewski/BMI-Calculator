@@ -68,8 +68,6 @@ namespace BMI_Calculator
         }
 
 
-
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
@@ -406,7 +404,7 @@ namespace BMI_Calculator
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
-            // Add a new user to the Users table
+            // updatint Users table
             UserRepository userRepository = new UserRepository(connectionString);
             UserData newUser = new UserData
             {
@@ -575,7 +573,6 @@ namespace BMI_Calculator
             {
                 // Reload the users list
                 // This code is uses often, make it a function?
-                MessageBox.Show("This is happening");
                 lb_users.Items.Clear();
                 List<string> lastusers = userRepository.GetUsers();
                 foreach (string users in lastusers)
