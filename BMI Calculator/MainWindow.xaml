@@ -27,6 +27,7 @@
         <ListBox x:Name ="lb_users" Margin="55,68,0,0"  SelectionChanged="ListBox_SelectionChanged" Background="#FFBFEABD" d:ItemsSource="{d:SampleData ItemCount=5}" RenderTransformOrigin="3.013,6.041" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="142" />
         <Label Content="Select your name from the list:" HorizontalAlignment="Left" Margin="55,37,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.209,0.609"/>
         <DataGrid HorizontalAlignment="Left" Height="13" Margin="1023,68,0,0" VerticalAlignment="Top" Width="4" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="202,88,0,0" VerticalAlignment="Top" Click="DeleteUser_ButtonClick"/>
 
 
     </Grid>

@@ -487,8 +487,6 @@ namespace BMI_Calculator
         public void LoadUsersOnSelectionChanged(string name)
         {
 
-          
-
             UserRepository userRepository = new UserRepository(connectionString);
             UserData user = userRepository.GetUserByName(name);
 
@@ -565,6 +563,31 @@ namespace BMI_Calculator
                     return;
 
             }
+        }
+
+        private void DeleteUser_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            string name = currentName; // currentName should be always storing currently checked user on the list
+            UserRepository userRepository = new UserRepository(connectionString);
+            bool success = userRepository.RemoveUserByName(name);
+
+            if (success)
+            {
+                // Reload the users list
+                // This code is uses often, make it a function?
+                MessageBox.Show("This is happening");
+                lb_users.Items.Clear();
+                List<string> lastusers = userRepository.GetUsers();
+                foreach (string users in lastusers)
+                {
+                    lb_users.Items.Add(users);
+                }
+            }
+            else
+            {
+                MessageBox.Show("There was some problem removing this user from database!");
+            }
+            
         }
     }
 }
