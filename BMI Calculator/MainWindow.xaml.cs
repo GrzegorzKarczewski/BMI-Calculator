@@ -19,6 +19,8 @@ using System.Data.SQLite;
 using System.Windows.Documents.DocumentStructures;
 using System.Reflection.PortableExecutable;
 using System.Globalization;
+using System.Text.RegularExpressions;
+
 
 namespace BMI_Calculator
 {
@@ -94,7 +96,7 @@ namespace BMI_Calculator
 
             // Taking input and checking if correct values are entered
 
-            bool isWeightDouble = double.TryParse(tb_weight.Text, out double result_weight);
+            bool isWeightDouble = double.TryParse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double result_weight);
             bool isHeightDouble = double.TryParse(tb_height.Text, out double result_height);
             bool isAgeInt = int.TryParse(tb_age.Text, out int result_age);
             bool isNameNotString = string.IsNullOrEmpty(tb_name.Text);
@@ -110,7 +112,7 @@ namespace BMI_Calculator
             {
 
                 name = tb_name.Text;
-                weight = double.Parse(tb_weight.Text, CultureInfo.InvariantCulture);
+                weight = double.Parse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
                 height = double.Parse(tb_height.Text);
                 age = int.Parse(tb_age.Text, NumberStyles.Integer);
 
@@ -601,6 +603,23 @@ namespace BMI_Calculator
                 MessageBox.Show("There was some problem removing this user from database!");
             }
             
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void NumberValidationTextBoxAllowComma(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9.]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+       
+            private void ValidationTextBoxLettersOnly(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^a-zA-Z]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
