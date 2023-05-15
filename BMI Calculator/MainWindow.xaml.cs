@@ -65,7 +65,7 @@ namespace BMI_Calculator
             tb_height.MaxLength = 3;
             tb_weight.MaxLength = 4;
 
-            LoadUsersOnStart();
+            PopulateListOnStart();
             LoadDataFromMostRecentUser();
         }
 
@@ -459,7 +459,7 @@ namespace BMI_Calculator
                     LoadUsersOnSelectionChanged(currentName);
             }
         }
-        public void LoadUsersOnStart()
+        public void PopulateListOnStart()
         {
           
 
@@ -477,27 +477,18 @@ namespace BMI_Calculator
 
         public void LoadDataFromMostRecentUser()
         {
+            /// <summary>
+            /// The `LoadDataFromMostRecentUser` method retrieves the name of the most recent user from the application settings.
+            /// It then calls the `LoadUsersOnSelectionChanged` method with the retrieved name.
+            ///
+            /// The `LoadUsersOnSelectionChanged` method fetches the user data from the database for the given user name. 
+            /// If a user with the given name is found, it populates the UI fields with the user's data, including name, gender, age, weight, height, and BMI.
+            /// Depending on the user's BMI, it adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
+            /// It also changes the displayed image based on the BMI category and the user's gender.
+            /// </summary>
+
             string name = GSettings.ReadSetting(mostRecentUser);
-
-            UserRepository userRepository = new UserRepository(connectionString);
-            UserData user = userRepository.GetUserByName(name);
-
-            if (user != null)
-            {
-                tb_name.Text = user.Name;
-                if (user.Gender == "Male")
-                    cb_male.IsChecked = true;
-                if (user.Gender == "Female")
-                    cb_female.IsChecked = true;
-                tb_age.Text = user.Age.ToString();
-                tb_weight.Text = user.Weight.ToString();
-                tb_height.Text = user.Height.ToString();
-                lbl_result.Content = Math.Round(user.BMI, 1);
-                // TODO: Database needs to store WeighType of saved user,
-                // to be passed when read from db to set
-                // ChangeLabelBMIScoreStyle(WeightType someweighttype);
-
-            }
+            LoadUsersOnSelectionChanged(name);
         }
 
         public void LoadUsersOnSelectionChanged(string name)
@@ -515,7 +506,7 @@ namespace BMI_Calculator
                 if (user.Gender == "Female")
                     cb_female.IsChecked = true;
                 tb_age.Text = user.Age.ToString();
-                tb_weight.Text = user.Weight.ToString();
+                tb_weight.Text = Math.Round(user.Weight,1).ToString(CultureInfo.InvariantCulture);
                 tb_height.Text = user.Height.ToString();
                 lbl_result.Content = bmi;
 
@@ -605,6 +596,9 @@ namespace BMI_Calculator
             
         }
 
+       
+        
+        // Validation functions
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
