@@ -38,7 +38,7 @@ namespace BMI_Calculator
         double weight;
         double height;
         int age;
-        string mostRecentUser = "mostRecentUser";
+        static string mostRecentUser = "mostRecentUser";
         static int currentWeightType = 0;
         static string currentName = string.Empty;
 
@@ -506,7 +506,9 @@ namespace BMI_Calculator
                 if (user.Gender == "Female")
                     cb_female.IsChecked = true;
                 tb_age.Text = user.Age.ToString();
-                tb_weight.Text = Math.Round(user.Weight,1).ToString(CultureInfo.InvariantCulture);
+
+                // Culture info is used here because for calculations and validations to work i had to settle for . as decimal separator    
+                tb_weight.Text = Math.Round(user.Weight,1).ToString(CultureInfo.InvariantCulture); 
                 tb_height.Text = user.Height.ToString();
                 lbl_result.Content = bmi;
 
@@ -588,6 +590,7 @@ namespace BMI_Calculator
                 {
                     lb_users.Items.Add(users);
                 }
+                clearInputFields();
             }
             else
             {
@@ -596,8 +599,19 @@ namespace BMI_Calculator
             
         }
 
-       
-        
+        private void clearInputFields()
+        {
+            tb_age.Clear();
+            tb_weight.Clear();
+            tb_height.Clear();
+            // clearing checkboxes
+           
+            cb_female.IsChecked  = false;
+            cb_male.IsChecked = false;
+        }
+
+
+
         // Validation functions
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -614,6 +628,11 @@ namespace BMI_Calculator
         {
             Regex regex = new Regex("[^a-zA-Z]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void Button_ClearFields(object sender, RoutedEventArgs e)
+        {
+            clearInputFields();
         }
     }
 }
