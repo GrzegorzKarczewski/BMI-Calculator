@@ -65,7 +65,8 @@ namespace BMI_Calculator
             tb_height.MaxLength = 3;
             tb_weight.MaxLength = 4;
 
-            PopulateListOnStart();
+            PopulateList();
+            currentName = mostRecentUser;
             LoadDataFromMostRecentUser();
         }
 
@@ -459,7 +460,7 @@ namespace BMI_Calculator
                     LoadUsersOnSelectionChanged(currentName);
             }
         }
-        public void PopulateListOnStart()
+        public void PopulateList()
         {
           
 
@@ -471,8 +472,6 @@ namespace BMI_Calculator
             {
                 lb_users.Items.Add(users);
             }
-            currentName = mostRecentUser;
-
         }
 
         public void LoadDataFromMostRecentUser()
@@ -582,15 +581,8 @@ namespace BMI_Calculator
 
             if (success)
             {
-                // Reload the users list
-                // This code is uses often, make it a function?
-                lb_users.Items.Clear();
-                List<string> lastusers = userRepository.GetUsers();
-                foreach (string users in lastusers)
-                {
-                    lb_users.Items.Add(users);
-                }
-                clearInputFields();
+                PopulateList();
+                ClearInputFields();
             }
             else
             {
@@ -599,13 +591,14 @@ namespace BMI_Calculator
             
         }
 
-        private void clearInputFields()
+        private void ClearInputFields()
         {
+            tb_name.Clear();
             tb_age.Clear();
             tb_weight.Clear();
             tb_height.Clear();
+            
             // clearing checkboxes
-           
             cb_female.IsChecked  = false;
             cb_male.IsChecked = false;
         }
@@ -623,8 +616,8 @@ namespace BMI_Calculator
             Regex regex = new Regex("[^0-9.]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-       
-            private void ValidationTextBoxLettersOnly(object sender, TextCompositionEventArgs e)
+
+        private void ValidationTextBoxLettersOnly(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^a-zA-Z]+");
             e.Handled = regex.IsMatch(e.Text);
