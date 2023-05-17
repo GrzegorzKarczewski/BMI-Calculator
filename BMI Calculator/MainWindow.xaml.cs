@@ -1,25 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Mapping;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using Newtonsoft.Json;
-using System.Xml.Linq;
-using System.Data.SQLite;
-using System.Windows.Documents.DocumentStructures;
-using System.Reflection.PortableExecutable;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
 
 namespace BMI_Calculator
@@ -71,25 +60,26 @@ namespace BMI_Calculator
         }
 
 
+
+
+        /// <summary>
+        /// The `Button_Click` event is triggered when the user clicks the button.
+        /// This function first validates the user's inputs, including name, weight, height, and age from the UI.
+        /// If the inputs are valid, it calculates the BMI using the user's weight and height.
+        ///
+        /// Depending on the BMI range, it performs the following operations:
+        /// - Updates the UI with the calculated BMI, changing the font size to 34.
+        /// - Adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
+        /// - Changes the displayed image based on the BMI category and the user's gender.
+        /// 
+        /// If the inputs are invalid, it shows a MessageBox with an error message specific to the invalid input.
+        ///
+        /// Finally, it saves the user's data, including the calculated BMI, into the database.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            /// <summary>
-            /// The `Button_Click` event is triggered when the user clicks the button.
-            /// This function first validates the user's inputs, including name, weight, height, and age from the UI.
-            /// If the inputs are valid, it calculates the BMI using the user's weight and height.
-            ///
-            /// Depending on the BMI range, it performs the following operations:
-            /// - Updates the UI with the calculated BMI, changing the font size to 34.
-            /// - Adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
-            /// - Changes the displayed image based on the BMI category and the user's gender.
-            /// 
-            /// If the inputs are invalid, it shows a MessageBox with an error message specific to the invalid input.
-            ///
-            /// Finally, it saves the user's data, including the calculated BMI, into the database.
-            /// </summary>
-            /// <param name="sender">The source of the event.</param>
-            /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
 
             // Taking input and checking if correct values are entered
 
@@ -165,7 +155,7 @@ namespace BMI_Calculator
             else
             {
                 if (!isWeightDouble)
-                MessageBox.Show("Check your weight, you entered incorrect format of weight!");
+                    MessageBox.Show("Check your weight, you entered incorrect format of weight!");
                 if (!isHeightDouble)
                     MessageBox.Show("Check your height, you entered incorrect format of height!");
                 if (!isAgeInt)
@@ -175,19 +165,15 @@ namespace BMI_Calculator
             }
         }
 
-
+        /// <summary>
+        /// Updates the displayed image based on the user's weight type and gender.
+        /// The function takes the WeightType enum value and an integer representing the gender (0 for male, 1 for female),
+        /// and changes the image source accordingly using the images stored in the "Images" folder.
+        /// </summary>
+        /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
+        /// <param name="gender">An integer representing the user's gender (0 for male, 1 for female).</param>
         private void SetPersonImage(WeightType weightType, int gender)
         {
-
-            /// <summary>
-            /// Updates the displayed image based on the user's weight type and gender.
-            /// The function takes the WeightType enum value and an integer representing the gender (0 for male, 1 for female),
-            /// and changes the image source accordingly using the images stored in the "Images" folder.
-            /// </summary>
-            /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
-            /// <param name="gender">An integer representing the user's gender (0 for male, 1 for female).</param>
-
-
             switch (weightType)
             {
                 case WeightType.Low:
@@ -338,22 +324,19 @@ namespace BMI_Calculator
             bmi = (dweight / dheight) / dheight * 10000;  // bmi formula 
 
 
-            return Math.Round(bmi,1);
+            return Math.Round(bmi, 1);
         }
 
 
-
+        /// <summary>
+        /// Provides a random tip based on the user's weight type (underweight, healthy, or overweight).
+        /// The tips are read from a JSON file named "tips.json", which should contain three categories
+        /// of tips: underweight_tips, healthy_weight_tips, and overweight_tips.
+        /// If an error occurs while reading the file or the file is not found, a default tip is displayed.
+        /// </summary>
+        /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
         void GiveTipsForBMI(WeightType weightType)
         {
-            /// <summary>
-            /// Provides a random tip based on the user's weight type (underweight, healthy, or overweight).
-            /// The tips are read from a JSON file named "tips.json", which should contain three categories
-            /// of tips: underweight_tips, healthy_weight_tips, and overweight_tips.
-            /// If an error occurs while reading the file or the file is not found, a default tip is displayed.
-            /// </summary>
-            /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
-
-
             string json = String.Empty;
             try
             {
@@ -372,7 +355,7 @@ namespace BMI_Calculator
             }
 
             BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
-        
+
 
             string bmiCategory = weightType switch
             {
@@ -390,22 +373,19 @@ namespace BMI_Calculator
         }
 
 
+        /// <summary>
+        /// This function initializes a new database connection using the provided connection string.
+        /// It then creates a new user repository to interact with the Users table in the database.
+        ///
+        /// A new user data object is created with the provided name, gender, age, weight, height, and BMI. 
+        /// The current timestamp is also recorded. This new user data is then added to the Users table in the database.
+        ///
+        /// The function also updates the application settings to record the most recent user.
+        ///
+        /// Finally, the function clears and repopulates the user list in the UI with the updated list of users from the database.
+        /// </summary>
         void LoadOrSaveUsersDatabase(string name, string gender, int age, double weight, double height, double bmi)
         {
-
-            /// <summary>
-            /// This function initializes a new database connection using the provided connection string.
-            /// It then creates a new user repository to interact with the Users table in the database.
-            ///
-            /// A new user data object is created with the provided name, gender, age, weight, height, and BMI. 
-            /// The current timestamp is also recorded. This new user data is then added to the Users table in the database.
-            ///
-            /// The function also updates the application settings to record the most recent user.
-            ///
-            /// Finally, the function clears and repopulates the user list in the UI with the updated list of users from the database.
-            /// </summary>
-
-
             DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
             initializer.Initialize();
 
@@ -425,7 +405,7 @@ namespace BMI_Calculator
             userRepository.AddUser(newUser);
 
             GSettings.AddUpdateAppSettings(mostRecentUser, name);
-            
+
             lb_users.Items.Clear();
             List<string> lastusers = userRepository.GetUsers();
             foreach (string users in lastusers)
@@ -437,8 +417,6 @@ namespace BMI_Calculator
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // TODO: If clicked on the list, load name, height, age and gender of user
-            //       leave weight for user to calculate again
             if (lb_users.SelectedItem != null)
             {
                 currentName = lb_users.SelectedItem.ToString();
@@ -448,8 +426,6 @@ namespace BMI_Calculator
         }
         public void PopulateList()
         {
-          
-
             UserRepository userRepository = new UserRepository(connectionString);
 
             lb_users.Items.Clear();
@@ -460,25 +436,23 @@ namespace BMI_Calculator
             }
         }
 
+        /// <summary>
+        /// The `LoadDataFromMostRecentUser` method retrieves the name of the most recent user from the application settings.
+        /// It then calls the `LoadUsersOnSelectionChanged` method with the retrieved name.
+        ///
+        /// The `LoadUsersOnSelectionChanged` method fetches the user data from the database for the given user name. 
+        /// If a user with the given name is found, it populates the UI fields with the user's data, including name, gender, age, weight, height, and BMI.
+        /// Depending on the user's BMI, it adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
+        /// It also changes the displayed image based on the BMI category and the user's gender.
+        /// </summary>
         public void LoadDataFromMostRecentUser()
         {
-            /// <summary>
-            /// The `LoadDataFromMostRecentUser` method retrieves the name of the most recent user from the application settings.
-            /// It then calls the `LoadUsersOnSelectionChanged` method with the retrieved name.
-            ///
-            /// The `LoadUsersOnSelectionChanged` method fetches the user data from the database for the given user name. 
-            /// If a user with the given name is found, it populates the UI fields with the user's data, including name, gender, age, weight, height, and BMI.
-            /// Depending on the user's BMI, it adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
-            /// It also changes the displayed image based on the BMI category and the user's gender.
-            /// </summary>
-
             string name = GSettings.ReadSetting(mostRecentUser);
             LoadUsersOnSelectionChanged(name);
         }
 
         public void LoadUsersOnSelectionChanged(string name)
         {
-
             UserRepository userRepository = new UserRepository(connectionString);
             UserData user = userRepository.GetUserByName(name);
 
@@ -493,7 +467,7 @@ namespace BMI_Calculator
                 tb_age.Text = user.Age.ToString();
 
                 // Culture info is used here because for calculations and validations to work i had to settle for . as decimal separator    
-                tb_weight.Text = Math.Round(user.Weight,1).ToString(CultureInfo.InvariantCulture); 
+                tb_weight.Text = Math.Round(user.Weight, 1).ToString(CultureInfo.InvariantCulture);
                 tb_height.Text = user.Height.ToString();
                 lbl_result.Content = bmi;
 
@@ -541,7 +515,7 @@ namespace BMI_Calculator
 
         public void ChangeLabelBMIScoreStyle(WeightType weightType)
         {
-           
+
             lbl_result.FontSize = 34;
             lbl_result.FontWeight = FontWeights.Bold;
             switch (weightType)
@@ -574,7 +548,7 @@ namespace BMI_Calculator
             {
                 MessageBox.Show("There was some problem removing this user from database!");
             }
-            
+
         }
 
         private void ClearInputFields()
@@ -583,9 +557,9 @@ namespace BMI_Calculator
             tb_age.Clear();
             tb_weight.Clear();
             tb_height.Clear();
-            
+
             // clearing checkboxes
-            cb_female.IsChecked  = false;
+            cb_female.IsChecked = false;
             cb_male.IsChecked = false;
         }
 
