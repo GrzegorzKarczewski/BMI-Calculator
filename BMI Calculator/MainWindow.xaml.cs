@@ -407,7 +407,7 @@ namespace BMI_Calculator
             GSettings.AddUpdateAppSettings(mostRecentUser, name);
 
             lb_users.Items.Clear();
-            List<string> lastusers = userRepository.GetUsers();
+            List<string> lastusers = userRepository.GetUserNames();
             foreach (string users in lastusers)
             {
                 lb_users.Items.Add(users);
@@ -429,7 +429,7 @@ namespace BMI_Calculator
             UserRepository userRepository = new UserRepository(connectionString);
 
             lb_users.Items.Clear();
-            List<string> lastusers = userRepository.GetUsers();
+            List<string> lastusers = userRepository.GetUserNames();
             foreach (string users in lastusers)
             {
                 lb_users.Items.Add(users);

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
-using System.Xml.Linq;
-using System.Windows.Media.Animation;
 
 namespace BMI_Calculator
 {
@@ -99,24 +95,25 @@ namespace BMI_Calculator
             int check = 0;
             using (var connection = new SQLiteConnection(_connectionString))
             {
-              
+
                 connection.Open();
                 var cmd = new SQLiteCommand("DELETE FROM Users WHERE Name = @Name", connection);
                 cmd.Parameters.AddWithValue("@Name", name);
                 check = cmd.ExecuteNonQuery();
             }
-            if (check > 0) 
-            { 
-                return true; 
-            } else 
-            { 
-                return false; 
+            if (check > 0)
+            {
+                return true;
             }
-           
-       
+            else
+            {
+                return false;
+            }
+
+
         }
 
-        public List<string> GetUsers()
+        public List<string> GetUserNames()
         {
 
             List<string> users = new List<string>();
