@@ -49,9 +49,9 @@ namespace BMI_Calculator
 
         public enum WeightType
         {
-            WeightLow,
-            WeightNormal,
-            WeightHigh
+            Low,
+            Normal,
+            High
         }
 
         public MainWindow()
@@ -91,10 +91,6 @@ namespace BMI_Calculator
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">An instance of RoutedEventArgs containing event data.</param>
 
-
-
-
-
             // Taking input and checking if correct values are entered
 
             bool isWeightDouble = double.TryParse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double result_weight);
@@ -126,41 +122,41 @@ namespace BMI_Calculator
                 if (bmi > 18.5 && bmi < 24.9)
                 {
 
-                    ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
-                    GiveTipsForBMI(WeightType.WeightNormal);
+                    ChangeLabelBMIScoreStyle(WeightType.Normal);
+                    GiveTipsForBMI(WeightType.Normal);
                     currentWeightType = 1;
 
                     if (isMale)
                     {
-                        SetPersonImage(WeightType.WeightNormal, 0);
+                        SetPersonImage(WeightType.Normal, 0);
                     }
-                    else { SetPersonImage(WeightType.WeightNormal, 1); }
+                    else { SetPersonImage(WeightType.Normal, 1); }
 
                 }
-                if (bmi < 18.5)
+                else if (bmi < 18.5)
                 {
-                    ChangeLabelBMIScoreStyle(WeightType.WeightLow);
-                    GiveTipsForBMI(WeightType.WeightLow);
+                    ChangeLabelBMIScoreStyle(WeightType.Low);
+                    GiveTipsForBMI(WeightType.Low);
                     currentWeightType = 0;
 
                     if (isMale)
                     {
-                        SetPersonImage(WeightType.WeightLow, 0);
+                        SetPersonImage(WeightType.Low, 0);
                     }
-                    else { SetPersonImage(WeightType.WeightLow, 1); }
+                    else { SetPersonImage(WeightType.Low, 1); }
                 }
-                if (bmi >= 25)
+                else if (bmi >= 25)
                 {
 
-                    ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
-                    GiveTipsForBMI(WeightType.WeightHigh);
+                    ChangeLabelBMIScoreStyle(WeightType.High);
+                    GiveTipsForBMI(WeightType.High);
                     currentWeightType = 2;
 
                     if (isMale)
                     {
-                        SetPersonImage(WeightType.WeightHigh, 0);
+                        SetPersonImage(WeightType.High, 0);
                     }
-                    else { SetPersonImage(WeightType.WeightHigh, 1); }
+                    else { SetPersonImage(WeightType.High, 1); }
                 }
 
                 LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
@@ -194,7 +190,7 @@ namespace BMI_Calculator
 
             switch (weightType)
             {
-                case WeightType.WeightLow:
+                case WeightType.Low:
                     if (gender == 0)
                     {
                         // put image of too skinny man
@@ -232,7 +228,7 @@ namespace BMI_Calculator
                     }
 
                     return;
-                case WeightType.WeightNormal:
+                case WeightType.Normal:
                     if (gender == 0)
                     {
                         // put image of too skinny man
@@ -269,7 +265,7 @@ namespace BMI_Calculator
 
                     }
                     return;
-                case WeightType.WeightHigh:
+                case WeightType.High:
                     if (gender == 0)
                     {
                         // put image of too skinny man
@@ -380,21 +376,15 @@ namespace BMI_Calculator
             }
 
             BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
-            string bmiCategory = String.Empty;
+        
 
-            switch (weightType)
+            string bmiCategory = weightType switch
             {
-                case WeightType.WeightLow:
-                    bmiCategory = "underweight_tips";
-                    break;
-                case WeightType.WeightHigh:
-                    bmiCategory = "overweight_tips";
-                    break;
-                case WeightType.WeightNormal:
-                    bmiCategory = "healthy_weight_tips";
-                    break;
-
-            }
+                WeightType.Low => "underweight_tips",
+                WeightType.High => "overweight_tips",
+                WeightType.Normal => "healthy_weight_tips",
+                _ => String.Empty
+            };
             List<string> selectedTipsList = (List<string>)typeof(BMITips).GetProperty(bmiCategory).GetValue(tips);
 
             Random random = new Random();
@@ -515,38 +505,38 @@ namespace BMI_Calculator
                     if (bmi > 18.5 && bmi < 24.9)
                     {
 
-                        ChangeLabelBMIScoreStyle(WeightType.WeightNormal);
-                        GiveTipsForBMI(WeightType.WeightNormal);
+                        ChangeLabelBMIScoreStyle(WeightType.Normal);
+                        GiveTipsForBMI(WeightType.Normal);
 
                         if (isMale)
                         {
-                            SetPersonImage(WeightType.WeightNormal, 0);
+                            SetPersonImage(WeightType.Normal, 0);
                         }
-                        else { SetPersonImage(WeightType.WeightNormal, 1); }
+                        else { SetPersonImage(WeightType.Normal, 1); }
 
                     }
                     if (bmi < 18.5)
                     {
-                        ChangeLabelBMIScoreStyle(WeightType.WeightLow);
-                        GiveTipsForBMI(WeightType.WeightLow);
+                        ChangeLabelBMIScoreStyle(WeightType.Low);
+                        GiveTipsForBMI(WeightType.Low);
 
                         if (isMale)
                         {
-                            SetPersonImage(WeightType.WeightLow, 0);
+                            SetPersonImage(WeightType.Low, 0);
                         }
-                        else { SetPersonImage(WeightType.WeightLow, 1); }
+                        else { SetPersonImage(WeightType.Low, 1); }
                     }
                     if (bmi >= 25)
                     {
 
-                        ChangeLabelBMIScoreStyle(WeightType.WeightHigh);
-                        GiveTipsForBMI(WeightType.WeightHigh);
+                        ChangeLabelBMIScoreStyle(WeightType.High);
+                        GiveTipsForBMI(WeightType.High);
 
                         if (isMale)
                         {
-                            SetPersonImage(WeightType.WeightHigh, 0);
+                            SetPersonImage(WeightType.High, 0);
                         }
-                        else { SetPersonImage(WeightType.WeightHigh, 1); }
+                        else { SetPersonImage(WeightType.High, 1); }
                     }
                 }
             }
@@ -560,13 +550,13 @@ namespace BMI_Calculator
             lbl_result.FontWeight = FontWeights.Bold;
             switch (weightType)
             {
-                case WeightType.WeightLow:
+                case WeightType.Low:
                     lbl_result.Foreground = Brushes.LightBlue;
                     return;
-                case WeightType.WeightNormal:
+                case WeightType.Normal:
                     lbl_result.Foreground = Brushes.Green;
                     return;
-                case WeightType.WeightHigh:
+                case WeightType.High:
                     lbl_result.Foreground = Brushes.OrangeRed;
                     return;
 
@@ -603,6 +593,10 @@ namespace BMI_Calculator
             cb_male.IsChecked = false;
         }
 
+        private void Button_ClearFields(object sender, RoutedEventArgs e)
+        {
+            ClearInputFields();
+        }
 
 
         // Validation functions
@@ -623,9 +617,5 @@ namespace BMI_Calculator
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Button_ClearFields(object sender, RoutedEventArgs e)
-        {
-            clearInputFields();
-        }
     }
 }
