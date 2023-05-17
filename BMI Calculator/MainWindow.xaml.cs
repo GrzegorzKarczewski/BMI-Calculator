@@ -313,11 +313,8 @@ namespace BMI_Calculator
             if (cb_male.IsChecked == true)
             {
                 isMale = true;
-
                 cb_female.IsChecked = false;
                 isFemale = false;
-                gender = "Male";
-
             }
         }
 
@@ -329,7 +326,6 @@ namespace BMI_Calculator
                 isFemale = true;
                 isMale = false;
                 cb_male.IsChecked = false;
-                gender = "Female";
             }
 
         }
