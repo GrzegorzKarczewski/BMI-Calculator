@@ -429,10 +429,14 @@ namespace BMI_Calculator
             UserRepository userRepository = new UserRepository(connectionString);
 
             lb_users.Items.Clear();
+
             List<string> lastusers = userRepository.GetUserNames();
-            foreach (string users in lastusers)
+            if (lastusers != null)
             {
-                lb_users.Items.Add(users);
+                foreach (string users in lastusers)
+                {
+                    lb_users.Items.Add(users);
+                }
             }
         }
 
@@ -448,7 +452,10 @@ namespace BMI_Calculator
         public void LoadDataFromMostRecentUser()
         {
             string name = GSettings.ReadSetting(mostRecentUser);
-            LoadUsersOnSelectionChanged(name);
+            if (name != null)
+            {
+                LoadUsersOnSelectionChanged(name);
+            }
         }
 
         public void LoadUsersOnSelectionChanged(string name)

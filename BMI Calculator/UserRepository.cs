@@ -52,7 +52,6 @@ namespace BMI_Calculator
                 cmd.Parameters.AddWithValue("@Weight", user.Weight);
                 cmd.Parameters.AddWithValue("@Height", user.Height);
                 cmd.Parameters.AddWithValue("@BMI", user.BMI);
-
                 cmd.Parameters.AddWithValue("@Timestamp", user.Timestamp.ToString("s"));
 
                 cmd.ExecuteNonQuery();
@@ -63,66 +62,101 @@ namespace BMI_Calculator
         {
             UserData user = null;
 
-            using (var connection = new SQLiteConnection(_connectionString))
+            if (name != null)
             {
-                connection.Open();
-                var cmd = new SQLiteCommand("SELECT * FROM Users WHERE Name = @Name ORDER BY timestamp DESC LIMIT 1", connection);
-                cmd.Parameters.AddWithValue("@Name", name);
-
-                using (var reader = cmd.ExecuteReader())
+                using (var connection = new SQLiteConnection(_connectionString))
                 {
-                    if (reader.Read())
+                    connection.Open();
+                    // Checking if the Users table already exists
+                    using (var command = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table' AND name='Users';", connection))
                     {
-                        user = new UserData
+                        var tableExists = command.ExecuteScalar() != null;
+
+                        if (!tableExists)
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Name = reader.GetString(reader.GetOrdinal("Name")),
-                            Gender = reader.GetString(reader.GetOrdinal("Gender")),
-                            Age = reader.GetInt32(reader.GetOrdinal("Age")),
-                            Weight = reader.GetFloat(reader.GetOrdinal("Weight")),
-                            Height = reader.GetFloat(reader.GetOrdinal("Height")),
-                            BMI = reader.GetFloat(reader.GetOrdinal("BMI")),
-                            Timestamp = DateTime.Parse(reader.GetString(7))
-                        };
+                            return null;
+                        }
+                    }
+                    var cmd = new SQLiteCommand("SELECT * FROM Users WHERE Name = @Name ORDER BY timestamp DESC LIMIT 1", connection);
+                    if (cmd != null)
+                    {
+                        cmd.Parameters.AddWithValue("@Name", name);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                user = new UserData
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    Gender = reader.GetString(reader.GetOrdinal("Gender")),
+                                    Age = reader.GetInt32(reader.GetOrdinal("Age")),
+                                    Weight = reader.GetFloat(reader.GetOrdinal("Weight")),
+                                    Height = reader.GetFloat(reader.GetOrdinal("Height")),
+                                    BMI = reader.GetFloat(reader.GetOrdinal("BMI")),
+                                    Timestamp = DateTime.Parse(reader.GetString(7))
+                                };
+                            }
+                        }
                     }
                 }
             }
-
             return user;
         }
         public bool RemoveUserByName(string name)
         {
             int check = 0;
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
-
                 connection.Open();
+
+                // Checking if the Users table already exists
+                using (var command = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table' AND name='Users';", connection))
+                {
+                    var tableExists = command.ExecuteScalar() != null;
+
+                    if (!tableExists)
+                    {
+                        return false;
+                    }
+                }
+
                 var cmd = new SQLiteCommand("DELETE FROM Users WHERE Name = @Name", connection);
                 cmd.Parameters.AddWithValue("@Name", name);
                 check = cmd.ExecuteNonQuery();
-            }
-            if (check > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
 
-
+                if (check > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
 
         public List<string> GetUserNames()
         {
 
             List<string> users = new List<string>();
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 connection.Open();
 
-                var cmd = new SQLiteCommand("SELECT DISTINCT Name from Users", connection);
+                // Checking if the Users table already exists
+                using (var command = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table' AND name='Users';", connection))
+                {
+                    var tableExists = command.ExecuteScalar() != null;
 
+                    if (!tableExists)
+                    {
+                        return null;
+                    }
+                }
+                var cmd = new SQLiteCommand("SELECT DISTINCT Name from Users", connection);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
