@@ -155,10 +155,10 @@ public partial class MainWindow : Window
             case WeightType.Low:
                 if (gender == 0)
                 {
-                    // put image of too skinny man
-                    Image maleImage = new();
-                    maleImage.Height = genderImage.Height - 5;
-                    maleImage.Width = genderImage.Width - 5;
+                    Image maleImage = new() { // put image of too skinny man
+                        Height = genderImage.Height - 5,
+                        Width = genderImage.Width - 5
+                    };
 
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
@@ -172,21 +172,19 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    // put image of skinny lady
-                    Image femaleImage = new();
-                    femaleImage.Height = genderImage.Height - 5;
-                    femaleImage.Width = genderImage.Width - 5;
+                    Image femaleImage = new() { // put image of skinny lady
+                        Height = genderImage.Height - 5,
+                        Width = genderImage.Width - 5
+                    };
 
-                    BitmapImage bitmap = new BitmapImage();
+                    BitmapImage bitmap = new();
                     bitmap.BeginInit();
 
                     string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_skinny.png");
-                    bitmap.UriSource = new Uri(imagePath);
+                    bitmap.UriSource = new(imagePath);
 
                     bitmap.EndInit();
                     genderImage.Source = bitmap;
-
-
                 }
 
                 return;
@@ -194,9 +192,10 @@ public partial class MainWindow : Window
                 if (gender == 0)
                 {
                     // put image of too skinny man
-                    Image maleImage = new();
-                    maleImage.Height = genderImage.Height - 5;
-                    maleImage.Width = genderImage.Width - 5;
+                    Image maleImage = new() {
+                        Height = genderImage.Height - 5,
+                        Width = genderImage.Width - 5
+                    };
 
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
@@ -210,36 +209,34 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    // put image of skinny lady
-                    Image femaleImage = new();
-                    femaleImage.Height = genderImage.Height - 5;
-                    femaleImage.Width = genderImage.Width - 5;
+                    Image femaleImage = new() { // put image of skinny lady
+                        Height = genderImage.Height - 5,
+                        Width = genderImage.Width - 5
+                    };
 
-                    BitmapImage bitmap = new BitmapImage();
+                    BitmapImage bitmap = new();
                     bitmap.BeginInit();
 
                     string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_regular.png");
-                    bitmap.UriSource = new Uri(imagePath);
+                    bitmap.UriSource = new(imagePath);
 
                     bitmap.EndInit();
                     genderImage.Source = bitmap;
-
-
                 }
                 return;
             case WeightType.High:
                 if (gender == 0)
                 {
-                    // put image of too skinny man
-                    Image maleImage = new();
-                    maleImage.Height = genderImage.Height - 5;
-                    maleImage.Width = genderImage.Width - 5;
+                    Image maleImage = new() { // put image of too skinny man
+                        Height = genderImage.Height - 5,
+                        Width = genderImage.Width - 5
+                    };
 
-                    BitmapImage bitmap = new BitmapImage();
+                    BitmapImage bitmap = new();
                     bitmap.BeginInit();
 
                     string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_fat.png");
-                    bitmap.UriSource = new Uri(imagePath);
+                    bitmap.UriSource = new(imagePath);
 
                     bitmap.EndInit();
                     genderImage.Source = bitmap;
@@ -248,25 +245,22 @@ public partial class MainWindow : Window
                 else
                 {
                     // put image of skinny lady
-                    Image femaleImage = new();
-                    femaleImage.Height = genderImage.Height - 5;
-                    femaleImage.Width = genderImage.Width - 5;
+                    Image femaleImage = new() {
+                        Height = genderImage.Height - 5,
+                        Width = genderImage.Width - 5
+                    };
 
-                    BitmapImage bitmap = new BitmapImage();
+                    BitmapImage bitmap = new();
                     bitmap.BeginInit();
 
                     string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_fat.png");
-                    bitmap.UriSource = new Uri(imagePath);
+                    bitmap.UriSource = new(imagePath);
 
                     bitmap.EndInit();
                     genderImage.Source = bitmap;
-
-
                 }
                 return;
-
         }
-
     }
 
     private void cb_male_Checked(object sender, RoutedEventArgs e)
@@ -289,21 +283,16 @@ public partial class MainWindow : Window
             isMale = false;
             cb_male.IsChecked = false;
         }
-
     }
 
-    static double calculateBmi(double dweight, double dheight)
+    static double calculateBmi(double weight, double height)
     {
-
         double bmi = 0;
-
-        bmi = (dweight / dheight) / dheight * 10000;  // bmi formula 
-
-
+        bmi = (weight / height) / height * 10000;  // bmi formula 
+        
         return Math.Round(bmi, 1);
     }
-
-
+    
     /// <summary>
     /// Provides a random tip based on the user's weight type (underweight, healthy, or overweight).
     /// The tips are read from a JSON file named "tips.json", which should contain three categories
@@ -331,8 +320,7 @@ public partial class MainWindow : Window
         }
 
         BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
-
-
+        
         string bmiCategory = weightType switch
         {
             WeightType.Low => "underweight_tips",
@@ -347,8 +335,7 @@ public partial class MainWindow : Window
         string randomTip = selectedTipsList[randomIndex];
         lbl_tipscontent.Content = randomTip;
     }
-
-
+    
     /// <summary>
     /// This function initializes a new database connection using the provided connection string.
     /// It then creates a new user repository to interact with the Users table in the database.
