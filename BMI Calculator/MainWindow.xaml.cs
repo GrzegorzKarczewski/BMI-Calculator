@@ -31,13 +31,6 @@ public partial class MainWindow : Window
     // Database global constants
     static string databaseFile = "UserData.db";
     static string connectionString = $"Data Source={databaseFile};Version=3;";
-        
-    public enum WeightType
-    {
-        Low,
-        Normal,
-        High
-    }
 
     public MainWindow()
     {
@@ -94,7 +87,7 @@ public partial class MainWindow : Window
             height = double.Parse(tb_height.Text);
             age = int.Parse(tb_age.Text, NumberStyles.Integer);
 
-            double bmi = calculateBmi(weight, height);
+            double bmi = BmiHandler.CalculateBmi(weight, height);
 
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
@@ -103,7 +96,10 @@ public partial class MainWindow : Window
             {
 
                 ChangeLabelBMIScoreStyle(WeightType.Normal);
-                GiveTipsForBMI(WeightType.Normal);
+                
+                string tip = BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                lbl_tipscontent.Content = tip;
+                
                 currentWeightType = 1;
 
                 SetPersonImage(WeightType.Normal, isMale ? 0 : 1);
@@ -111,7 +107,10 @@ public partial class MainWindow : Window
             else if (bmi < 18.5)
             {
                 ChangeLabelBMIScoreStyle(WeightType.Low);
-                GiveTipsForBMI(WeightType.Low);
+                
+                string tip = BmiHandler.GiveTipsForBmi(WeightType.Low);
+                lbl_tipscontent.Content = tip;
+                
                 currentWeightType = 0;
 
                 SetPersonImage(WeightType.Low, isMale ? 0 : 1);
@@ -120,7 +119,10 @@ public partial class MainWindow : Window
             {
 
                 ChangeLabelBMIScoreStyle(WeightType.High);
-                GiveTipsForBMI(WeightType.High);
+                
+                string tip = BmiHandler.GiveTipsForBmi(WeightType.High);
+                lbl_tipscontent.Content = tip;
+                
                 currentWeightType = 2;
 
                 SetPersonImage(WeightType.High, isMale ? 0 : 1);
@@ -285,57 +287,6 @@ public partial class MainWindow : Window
         }
     }
 
-    static double calculateBmi(double weight, double height)
-    {
-        double bmi = 0;
-        bmi = (weight / height) / height * 10000;  // bmi formula 
-        
-        return Math.Round(bmi, 1);
-    }
-    
-    /// <summary>
-    /// Provides a random tip based on the user's weight type (underweight, healthy, or overweight).
-    /// The tips are read from a JSON file named "tips.json", which should contain three categories
-    /// of tips: underweight_tips, healthy_weight_tips, and overweight_tips.
-    /// If an error occurs while reading the file or the file is not found, a default tip is displayed.
-    /// </summary>
-    /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
-    void GiveTipsForBMI(WeightType weightType)
-    {
-        string json = String.Empty;
-        try
-        {
-            json = File.ReadAllText("tips.json");
-        }
-        catch (IOException e)
-        {
-            //MessageBox.Show(e.ToString());
-        }
-        finally
-        {
-            if (json == null)
-            {
-                json = "Try to eat Healthy!";
-            }
-        }
-
-        BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
-        
-        string bmiCategory = weightType switch
-        {
-            WeightType.Low => "underweight_tips",
-            WeightType.High => "overweight_tips",
-            WeightType.Normal => "healthy_weight_tips",
-            _ => String.Empty
-        };
-        List<string> selectedTipsList = (List<string>)typeof(BMITips).GetProperty(bmiCategory).GetValue(tips);
-
-        Random random = new Random();
-        int randomIndex = random.Next(0, selectedTipsList.Count);
-        string randomTip = selectedTipsList[randomIndex];
-        lbl_tipscontent.Content = randomTip;
-    }
-    
     /// <summary>
     /// This function initializes a new database connection using the provided connection string.
     /// It then creates a new user repository to interact with the Users table in the database.
@@ -446,7 +397,9 @@ public partial class MainWindow : Window
                 {
 
                     ChangeLabelBMIScoreStyle(WeightType.Normal);
-                    GiveTipsForBMI(WeightType.Normal);
+                    
+                    string tip = BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                    lbl_tipscontent.Content = tip;
 
                     if (isMale)
                     {
@@ -458,7 +411,9 @@ public partial class MainWindow : Window
                 if (bmi < 18.5)
                 {
                     ChangeLabelBMIScoreStyle(WeightType.Low);
-                    GiveTipsForBMI(WeightType.Low);
+                    
+                    string tip = BmiHandler.GiveTipsForBmi(WeightType.Low);
+                    lbl_tipscontent.Content = tip;
 
                     if (isMale)
                     {
@@ -468,9 +423,10 @@ public partial class MainWindow : Window
                 }
                 if (bmi >= 25)
                 {
-
                     ChangeLabelBMIScoreStyle(WeightType.High);
-                    GiveTipsForBMI(WeightType.High);
+                    
+                    string tip = BmiHandler.GiveTipsForBmi(WeightType.High);
+                    lbl_tipscontent.Content = tip;
 
                     if (isMale)
                     {
