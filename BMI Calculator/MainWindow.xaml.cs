@@ -10,12 +10,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace BMI_Calculator; 
+namespace BMI_Calculator;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     bool isMale = false;
     bool isFemale = false;
@@ -31,9 +31,11 @@ public partial class MainWindow : Window
     // Database global constants
     static string databaseFile = "UserData.db";
     static string connectionString = $"Data Source={databaseFile};Version=3;";
+    private readonly PersonImage _personImage;
 
     public MainWindow()
     {
+        _personImage = new PersonImage(this);
         InitializeComponent();
 
         // Restricting input fields for reasonable values (lazy way)
@@ -45,6 +47,7 @@ public partial class MainWindow : Window
         PopulateList();
         currentName = mostRecentUser;
         LoadDataFromMostRecentUser();
+        _personImage = new (this);
     }
 
     /// <summary>
@@ -102,7 +105,7 @@ public partial class MainWindow : Window
                 
                 currentWeightType = 1;
 
-                SetPersonImage(WeightType.Normal, isMale ? 0 : 1);
+                BMI_Calculator.PersonImage.SetPersonImage( WeightType.Normal, isMale ? 0 : 1);
             }
             else if (bmi < 18.5)
             {
@@ -113,7 +116,7 @@ public partial class MainWindow : Window
                 
                 currentWeightType = 0;
 
-                SetPersonImage(WeightType.Low, isMale ? 0 : 1);
+                BMI_Calculator.PersonImage.SetPersonImage(WeightType.Low, isMale ? 0 : 1);
             }
             else if (bmi >= 25)
             {
@@ -125,7 +128,7 @@ public partial class MainWindow : Window
                 
                 currentWeightType = 2;
 
-                SetPersonImage(WeightType.High, isMale ? 0 : 1);
+                BMI_Calculator.PersonImage.SetPersonImage(WeightType.High, isMale ? 0 : 1);
             }
 
             LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
@@ -140,128 +143,6 @@ public partial class MainWindow : Window
                 MessageBox.Show("Check your age, you entered incorrect format of age!");
             if (isNameNotString)
                 MessageBox.Show("Check your name, you should use real name!");
-        }
-    }
-
-    /// <summary>
-    /// Updates the displayed image based on the user's weight type and gender.
-    /// The function takes the WeightType enum value and an integer representing the gender (0 for male, 1 for female),
-    /// and changes the image source accordingly using the images stored in the "Images" folder.
-    /// </summary>
-    /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
-    /// <param name="gender">An integer representing the user's gender (0 for male, 1 for female).</param>
-    private void SetPersonImage(WeightType weightType, int gender)
-    {
-        switch (weightType)
-        {
-            case WeightType.Low:
-                if (gender == 0)
-                {
-                    Image maleImage = new() { // put image of too skinny man
-                        Height = genderImage.Height - 5,
-                        Width = genderImage.Width - 5
-                    };
-
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_skinny.png");
-                    bitmap.UriSource = new Uri(imagePath);
-
-                    bitmap.EndInit();
-                    genderImage.Source = bitmap;
-                    return;
-                }
-                else
-                {
-                    Image femaleImage = new() { // put image of skinny lady
-                        Height = genderImage.Height - 5,
-                        Width = genderImage.Width - 5
-                    };
-
-                    BitmapImage bitmap = new();
-                    bitmap.BeginInit();
-
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_skinny.png");
-                    bitmap.UriSource = new(imagePath);
-
-                    bitmap.EndInit();
-                    genderImage.Source = bitmap;
-                }
-
-                return;
-            case WeightType.Normal:
-                if (gender == 0)
-                {
-                    // put image of too skinny man
-                    Image maleImage = new() {
-                        Height = genderImage.Height - 5,
-                        Width = genderImage.Width - 5
-                    };
-
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_regular.png");
-                    bitmap.UriSource = new Uri(imagePath);
-
-                    bitmap.EndInit();
-                    genderImage.Source = bitmap;
-                    return;
-                }
-                else
-                {
-                    Image femaleImage = new() { // put image of skinny lady
-                        Height = genderImage.Height - 5,
-                        Width = genderImage.Width - 5
-                    };
-
-                    BitmapImage bitmap = new();
-                    bitmap.BeginInit();
-
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_regular.png");
-                    bitmap.UriSource = new(imagePath);
-
-                    bitmap.EndInit();
-                    genderImage.Source = bitmap;
-                }
-                return;
-            case WeightType.High:
-                if (gender == 0)
-                {
-                    Image maleImage = new() { // put image of too skinny man
-                        Height = genderImage.Height - 5,
-                        Width = genderImage.Width - 5
-                    };
-
-                    BitmapImage bitmap = new();
-                    bitmap.BeginInit();
-
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_fat.png");
-                    bitmap.UriSource = new(imagePath);
-
-                    bitmap.EndInit();
-                    genderImage.Source = bitmap;
-                    return;
-                }
-                else
-                {
-                    // put image of skinny lady
-                    Image femaleImage = new() {
-                        Height = genderImage.Height - 5,
-                        Width = genderImage.Width - 5
-                    };
-
-                    BitmapImage bitmap = new();
-                    bitmap.BeginInit();
-
-                    string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "female_fat.png");
-                    bitmap.UriSource = new(imagePath);
-
-                    bitmap.EndInit();
-                    genderImage.Source = bitmap;
-                }
-                return;
         }
     }
 
@@ -401,12 +282,7 @@ public partial class MainWindow : Window
                     string tip = BmiHandler.GiveTipsForBmi(WeightType.Normal);
                     lbl_tipscontent.Content = tip;
 
-                    if (isMale)
-                    {
-                        SetPersonImage(WeightType.Normal, 0);
-                    }
-                    else { SetPersonImage(WeightType.Normal, 1); }
-
+                    BMI_Calculator.PersonImage.SetPersonImage(WeightType.Normal, isMale ? 0 : 1);
                 }
                 if (bmi < 18.5)
                 {
@@ -417,9 +293,10 @@ public partial class MainWindow : Window
 
                     if (isMale)
                     {
-                        SetPersonImage(WeightType.Low, 0);
+                        BMI_Calculator.PersonImage.SetPersonImage(WeightType.Low, 0);
                     }
-                    else { SetPersonImage(WeightType.Low, 1); }
+                    else {
+                        PersonImage.SetPersonImage(WeightType.Low, 1); }
                 }
                 if (bmi >= 25)
                 {
@@ -430,9 +307,10 @@ public partial class MainWindow : Window
 
                     if (isMale)
                     {
-                        SetPersonImage(WeightType.High, 0);
+                        PersonImage.SetPersonImage(WeightType.High, 0);
                     }
-                    else { SetPersonImage(WeightType.High, 1); }
+                    else {
+                        PersonImage.SetPersonImage(WeightType.High, 1); }
                 }
             }
         }
@@ -493,8 +371,7 @@ public partial class MainWindow : Window
     {
         ClearInputFields();
     }
-
-
+    
     // Validation functions
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
@@ -512,5 +389,4 @@ public partial class MainWindow : Window
         Regex regex = new Regex("[^a-zA-Z]+");
         e.Handled = regex.IsMatch(e.Text);
     }
-
 }
