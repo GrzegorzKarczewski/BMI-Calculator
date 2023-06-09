@@ -17,7 +17,7 @@ public partial class MainWindow
     private double _weight;
     private double _height;
     private int _age;
-    internal static string MostRecentUser = "mostRecentUser";
+    internal static readonly string MostRecentUser = "mostRecentUser";
     private static int _currentWeightType = 0;
     private static string _currentName = string.Empty;
 
@@ -43,9 +43,9 @@ public partial class MainWindow
         tb_age.MaxLength = 3;
         tb_height.MaxLength = 3;
         tb_weight.MaxLength = 4;
-
-        _loadData.LoadDataFromMostRecentUser();
-        _loadDatabase.PopulateList();
+        
+        _loadData.LoadDataFromMostRecentUser(); // Loading most recent user data
+        _loadDatabase.PopulateList(); // Loading all users from database
 
         _currentName = MostRecentUser;
     }
@@ -69,7 +69,6 @@ public partial class MainWindow
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         // Taking input and checking if correct values are entered
-
         bool isWeightDouble = double.TryParse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double result_weight);
         bool isHeightDouble = double.TryParse(tb_height.Text, out _);
         bool isAgeInt = int.TryParse(tb_age.Text, out _);
@@ -84,7 +83,6 @@ public partial class MainWindow
         // Execute the calculations only if input data are proper
         if (isNameNotString == false && isAgeInt && isHeightDouble && isWeightDouble)
         {
-
             _name = tb_name.Text;
             _weight = double.Parse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
             _height = double.Parse(tb_height.Text);
@@ -95,42 +93,41 @@ public partial class MainWindow
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
 
-            if (bmi is > 18.5 and < 24.9)
-            {
-
-                BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
+            switch (bmi) {
+                case > 18.5 and < 24.9: {
+                    BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
                 
-                string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
-                lbl_tipscontent.Content = tip;
+                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                    lbl_tipscontent.Content = tip;
                 
-                _currentWeightType = 1;
+                    _currentWeightType = 1;
 
-                BMI_Calculator.Window.PersonImage.SetPersonImage( WeightType.Normal, IsMale ? 0 : 1);
+                    _personImage.SetPersonImage( WeightType.Normal, IsMale ? 0 : 1);
+                    break;
+                }
+                case < 18.5: {
+                    BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
+                
+                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
+                    lbl_tipscontent.Content = tip;
+                
+                    _currentWeightType = 0;
+
+                    _personImage.SetPersonImage(WeightType.Low, IsMale ? 0 : 1);
+                    break;
+                }
+                case >= 25: {
+                    BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
+                
+                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
+                    lbl_tipscontent.Content = tip;
+                
+                    _currentWeightType = 2;
+
+                    _personImage.SetPersonImage(WeightType.High, IsMale ? 0 : 1);
+                    break;
+                }
             }
-            else if (bmi < 18.5)
-            {
-                BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
-                
-                string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
-                lbl_tipscontent.Content = tip;
-                
-                _currentWeightType = 0;
-
-                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, IsMale ? 0 : 1);
-            }
-            else if (bmi >= 25)
-            {
-
-                BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
-                
-                string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
-                lbl_tipscontent.Content = tip;
-                
-                _currentWeightType = 2;
-
-                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, IsMale ? 0 : 1);
-            }
-
             _loadDatabase.LoadOrSaveUsersDatabase(_name, _gender, _age, _weight, _height, bmi);
         }
         else
@@ -146,33 +143,24 @@ public partial class MainWindow
         }
     }
 
-    private void cb_male_Checked(object sender, RoutedEventArgs e)
-    {
+    private void cb_male_Checked(object sender, RoutedEventArgs e) {
         // This is checking if male is checked and unsets female to be safe
-        if (cb_male.IsChecked == true)
-        {
-            IsMale = true;
-            cb_female.IsChecked = false;
-        }
+        if (cb_male.IsChecked != true) return;
+        IsMale = true;
+        cb_female.IsChecked = false;
     }
 
-    private void cb_female_Checked(object sender, RoutedEventArgs e)
-    {
+    private void cb_female_Checked(object sender, RoutedEventArgs e) {
         // This is checking if female is checked and unsets male to be safe
-        if (cb_female.IsChecked == true)
-        {
-            IsMale = false;
-            cb_male.IsChecked = false;
-        }
+        if (cb_female.IsChecked != true) return;
+        IsMale = false;
+        cb_male.IsChecked = false;
     }
 
-    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (lb_users.SelectedItem != null)
-        {
-            _currentName = lb_users.SelectedItem.ToString();
-            if (_currentName != null) _loadData.LoadUsersOnSelectionChanged(_currentName);
-        }
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        if (lb_users.SelectedItem == null) return;
+        _currentName = lb_users.SelectedItem.ToString();
+        if (_currentName != null) _loadData.LoadUsersOnSelectionChanged(_currentName);
     }
 
     private void DeleteUser_ButtonClick(object sender, RoutedEventArgs e)

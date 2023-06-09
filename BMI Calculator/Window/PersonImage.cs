@@ -18,7 +18,7 @@ public class PersonImage {
     /// </summary>
     /// <param name="weightType">A WeightType enum value representing the user's weight type.</param>
     /// <param name="gender">An integer representing the user's gender (0 for male, 1 for female).</param>
-    public static void SetPersonImage(WeightType weightType, int gender)
+    public void SetPersonImage(WeightType weightType, int gender)
     {
         switch (weightType)
         {
