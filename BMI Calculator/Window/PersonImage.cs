@@ -2,9 +2,7 @@
 using System.IO;
 using System.Windows.Media.Imaging;
 
-using System.Windows.Controls;
-
-namespace BMI_Calculator; 
+namespace BMI_Calculator.Window; 
 
 public class PersonImage {
     private static MainWindow _mainWindow;

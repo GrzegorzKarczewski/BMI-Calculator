@@ -31,11 +31,13 @@ public partial class MainWindow
     // Database global constants
     static string databaseFile = "UserData.db";
     static string connectionString = $"Data Source={databaseFile};Version=3;";
-    private readonly PersonImage _personImage;
+    private readonly BMI_Calculator.Window.PersonImage _personImage;
+    private readonly BMI_Calculator.Window.BmiHandler _bmiHandler;
 
     public MainWindow()
     {
-        _personImage = new PersonImage(this);
+        _personImage = new BMI_Calculator.Window.PersonImage(this);
+        _bmiHandler = new BMI_Calculator.Window.BmiHandler(this);
         InitializeComponent();
 
         // Restricting input fields for reasonable values (lazy way)
@@ -90,7 +92,7 @@ public partial class MainWindow
             height = double.Parse(tb_height.Text);
             age = int.Parse(tb_age.Text, NumberStyles.Integer);
 
-            double bmi = BmiHandler.CalculateBmi(weight, height);
+            double bmi = BMI_Calculator.Window.BmiHandler.CalculateBmi(weight, height);
 
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
@@ -98,37 +100,37 @@ public partial class MainWindow
             if (bmi is > 18.5 and < 24.9)
             {
 
-                ChangeLabelBMIScoreStyle(WeightType.Normal);
+                _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
                 
-                string tip = BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
                 lbl_tipscontent.Content = tip;
                 
                 currentWeightType = 1;
 
-                BMI_Calculator.PersonImage.SetPersonImage( WeightType.Normal, isMale ? 0 : 1);
+                BMI_Calculator.Window.PersonImage.SetPersonImage( WeightType.Normal, isMale ? 0 : 1);
             }
             else if (bmi < 18.5)
             {
-                ChangeLabelBMIScoreStyle(WeightType.Low);
+                _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
                 
-                string tip = BmiHandler.GiveTipsForBmi(WeightType.Low);
+                string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
                 lbl_tipscontent.Content = tip;
                 
                 currentWeightType = 0;
 
-                BMI_Calculator.PersonImage.SetPersonImage(WeightType.Low, isMale ? 0 : 1);
+                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, isMale ? 0 : 1);
             }
             else if (bmi >= 25)
             {
 
-                ChangeLabelBMIScoreStyle(WeightType.High);
+                _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
                 
-                string tip = BmiHandler.GiveTipsForBmi(WeightType.High);
+                string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
                 lbl_tipscontent.Content = tip;
                 
                 currentWeightType = 2;
 
-                BMI_Calculator.PersonImage.SetPersonImage(WeightType.High, isMale ? 0 : 1);
+                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, isMale ? 0 : 1);
             }
 
             LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
@@ -277,64 +279,44 @@ public partial class MainWindow
                 if (bmi > 18.5 && bmi < 24.9)
                 {
 
-                    ChangeLabelBMIScoreStyle(WeightType.Normal);
+                    _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
                     
-                    string tip = BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
                     lbl_tipscontent.Content = tip;
 
-                    BMI_Calculator.PersonImage.SetPersonImage(WeightType.Normal, isMale ? 0 : 1);
+                    BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Normal, isMale ? 0 : 1);
                 }
                 if (bmi < 18.5)
                 {
-                    ChangeLabelBMIScoreStyle(WeightType.Low);
+                    _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
                     
-                    string tip = BmiHandler.GiveTipsForBmi(WeightType.Low);
+                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
                     lbl_tipscontent.Content = tip;
 
                     if (isMale)
                     {
-                        BMI_Calculator.PersonImage.SetPersonImage(WeightType.Low, 0);
+                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, 0);
                     }
                     else {
-                        PersonImage.SetPersonImage(WeightType.Low, 1); }
+                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, 1); }
                 }
                 if (bmi >= 25)
                 {
-                    ChangeLabelBMIScoreStyle(WeightType.High);
+                    _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
                     
-                    string tip = BmiHandler.GiveTipsForBmi(WeightType.High);
+                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
                     lbl_tipscontent.Content = tip;
 
                     if (isMale)
                     {
-                        PersonImage.SetPersonImage(WeightType.High, 0);
+                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, 0);
                     }
                     else {
-                        PersonImage.SetPersonImage(WeightType.High, 1); }
+                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, 1); }
                 }
             }
         }
 
-    }
-
-    public void ChangeLabelBMIScoreStyle(WeightType weightType)
-    {
-
-        lbl_result.FontSize = 34;
-        lbl_result.FontWeight = FontWeights.Bold;
-        switch (weightType)
-        {
-            case WeightType.Low:
-                lbl_result.Foreground = Brushes.LightBlue;
-                return;
-            case WeightType.Normal:
-                lbl_result.Foreground = Brushes.Green;
-                return;
-            case WeightType.High:
-                lbl_result.Foreground = Brushes.OrangeRed;
-                return;
-
-        }
     }
 
     private void DeleteUser_ButtonClick(object sender, RoutedEventArgs e)

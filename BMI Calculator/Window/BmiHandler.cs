@@ -1,12 +1,19 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Media;
+using System.Windows;
 using Newtonsoft.Json;
-using static BMI_Calculator.MainWindow;
 
-namespace BMI_Calculator; 
+namespace BMI_Calculator.Window; 
 
-public static class BmiHandler {
+public class BmiHandler {
+    private static MainWindow _mainWindow;
+    
+    public BmiHandler(MainWindow mainWindow) {
+        _mainWindow = mainWindow;
+    }
+    
     public static double CalculateBmi(double weight, double height)
     {
         double bmi = 0;
@@ -52,5 +59,25 @@ public static class BmiHandler {
         int randomIndex = random.Next(0, selectedTipsList.Count);
         string randomTip = selectedTipsList[randomIndex];
         return randomTip;
+    }
+    
+    public void ChangeLabelBMIScoreStyle(WeightType weightType)
+    {
+
+        _mainWindow.lbl_result.FontSize = 34;
+        _mainWindow.lbl_result.FontWeight = FontWeights.Bold;
+        switch (weightType)
+        {
+            case WeightType.Low:
+                _mainWindow.lbl_result.Foreground = Brushes.LightBlue;
+                return;
+            case WeightType.Normal:
+                _mainWindow.lbl_result.Foreground = Brushes.Green;
+                return;
+            case WeightType.High:
+                _mainWindow.lbl_result.Foreground = Brushes.OrangeRed;
+                return;
+
+        }
     }
 }
