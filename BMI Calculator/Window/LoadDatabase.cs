@@ -23,11 +23,11 @@ public class LoadDatabase {
     /// </summary>
     public void LoadOrSaveUsersDatabase(string name, string gender, int age, double weight, double height, double bmi)
     {
-        DatabaseInitializer initializer = new DatabaseInitializer(MainWindow.connectionString);
+        DatabaseInitializer initializer = new DatabaseInitializer(MainWindow.ConnectionString);
         initializer.Initialize();
 
         // updating Users table
-        UserRepository userRepository = new UserRepository(MainWindow.connectionString);
+        UserRepository userRepository = new UserRepository(MainWindow.ConnectionString);
         UserData newUser = new UserData
         {
             Name = name,
@@ -41,7 +41,7 @@ public class LoadDatabase {
         };
         userRepository.AddUser(newUser);
 
-        GSettings.AddUpdateAppSettings(MainWindow.mostRecentUser, name);
+        GSettings.AddUpdateAppSettings(MainWindow.MostRecentUser, name);
 
         _mainWindow.lb_users.Items.Clear();
         List<string> lastusers = userRepository.GetUserNames();
@@ -54,7 +54,7 @@ public class LoadDatabase {
 
     public void PopulateList()
     {
-        UserRepository userRepository = new UserRepository(MainWindow.connectionString);
+        UserRepository userRepository = new UserRepository(MainWindow.ConnectionString);
 
         _mainWindow.lb_users.Items.Clear();
 

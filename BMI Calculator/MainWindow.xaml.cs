@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,30 +11,29 @@ namespace BMI_Calculator;
 /// </summary>
 public partial class MainWindow
 {
-    internal bool isMale = false;
-    bool isFemale = false;
-    string name = string.Empty;
-    string gender = string.Empty;
-    double weight;
-    double height;
-    int age;
-    internal static string mostRecentUser = "mostRecentUser";
-    static int currentWeightType = 0;
-    static string currentName = string.Empty;
+    internal bool IsMale; // false
+    private string _name = string.Empty;
+    private string _gender = string.Empty;
+    private double _weight;
+    private double _height;
+    private int _age;
+    internal static string MostRecentUser = "mostRecentUser";
+    private static int _currentWeightType = 0;
+    private static string _currentName = string.Empty;
 
     // Database global constants
-    static string databaseFile = "UserData.db";
-    internal static string connectionString = $"Data Source={databaseFile};Version=3;";
+    private static readonly string DatabaseFile = "UserData.db";
+    internal static readonly string ConnectionString = $"Data Source={DatabaseFile};Version=3;";
     private readonly BMI_Calculator.Window.PersonImage _personImage;
-    internal readonly BMI_Calculator.Window.BmiHandler _bmiHandler;
     private readonly BMI_Calculator.Window.LoadData _loadData;
     private readonly BMI_Calculator.Window.LoadDatabase _loadDatabase;
+    internal readonly BMI_Calculator.Window.BmiHandler BmiHandler;
 
     public MainWindow()
     {
         _loadData = new(this);
         _personImage = new(this);
-        _bmiHandler = new(this);
+        BmiHandler = new(this);
         _loadDatabase = new (this);
         
         InitializeComponent();
@@ -49,7 +46,7 @@ public partial class MainWindow
         
         _loadDatabase.PopulateList();
 
-        currentName = mostRecentUser;
+        _currentName = MostRecentUser;
     }
 
     /// <summary>
@@ -79,20 +76,20 @@ public partial class MainWindow
 
         // setting gender values for db and later use
         if (cb_male.IsChecked == true)
-            gender = "Male";
+            _gender = "Male";
         if (cb_female.IsChecked == true)
-            gender = "Female";
+            _gender = "Female";
 
         // Execute the calculations only if input data are proper
         if (isNameNotString == false && isAgeInt && isHeightDouble && isWeightDouble)
         {
 
-            name = tb_name.Text;
-            weight = double.Parse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
-            height = double.Parse(tb_height.Text);
-            age = int.Parse(tb_age.Text, NumberStyles.Integer);
+            _name = tb_name.Text;
+            _weight = double.Parse(tb_weight.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+            _height = double.Parse(tb_height.Text);
+            _age = int.Parse(tb_age.Text, NumberStyles.Integer);
 
-            double bmi = BMI_Calculator.Window.BmiHandler.CalculateBmi(weight, height);
+            double bmi = BMI_Calculator.Window.BmiHandler.CalculateBmi(_weight, _height);
 
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
@@ -100,40 +97,40 @@ public partial class MainWindow
             if (bmi is > 18.5 and < 24.9)
             {
 
-                _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
+                BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
                 
                 string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
                 lbl_tipscontent.Content = tip;
                 
-                currentWeightType = 1;
+                _currentWeightType = 1;
 
-                BMI_Calculator.Window.PersonImage.SetPersonImage( WeightType.Normal, isMale ? 0 : 1);
+                BMI_Calculator.Window.PersonImage.SetPersonImage( WeightType.Normal, IsMale ? 0 : 1);
             }
             else if (bmi < 18.5)
             {
-                _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
+                BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
                 
                 string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
                 lbl_tipscontent.Content = tip;
                 
-                currentWeightType = 0;
+                _currentWeightType = 0;
 
-                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, isMale ? 0 : 1);
+                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, IsMale ? 0 : 1);
             }
             else if (bmi >= 25)
             {
 
-                _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
+                BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
                 
                 string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
                 lbl_tipscontent.Content = tip;
                 
-                currentWeightType = 2;
+                _currentWeightType = 2;
 
-                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, isMale ? 0 : 1);
+                BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, IsMale ? 0 : 1);
             }
 
-            _loadDatabase.LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
+            _loadDatabase.LoadOrSaveUsersDatabase(_name, _gender, _age, _weight, _height, bmi);
         }
         else
         {
@@ -153,9 +150,8 @@ public partial class MainWindow
         // This is checking if male is checked and unsets female to be safe
         if (cb_male.IsChecked == true)
         {
-            isMale = true;
+            IsMale = true;
             cb_female.IsChecked = false;
-            isFemale = false;
         }
     }
 
@@ -164,8 +160,7 @@ public partial class MainWindow
         // This is checking if female is checked and unsets male to be safe
         if (cb_female.IsChecked == true)
         {
-            isFemale = true;
-            isMale = false;
+            IsMale = false;
             cb_male.IsChecked = false;
         }
     }
@@ -174,15 +169,15 @@ public partial class MainWindow
     {
         if (lb_users.SelectedItem != null)
         {
-            currentName = lb_users.SelectedItem.ToString();
-            if (currentName != null) _loadData.LoadUsersOnSelectionChanged(currentName);
+            _currentName = lb_users.SelectedItem.ToString();
+            if (_currentName != null) _loadData.LoadUsersOnSelectionChanged(_currentName);
         }
     }
 
     private void DeleteUser_ButtonClick(object sender, RoutedEventArgs e)
     {
-        string name = currentName; // currentName should be always storing currently checked user on the list
-        UserRepository userRepository = new UserRepository(connectionString);
+        string name = _currentName; // currentName should be always storing currently checked user on the list
+        UserRepository userRepository = new UserRepository(ConnectionString);
         bool success = userRepository.RemoveUserByName(name);
 
         if (success)

@@ -22,7 +22,7 @@ public class LoadData {
     /// </summary>
     public void LoadDataFromMostRecentUser()
     {
-        string name = GSettings.ReadSetting(MainWindow.mostRecentUser);
+        string name = GSettings.ReadSetting(MainWindow.MostRecentUser);
         if (name != null)
         {
             LoadUsersOnSelectionChanged(name);
@@ -31,7 +31,7 @@ public class LoadData {
 
     public void LoadUsersOnSelectionChanged(string name)
     {
-        UserRepository userRepository = new UserRepository(MainWindow.connectionString);
+        UserRepository userRepository = new UserRepository(MainWindow.ConnectionString);
         UserData user = userRepository.GetUserByName(name);
 
         if (user != null)
@@ -50,21 +50,21 @@ public class LoadData {
             {
                 switch (bmi) {
                     case > 18.5 and < 24.9: {
-                        _mainWindow._bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
+                        _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
                     
                         string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
                         _mainWindow.lbl_tipscontent.Content = tip;
 
-                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Normal, _mainWindow.isMale ? 0 : 1);
+                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Normal, _mainWindow.IsMale ? 0 : 1);
                         break;
                     }
                     case < 18.5: {
-                        _mainWindow._bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
+                        _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
                     
                         string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
                         _mainWindow.lbl_tipscontent.Content = tip;
 
-                        if (_mainWindow.isMale)
+                        if (_mainWindow.IsMale)
                         {
                             BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, 0);
                         }
@@ -74,12 +74,12 @@ public class LoadData {
                         break;
                     }
                     case >= 25: {
-                        _mainWindow._bmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
+                        _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
                     
                         string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
                         _mainWindow.lbl_tipscontent.Content = tip;
 
-                        if (_mainWindow.isMale)
+                        if (_mainWindow.IsMale)
                         {
                             BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, 0);
                         }
