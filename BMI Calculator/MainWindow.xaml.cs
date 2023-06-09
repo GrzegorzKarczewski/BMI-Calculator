@@ -30,12 +30,15 @@ public partial class MainWindow
     private readonly BMI_Calculator.Window.PersonImage _personImage;
     internal readonly BMI_Calculator.Window.BmiHandler _bmiHandler;
     private readonly BMI_Calculator.Window.LoadData _loadData;
+    private readonly BMI_Calculator.Window.LoadDatabase _loadDatabase;
 
     public MainWindow()
     {
         _loadData = new(this);
         _personImage = new(this);
         _bmiHandler = new(this);
+        _loadDatabase = new (this);
+        
         InitializeComponent();
 
         // Restricting input fields for reasonable values (lazy way)
@@ -43,10 +46,10 @@ public partial class MainWindow
         tb_age.MaxLength = 3;
         tb_height.MaxLength = 3;
         tb_weight.MaxLength = 4;
+        
+        _loadDatabase.PopulateList();
 
-        PopulateList();
         currentName = mostRecentUser;
-        _personImage = new (this);
     }
 
     /// <summary>
@@ -130,7 +133,7 @@ public partial class MainWindow
                 BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, isMale ? 0 : 1);
             }
 
-            LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
+            _loadDatabase.LoadOrSaveUsersDatabase(name, gender, age, weight, height, bmi);
         }
         else
         {
@@ -167,69 +170,12 @@ public partial class MainWindow
         }
     }
 
-    /// <summary>
-    /// This function initializes a new database connection using the provided connection string.
-    /// It then creates a new user repository to interact with the Users table in the database.
-    ///
-    /// A new user data object is created with the provided name, gender, age, weight, height, and BMI. 
-    /// The current timestamp is also recorded. This new user data is then added to the Users table in the database.
-    ///
-    /// The function also updates the application settings to record the most recent user.
-    ///
-    /// Finally, the function clears and repopulates the user list in the UI with the updated list of users from the database.
-    /// </summary>
-    void LoadOrSaveUsersDatabase(string name, string gender, int age, double weight, double height, double bmi)
-    {
-        DatabaseInitializer initializer = new DatabaseInitializer(connectionString);
-        initializer.Initialize();
-
-        // updating Users table
-        UserRepository userRepository = new UserRepository(connectionString);
-        UserData newUser = new UserData
-        {
-            Name = name,
-            Gender = gender,
-            Age = age,
-            Weight = weight,
-            Height = height,
-            BMI = bmi,
-            Timestamp = DateTime.Now
-
-        };
-        userRepository.AddUser(newUser);
-
-        GSettings.AddUpdateAppSettings(mostRecentUser, name);
-
-        lb_users.Items.Clear();
-        List<string> lastusers = userRepository.GetUserNames();
-        foreach (string users in lastusers)
-        {
-            lb_users.Items.Add(users);
-        }
-
-    }
-
     private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (lb_users.SelectedItem != null)
         {
             currentName = lb_users.SelectedItem.ToString();
             if (currentName != null) _loadData.LoadUsersOnSelectionChanged(currentName);
-        }
-    }
-    public void PopulateList()
-    {
-        UserRepository userRepository = new UserRepository(connectionString);
-
-        lb_users.Items.Clear();
-
-        List<string> lastusers = userRepository.GetUserNames();
-        if (lastusers != null)
-        {
-            foreach (string users in lastusers)
-            {
-                lb_users.Items.Add(users);
-            }
         }
     }
 
@@ -241,7 +187,7 @@ public partial class MainWindow
 
         if (success)
         {
-            PopulateList();
+            _loadDatabase.PopulateList();
             ClearInputFields();
         }
         else
