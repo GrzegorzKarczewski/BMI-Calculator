@@ -1,14 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace BMI_Calculator;
 
@@ -17,27 +13,29 @@ namespace BMI_Calculator;
 /// </summary>
 public partial class MainWindow
 {
-    bool isMale = false;
+    internal bool isMale = false;
     bool isFemale = false;
     string name = string.Empty;
     string gender = string.Empty;
     double weight;
     double height;
     int age;
-    static string mostRecentUser = "mostRecentUser";
+    internal static string mostRecentUser = "mostRecentUser";
     static int currentWeightType = 0;
     static string currentName = string.Empty;
 
     // Database global constants
     static string databaseFile = "UserData.db";
-    static string connectionString = $"Data Source={databaseFile};Version=3;";
+    internal static string connectionString = $"Data Source={databaseFile};Version=3;";
     private readonly BMI_Calculator.Window.PersonImage _personImage;
-    private readonly BMI_Calculator.Window.BmiHandler _bmiHandler;
+    internal readonly BMI_Calculator.Window.BmiHandler _bmiHandler;
+    private readonly BMI_Calculator.Window.LoadData _loadData;
 
     public MainWindow()
     {
-        _personImage = new BMI_Calculator.Window.PersonImage(this);
-        _bmiHandler = new BMI_Calculator.Window.BmiHandler(this);
+        _loadData = new(this);
+        _personImage = new(this);
+        _bmiHandler = new(this);
         InitializeComponent();
 
         // Restricting input fields for reasonable values (lazy way)
@@ -48,7 +46,6 @@ public partial class MainWindow
 
         PopulateList();
         currentName = mostRecentUser;
-        LoadDataFromMostRecentUser();
         _personImage = new (this);
     }
 
@@ -217,8 +214,7 @@ public partial class MainWindow
         if (lb_users.SelectedItem != null)
         {
             currentName = lb_users.SelectedItem.ToString();
-            if (currentName != null)
-                LoadUsersOnSelectionChanged(currentName);
+            if (currentName != null) _loadData.LoadUsersOnSelectionChanged(currentName);
         }
     }
     public void PopulateList()
@@ -235,88 +231,6 @@ public partial class MainWindow
                 lb_users.Items.Add(users);
             }
         }
-    }
-
-    /// <summary>
-    /// The `LoadDataFromMostRecentUser` method retrieves the name of the most recent user from the application settings.
-    /// It then calls the `LoadUsersOnSelectionChanged` method with the retrieved name.
-    ///
-    /// The `LoadUsersOnSelectionChanged` method fetches the user data from the database for the given user name. 
-    /// If a user with the given name is found, it populates the UI fields with the user's data, including name, gender, age, weight, height, and BMI.
-    /// Depending on the user's BMI, it adjusts the UI styling and provides user tips specific to the BMI category (low weight, normal weight, or high weight).
-    /// It also changes the displayed image based on the BMI category and the user's gender.
-    /// </summary>
-    public void LoadDataFromMostRecentUser()
-    {
-        string name = GSettings.ReadSetting(mostRecentUser);
-        if (name != null)
-        {
-            LoadUsersOnSelectionChanged(name);
-        }
-    }
-
-    public void LoadUsersOnSelectionChanged(string name)
-    {
-        UserRepository userRepository = new UserRepository(connectionString);
-        UserData user = userRepository.GetUserByName(name);
-
-        if (user != null)
-        {
-            double bmi = Math.Round(user.BMI, 1); ;
-            tb_name.Text = user.Name;
-            if (user.Gender == "Male")
-                cb_male.IsChecked = true;
-            if (user.Gender == "Female")
-                cb_female.IsChecked = true;
-            tb_age.Text = user.Age.ToString();
-
-            // Culture info is used here because for calculations and validations to work i had to settle for . as decimal separator    
-            tb_weight.Text = Math.Round(user.Weight, 1).ToString(CultureInfo.InvariantCulture);
-            tb_height.Text = user.Height.ToString();
-            lbl_result.Content = bmi;
-
-            {
-                if (bmi > 18.5 && bmi < 24.9)
-                {
-
-                    _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
-                    
-                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
-                    lbl_tipscontent.Content = tip;
-
-                    BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Normal, isMale ? 0 : 1);
-                }
-                if (bmi < 18.5)
-                {
-                    _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
-                    
-                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
-                    lbl_tipscontent.Content = tip;
-
-                    if (isMale)
-                    {
-                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, 0);
-                    }
-                    else {
-                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.Low, 1); }
-                }
-                if (bmi >= 25)
-                {
-                    _bmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
-                    
-                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
-                    lbl_tipscontent.Content = tip;
-
-                    if (isMale)
-                    {
-                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, 0);
-                    }
-                    else {
-                        BMI_Calculator.Window.PersonImage.SetPersonImage(WeightType.High, 1); }
-                }
-            }
-        }
-
     }
 
     private void DeleteUser_ButtonClick(object sender, RoutedEventArgs e)
