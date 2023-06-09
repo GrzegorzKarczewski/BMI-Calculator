@@ -43,7 +43,8 @@ public partial class MainWindow
         tb_age.MaxLength = 3;
         tb_height.MaxLength = 3;
         tb_weight.MaxLength = 4;
-        
+
+        _loadData.LoadDataFromMostRecentUser();
         _loadDatabase.PopulateList();
 
         _currentName = MostRecentUser;

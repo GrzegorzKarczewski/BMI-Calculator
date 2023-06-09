@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace BMI_Calculator.Window; 
 
 public class BmiHandler {
-    private static MainWindow _mainWindow;
+    private readonly MainWindow _mainWindow;
     
     public BmiHandler(MainWindow mainWindow) {
         _mainWindow = mainWindow;

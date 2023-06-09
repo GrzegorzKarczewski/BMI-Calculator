@@ -4,11 +4,10 @@ using System.Globalization;
 namespace BMI_Calculator.Window; 
 
 public class LoadData {
-    private MainWindow _mainWindow;
+    private readonly MainWindow _mainWindow;
 
     public LoadData(MainWindow mainWindow) {
         _mainWindow = mainWindow;
-        // LoadDataFromMostRecentUser();
     }
 
     /// <summary>

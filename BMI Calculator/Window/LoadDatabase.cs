@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BMI_Calculator.Window; 
 
 public class LoadDatabase {
-    private MainWindow _mainWindow;
+    private readonly MainWindow _mainWindow;
 
     public LoadDatabase(MainWindow mainWindow) {
         _mainWindow = mainWindow;
