@@ -85,7 +85,7 @@
 
         <Button Content="Clear All"
                 Grid.Row="2"
-                Grid.Column="3"
+                Grid.Column="1"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
                 RenderTransformOrigin="0.231,-0.548"
