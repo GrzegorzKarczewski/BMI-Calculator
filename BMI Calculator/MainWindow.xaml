@@ -13,8 +13,6 @@
         AllowsTransparency="True"
         >
 
-
-
     <Grid x:Name ="MainGrid" Margin="0,0,0,0" Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.1*"/>
@@ -54,9 +52,6 @@
 
         <!--#endregion-->
 
-
-
-
         <!--#region Input Data -->
         <StackPanel>
             <Label Content="Select your name from the list:"
@@ -78,10 +73,7 @@
                         />
             </StackPanel>
 
-
-            <DataGrid HorizontalAlignment="Left" 
-                  VerticalAlignment="Top"
-                 d:ItemsSource="{d:SampleData ItemCount=5}"/>
+         
 
         </StackPanel>
 
@@ -135,7 +127,6 @@
                  Width="120"/>
 
         </StackPanel>
-
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="3"
@@ -235,32 +226,29 @@
                 HorizontalAlignment="Left" 
                 Grid.Column="1"
                 Grid.Row="3"
-                VerticalAlignment="Top" 
-                Height="26" Width="86" 
+                VerticalAlignment="Center" 
                 />
         <Label  Name="lbl_result"  
                 Content="" 
                 Grid.Column="1"
                 Grid.Row="4"
+                Grid.RowSpan="3"
                 HorizontalAlignment="Left" 
-                VerticalAlignment="Top" 
-                Height="66" 
-                Width="152"/>
+                VerticalAlignment="Center" 
+                />
 
         <Label Content="Tips:" 
                Grid.Column="1"
-               Grid.Row="5"
+               Grid.Row="6"
                HorizontalAlignment="Left" 
-               VerticalAlignment="Top" 
+               VerticalAlignment="Center" 
                Width="34"/>
         <Label Name="lbl_tipscontent"
                Grid.Column="1"
-               Grid.Row="6"
+               Grid.Row="7"
                Content="" 
                HorizontalAlignment="Left" 
-               VerticalAlignment="Top" 
-               Height="111" 
-               Width="193"/>
+               VerticalAlignment="Center"/>
 
         <Image Name ="genderImage"
                Grid.Column="2"
