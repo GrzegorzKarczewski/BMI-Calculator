@@ -5,46 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BMI_Calculator"
         mc:Ignorable="d"
-        Title="BMI Calculator" Height="500" Width="670">
+        Title="BMI Calculator" 
+        Height="500" 
+        Width="670"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        >
 
 
-    <Grid x:Name ="MainGrid" Margin="0,0,0,12" RenderTransformOrigin="0.498,0.528">
-   
 
-        <Button Content="Calculate your BMI" HorizontalAlignment="Left" Margin="55,404,0,20" Width="120" Click="Button_Click"/>
-        
-        <Label Content="Gender" HorizontalAlignment="Left" Margin="52,172,0,0" VerticalAlignment="Top" Height="24" Width="104"/>
-       
-        <CheckBox Content="Male" Name="cb_male" HorizontalAlignment="Left" Margin="55,201,0,0" VerticalAlignment="Top" Checked="cb_male_Checked" BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"/>
-        <CheckBox Content="Female" Name="cb_female" HorizontalAlignment="Left" Margin="115,201,0,0" VerticalAlignment="Top" Checked="cb_female_Checked" RenderTransformOrigin="0.508,1.8" BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"/>
-       
-        <Label Content="Age" HorizontalAlignment="Left" Margin="52,221,0,0" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.067,0.535"/>
-        <TextBox Name="tb_age" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="55,252,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-       
-        <Label Content="Height [cm]" HorizontalAlignment="Left" Margin="55,275,0,0" VerticalAlignment="Top" Width="91" Height="25"/>
-        <TextBox Name="tb_height" PreviewTextInput="NumberValidationTextBoxAllowComma" HorizontalAlignment="Left" Margin="55,306,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-       
-        <Label Content="Weight [kg]" HorizontalAlignment="Left" Margin="55,331,0,0" VerticalAlignment="Top" Width="70"/>
-        <TextBox Name="tb_weight" PreviewTextInput="NumberValidationTextBoxAllowComma" HorizontalAlignment="Left" Margin="55,362,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-       
-        <Label  Content="Your Result:" HorizontalAlignment="Left" Margin="330,55,0,0" VerticalAlignment="Top" Height="26" Width="86" RenderTransformOrigin="0.536,-1.764"/>
-        <Label  Name="lbl_result" Content="" HorizontalAlignment="Left" Margin="320,120,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.928,-1.392" Height="66" Width="152"/>
-        
-        <Label Content="Tips:" HorizontalAlignment="Left" Margin="330,207,0,0" VerticalAlignment="Top" Width="34"/>
-        
-        <Image Name ="genderImage" HorizontalAlignment="Left" Height="225" Margin="528,56,0,0" VerticalAlignment="Top" Width="110"/>
-       
-        <Label Name="lbl_tipscontent" Content="" HorizontalAlignment="Left" Margin="320,250,0,0" VerticalAlignment="Top" Height="111" Width="193"/>
-        
-        <Label Name ="lbl_name" Content="Or put your name:" HorizontalAlignment="Left" Margin="55,127,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tb_name" PreviewTextInput="ValidationTextBoxLettersOnly" HorizontalAlignment="Left" Margin="55,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-      
-        <ListBox x:Name ="lb_users" Margin="55,68,0,0"  SelectionChanged="ListBox_SelectionChanged"  RenderTransformOrigin="3.013,6.041" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="142" Background="#FFBFEABD" />
-        <Label Content="Select your name from the list:" HorizontalAlignment="Left" Margin="55,37,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.209,0.609"/>
-        <DataGrid HorizontalAlignment="Left" Height="13" Margin="1023,68,0,0" VerticalAlignment="Top" Width="4" d:ItemsSource="{d:SampleData ItemCount=5}"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="202,88,0,0" VerticalAlignment="Top" Click="DeleteUser_ButtonClick"/>
-        <Button Content="Clear All" HorizontalAlignment="Left" Margin="187,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.231,-0.548" Width="64" Click="Button_ClearFields"/>
-        <Separator HorizontalAlignment="Left" Margin="54,108,0,0" VerticalAlignment="Top" Height="33" RenderTransformOrigin="0.5,0.5" Width="197">
+    <Grid x:Name ="MainGrid" Margin="0,0,0,0" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.1*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--#region Window -->
+
+        <Rectangle Fill="White" RadiusX="10" RadiusY="10" 
+                   Margin="0,0,0,0"
+                   Grid.ColumnSpan="3"
+                   Grid.RowSpan="14"/>
+
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Background="Transparent" BorderBrush="{x:Null}" 
+                    Foreground="Red" Content="❌" FontSize="15" 
+                    Click="CloseWindow"
+                    Grid.Row="0"
+                    Grid.Column="3"/>
+
+        <!--#endregion-->
+
+
+
+
+        <!--#region Input Data -->
+        <StackPanel>
+            <Label Content="Select your name from the list:"
+                   HorizontalAlignment="Left"  
+                   VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal">
+                <ListBox x:Name ="lb_users"
+                     VerticalAlignment="Center"
+                     SelectionChanged="ListBox_SelectionChanged"  
+                     Height="41" 
+                     HorizontalAlignment="Left" 
+                     Width="142" 
+                     Background="#FFBFEABD"/>
+                <Button Content="Delete" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom" 
+                    Click="DeleteUser_ButtonClick"
+                    Margin="5,0,0,0"    
+                        />
+            </StackPanel>
+
+
+            <DataGrid HorizontalAlignment="Left" 
+                  VerticalAlignment="Top"
+                 d:ItemsSource="{d:SampleData ItemCount=5}"/>
+
+        </StackPanel>
+
+
+        <Button Content="Clear All"
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                RenderTransformOrigin="0.231,-0.548"
+                Width="64" 
+                Click="Button_ClearFields"/>
+
+        <Separator HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   Height="33" 
+                   RenderTransformOrigin="0.5,0.5" 
+                   Width="197"
+                   Margin="0,5,0,0"
+                   Grid.Row="0"
+                   Grid.Column="0">
             <Separator.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>
@@ -54,7 +112,170 @@
                 </TransformGroup>
             </Separator.RenderTransform>
         </Separator>
-      
+
+        <Label Name ="lbl_name"
+                Grid.Column="0"
+                Grid.Row="1"
+               VerticalAlignment="Center"
+               Content="Or put your name:" 
+               HorizontalAlignment="Left" />
+        <StackPanel Orientation="Horizontal"
+                      Grid.Column="0"
+                      Grid.Row="2">
+            <Label Content="Name"
+                   Margin="0,0,0,0"/>
+            <TextBox x:Name="tb_name"
+               
+                 PreviewTextInput="ValidationTextBoxLettersOnly" 
+                 HorizontalAlignment="Right" 
+                 TextWrapping="Wrap" 
+                 Text="" 
+                 Margin="30,0,0,0"
+                 VerticalAlignment="Center" 
+                 Width="120"/>
+
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    Grid.Column="0">
+            <Label Content="Gender"
+              Margin="0,0,22,0"
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Center" 
+            />
+
+            <CheckBox Content="Male" 
+                  Name="cb_male" 
+                  HorizontalAlignment="Left"   
+                  VerticalAlignment="Center" 
+                  Checked="cb_male_Checked" 
+                  BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
+                  Margin="0,0,5,0"   
+                      />
+            <CheckBox Content="Female"
+                  Name="cb_female" 
+                  HorizontalAlignment="Right" 
+                  VerticalAlignment="Center" 
+                  Checked="cb_female_Checked" 
+                  BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="4"
+                    Grid.Column="0">
+
+            <Label Content="Age"
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top"/>
+            <TextBox Name="tb_age"
+                 PreviewTextInput="NumberValidationTextBox" 
+                 HorizontalAlignment="Right"   
+                 TextWrapping="Wrap" Text="" 
+                 VerticalAlignment="Center"
+                 Width="120"
+                 Margin="41,0,5,0"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="5"
+                    Grid.Column="0">
+            <Label Content="Height [cm]"
+               Grid.Row="5"
+               Grid.Column="0"
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top"
+              />
+            <TextBox Name="tb_height"
+                 Grid.Row="5"
+                 Grid.Column="0"
+                 PreviewTextInput="NumberValidationTextBoxAllowComma" 
+                 HorizontalAlignment="Right" 
+                
+                 TextWrapping="Wrap" 
+                 Text="" 
+                 VerticalAlignment="Center" 
+                 Width="120"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="6"
+                    Grid.Column="0">
+            <Label Content="Weight [kg]"
+               Grid.Row="6"
+               Grid.Column="0"
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top"/>
+            <TextBox Name="tb_weight"
+                 Grid.Row="6"
+                 Grid.Column="0"
+                 VerticalAlignment="Center"
+                 PreviewTextInput="NumberValidationTextBoxAllowComma" 
+                 HorizontalAlignment="Right" 
+                 TextWrapping="Wrap" 
+                 Text=""
+                 Width="120"/>
+        </StackPanel>
+
+
+        <Button Content="Calculate your BMI" 
+                HorizontalAlignment="Center" 
+                Width="120" 
+                Click="Button_Click"
+                Grid.Row="10"
+                Grid.Column="0"
+                BorderBrush="Black"
+                />
+        <!--#endregion-->
+
+        <!--#region Result -->
+
+        <Label  Content="Your Result:" 
+                HorizontalAlignment="Left" 
+                Grid.Column="1"
+                Grid.Row="3"
+                VerticalAlignment="Top" 
+                Height="26" Width="86" 
+                />
+        <Label  Name="lbl_result"  
+                Content="" 
+                Grid.Column="1"
+                Grid.Row="4"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Height="66" 
+                Width="152"/>
+
+        <Label Content="Tips:" 
+               Grid.Column="1"
+               Grid.Row="5"
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top" 
+               Width="34"/>
+        <Label Name="lbl_tipscontent"
+               Grid.Column="1"
+               Grid.Row="6"
+               Content="" 
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top" 
+               Height="111" 
+               Width="193"/>
+
+        <Image Name ="genderImage"
+               Grid.Column="2"
+               Grid.Row="3"
+               Grid.RowSpan="7"
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center"/>
+
+
+
+        <!--#endregion-->
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="5" ShadowDepth="3" Color="LightBlue"
+                              />
+        </Grid.Effect>
 
     </Grid>
 
