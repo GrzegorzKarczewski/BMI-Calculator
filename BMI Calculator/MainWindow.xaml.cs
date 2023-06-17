@@ -227,4 +227,10 @@ public partial class MainWindow
     {
         this.Close();
     }
+
+    private void DragWindow(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
+            this.DragMove();
+    }
 }

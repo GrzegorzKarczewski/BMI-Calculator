@@ -20,6 +20,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -37,23 +38,27 @@
         </Grid.RowDefinitions>
 
         <!--#region Window -->
-
+      
         <Rectangle Fill="White" RadiusX="10" RadiusY="10" 
                    Margin="0,0,0,0"
                    Grid.ColumnSpan="3"
-                   Grid.RowSpan="14"/>
-
-        <Button HorizontalAlignment="Right" VerticalAlignment="Top" 
+                   Grid.RowSpan="15"/>
+        <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Background="Transparent"
+                    MouseDown="DragWindow"
+                    >
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" 
                     Background="Transparent" BorderBrush="{x:Null}" 
                     Foreground="Red" Content="❌" FontSize="15" 
                     Click="CloseWindow"
-                    Grid.Row="0"
-                    Grid.Column="3"/>
+                    />
+        </StackPanel>
 
         <!--#endregion-->
-
+        
         <!--#region Input Data -->
-        <StackPanel>
+        <StackPanel Grid.Row="1">
             <Label Content="Select your name from the list:"
                    HorizontalAlignment="Left"  
                    VerticalAlignment="Top"/>
@@ -73,14 +78,14 @@
                         />
             </StackPanel>
 
-         
+
 
         </StackPanel>
 
 
         <Button Content="Clear All"
-                Grid.Row="1"
-                Grid.Column="1"
+                Grid.Row="2"
+                Grid.Column="3"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
                 RenderTransformOrigin="0.231,-0.548"
@@ -93,7 +98,7 @@
                    RenderTransformOrigin="0.5,0.5" 
                    Width="197"
                    Margin="0,5,0,0"
-                   Grid.Row="0"
+                   Grid.Row="1"
                    Grid.Column="0">
             <Separator.RenderTransform>
                 <TransformGroup>
@@ -107,13 +112,13 @@
 
         <Label Name ="lbl_name"
                 Grid.Column="0"
-                Grid.Row="1"
+                Grid.Row="2"
                VerticalAlignment="Center"
                Content="Or put your name:" 
                HorizontalAlignment="Left" />
         <StackPanel Orientation="Horizontal"
                       Grid.Column="0"
-                      Grid.Row="2">
+                      Grid.Row="3">
             <Label Content="Name"
                    Margin="0,0,0,0"/>
             <TextBox x:Name="tb_name"
@@ -129,7 +134,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="0">
             <Label Content="Gender"
               Margin="0,0,22,0"
@@ -155,7 +160,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="0">
 
             <Label Content="Age"
@@ -171,16 +176,16 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="0">
             <Label Content="Height [cm]"
-               Grid.Row="5"
+               Grid.Row="6"
                Grid.Column="0"
                HorizontalAlignment="Left" 
                VerticalAlignment="Top"
               />
             <TextBox Name="tb_height"
-                 Grid.Row="5"
+                 Grid.Row="6"
                  Grid.Column="0"
                  PreviewTextInput="NumberValidationTextBoxAllowComma" 
                  HorizontalAlignment="Right" 
@@ -191,15 +196,15 @@
                  Width="120"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="0">
             <Label Content="Weight [kg]"
-               Grid.Row="6"
+               Grid.Row="7"
                Grid.Column="0"
                HorizontalAlignment="Left" 
                VerticalAlignment="Top"/>
             <TextBox Name="tb_weight"
-                 Grid.Row="6"
+                 Grid.Row="7"
                  Grid.Column="0"
                  VerticalAlignment="Center"
                  PreviewTextInput="NumberValidationTextBoxAllowComma" 
@@ -225,13 +230,13 @@
         <Label  Content="Your Result:" 
                 HorizontalAlignment="Left" 
                 Grid.Column="1"
-                Grid.Row="3"
+                Grid.Row="5"
                 VerticalAlignment="Center" 
                 />
         <Label  Name="lbl_result"  
                 Content="" 
                 Grid.Column="1"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.RowSpan="3"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Center" 
@@ -239,13 +244,13 @@
 
         <Label Content="Tips:" 
                Grid.Column="1"
-               Grid.Row="6"
+               Grid.Row="7"
                HorizontalAlignment="Left" 
                VerticalAlignment="Center" 
                Width="34"/>
         <Label Name="lbl_tipscontent"
                Grid.Column="1"
-               Grid.Row="7"
+               Grid.Row="8"
                Content="" 
                HorizontalAlignment="Left" 
                VerticalAlignment="Center"/>
@@ -253,7 +258,7 @@
         <Image Name ="genderImage"
                Grid.Column="2"
                Grid.Row="3"
-               Grid.RowSpan="7"
+               Grid.RowSpan="8"
                HorizontalAlignment="Center" 
                VerticalAlignment="Center"/>
 
