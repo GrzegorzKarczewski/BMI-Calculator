@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BMI_Calculator"
         mc:Ignorable="d"
-        Title="BMI Calculator" 
         Height="500" 
         Width="670"
         WindowStyle="None"
@@ -20,7 +19,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="28"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -38,27 +37,43 @@
         </Grid.RowDefinitions>
 
         <!--#region Window -->
-      
-        <Rectangle Fill="White" RadiusX="10" RadiusY="10" 
+        <Border BorderBrush="LightSlateGray" BorderThickness="1" CornerRadius="10,10,10,10"
+            Grid.ColumnSpan="3" Grid.RowSpan="15"
+            Margin="0,0,0,0">
+            <Rectangle Fill="White" RadiusX="10" RadiusY="10" 
                    Margin="0,0,0,0"
                    Grid.ColumnSpan="3"
                    Grid.RowSpan="15"/>
+        </Border>
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="3"
-                    Background="Transparent"
+                    Grid.RowSpan="1"
+                    Background="LightGray"
                     MouseDown="DragWindow"
                     >
-            <Button HorizontalAlignment="Right" VerticalAlignment="Top" 
+
+            <Border BorderThickness="1"  BorderBrush="DarkGray">
+                <Button HorizontalAlignment="Right" VerticalAlignment="Top" 
                     Background="Transparent" BorderBrush="{x:Null}" 
                     Foreground="Red" Content="❌" FontSize="15" 
                     Click="CloseWindow"
                     />
+        </Border>
+           
         </StackPanel>
-
         <!--#endregion-->
         
+        <Label Content="BMI Calculator" Grid.Row="0" Grid.Column="1"
+                       FontSize="20" 
+                       Margin="0,-7,0,0"
+                       FontWeight="Bold"
+                       VerticalContentAlignment="Top"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
         <!--#region Input Data -->
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1"
+                    Margin="20,0,0,0">
             <Label Content="Select your name from the list:"
                    HorizontalAlignment="Left"  
                    VerticalAlignment="Top"/>
@@ -97,7 +112,7 @@
                    Height="33" 
                    RenderTransformOrigin="0.5,0.5" 
                    Width="197"
-                   Margin="0,5,0,0"
+                   Margin="20,5,0,0"
                    Grid.Row="1"
                    Grid.Column="0">
             <Separator.RenderTransform>
@@ -113,6 +128,7 @@
         <Label Name ="lbl_name"
                 Grid.Column="0"
                 Grid.Row="2"
+               Margin="20,0,0,0"
                VerticalAlignment="Center"
                Content="Or put your name:" 
                HorizontalAlignment="Left" />
@@ -120,7 +136,7 @@
                       Grid.Column="0"
                       Grid.Row="3">
             <Label Content="Name"
-                   Margin="0,0,0,0"/>
+                   Margin="20,0,0,0"/>
             <TextBox x:Name="tb_name"
                
                  PreviewTextInput="ValidationTextBoxLettersOnly" 
@@ -135,7 +151,8 @@
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="4"
-                    Grid.Column="0">
+                    Grid.Column="0"
+                    Margin="20,0,0,0">
             <Label Content="Gender"
               Margin="0,0,22,0"
                HorizontalAlignment="Left" 
@@ -161,7 +178,9 @@
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="5"
-                    Grid.Column="0">
+                    Grid.Column="0"
+                    Margin="20,0,0,0"
+                    >
 
             <Label Content="Age"
                HorizontalAlignment="Left" 
@@ -176,6 +195,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"
+                    Margin="20,0,0,0"
                     Grid.Row="6"
                     Grid.Column="0">
             <Label Content="Height [cm]"
@@ -196,6 +216,7 @@
                  Width="120"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
+                    Margin="20,0,0,0"
                     Grid.Row="7"
                     Grid.Column="0">
             <Label Content="Weight [kg]"
@@ -265,10 +286,7 @@
 
 
         <!--#endregion-->
-        <Grid.Effect>
-            <DropShadowEffect BlurRadius="5" ShadowDepth="3" Color="LightBlue"
-                              />
-        </Grid.Effect>
+
 
     </Grid>
 
