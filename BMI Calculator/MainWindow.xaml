@@ -41,10 +41,17 @@
         <Border BorderBrush="LightSlateGray" BorderThickness="1" CornerRadius="10,10,10,10"
             Grid.ColumnSpan="3" Grid.RowSpan="15"
             Margin="0,0,0,0">
-            <Rectangle Fill="White" RadiusX="10" RadiusY="10" 
+            <Rectangle  RadiusX="10" RadiusY="10" 
                    Margin="0,0,0,0"
                    Grid.ColumnSpan="3"
-                   Grid.RowSpan="15"/>
+                   Grid.RowSpan="15">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                        <GradientStop Color="White" Offset="0.8"/>
+                        <GradientStop Color="LightGray" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
         </Border>
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="3"
@@ -92,47 +99,39 @@
                     Click="DeleteUser_ButtonClick"
                     Margin="5,0,0,0"    
                         />
+                
+
             </StackPanel>
-
-
-
-        </StackPanel>
-
-
-        <Button Content="Clear All"
-                Grid.Row="2"
-                Grid.Column="1"
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                RenderTransformOrigin="0.231,-0.548"
-                Width="64" 
-                Click="Button_ClearFields"/>
-
-        <Separator HorizontalAlignment="Left" 
+            <Separator HorizontalAlignment="Left" 
                    VerticalAlignment="Bottom" 
                    Height="33" 
                    RenderTransformOrigin="0.5,0.5" 
-                   Width="197"
-                   Margin="20,5,0,0"
+                   Width="190"
                    Grid.Row="1"
                    Grid.Column="0">
-            <Separator.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.168"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Separator.RenderTransform>
-        </Separator>
+                <Separator.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Separator.RenderTransform>
+            </Separator>
+        </StackPanel>
 
-        <Label Name ="lbl_name"
+
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
+            <Label Name ="lbl_name"
                 Grid.Column="0"
                 Grid.Row="2"
                Margin="20,0,0,0"
                VerticalAlignment="Center"
                Content="Or put your name:" 
                HorizontalAlignment="Left" />
+         
+        </StackPanel>
+       
         <StackPanel Orientation="Horizontal"
                       Grid.Column="0"
                       Grid.Row="3">
@@ -235,47 +234,48 @@
                  Text=""
                  Width="120"/>
         </StackPanel>
-
-
-        <Button Content="Calculate your BMI" 
-                HorizontalAlignment="Center" 
-                Width="120" 
+        <StackPanel Orientation="Horizontal" 
+                    Margin="20,0,0,0"
+                    Grid.Row="10"
+                    Grid.RowSpan="2"
+                    Grid.Column="0">
+            <Button Content="Clear All"
+                    HorizontalAlignment="Left" 
+                    Width="64"
+                    Height="20"
+                    Click="Button_ClearFields"/>
+            <Button Content="Calculate your BMI" 
+                HorizontalAlignment="Right" 
+                Width="140"
+                Height="50"
                 Click="Button_Click"
-                Grid.Row="10"
-                Grid.Column="0"
                 BorderBrush="Black"
+                Margin="10,0,0,0"
+                
+                FontSize="15"
+                VerticalContentAlignment="Center"
                 />
+
+        </StackPanel>
+        
         <!--#endregion-->
 
         <!--#region Result -->
-
-        <Label  Content="Your Result:" 
-                HorizontalAlignment="Left" 
-                Grid.Column="1"
-                Grid.Row="5"
-                VerticalAlignment="Center" 
+        <StackPanel Orientation="Vertical" 
+                    Grid.Column="1" 
+                    Grid.Row="5"
+                    Grid.RowSpan="6"
+                    HorizontalAlignment="Center"
+                    >
+            <Label  Content="Your Result:" 
                 />
-        <Label  Name="lbl_result"  
-                Content="" 
-                Grid.Column="1"
-                Grid.Row="5"
-                Grid.RowSpan="3"
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-                />
-
-        <Label Content="Tips:" 
-               Grid.Column="1"
-               Grid.Row="7"
-               HorizontalAlignment="Left" 
-               VerticalAlignment="Center" 
-               Width="34"/>
-        <Label Name="lbl_tipscontent"
-               Grid.Column="1"
-               Grid.Row="8"
-               Content="" 
-               HorizontalAlignment="Left" 
-               VerticalAlignment="Center"/>
+            <Label  Name="lbl_result"  
+                Content=""/>
+            <Label Content="Tips:"/>
+            <Label Name="lbl_tipscontent"
+               Content=""/>
+        </StackPanel>
+        
 
         <Image Name ="genderImage"
                Grid.Column="2"
