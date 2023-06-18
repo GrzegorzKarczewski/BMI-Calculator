@@ -31,11 +31,12 @@ public partial class MainWindow
 
     public MainWindow()
     {
+        MatchWindowSizetoScreen(this);
         _loadData = new(this);
         _personImage = new(this);
         BmiHandler = new(this);
-        _loadDatabase = new (this);
-        
+        _loadDatabase = new(this);
+
         InitializeComponent();
 
         // Restricting input fields for reasonable values (lazy way)
@@ -43,7 +44,7 @@ public partial class MainWindow
         tb_age.MaxLength = 3;
         tb_height.MaxLength = 3;
         tb_weight.MaxLength = 4;
-        
+
         _loadData.LoadDataFromMostRecentUser(); // Loading most recent user data
         _loadDatabase.PopulateList(); // Loading all users from database
 
@@ -93,40 +94,44 @@ public partial class MainWindow
             lbl_result.FontSize = 34;
             lbl_result.Content = bmi;
 
-            switch (bmi) {
-                case > 18.5 and < 24.9: {
-                    BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
-                
-                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
-                    lbl_tipscontent.Content = tip;
-                
-                    _currentWeightType = 1;
+            switch (bmi)
+            {
+                case > 18.5 and < 24.9:
+                    {
+                        BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
 
-                    _personImage.SetPersonImage( WeightType.Normal, IsMale ? 0 : 1);
-                    break;
-                }
-                case < 18.5: {
-                    BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
-                
-                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
-                    lbl_tipscontent.Content = tip;
-                
-                    _currentWeightType = 0;
+                        string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                        lbl_tipscontent.Content = tip;
 
-                    _personImage.SetPersonImage(WeightType.Low, IsMale ? 0 : 1);
-                    break;
-                }
-                case >= 25: {
-                    BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
-                
-                    string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
-                    lbl_tipscontent.Content = tip;
-                
-                    _currentWeightType = 2;
+                        _currentWeightType = 1;
 
-                    _personImage.SetPersonImage(WeightType.High, IsMale ? 0 : 1);
-                    break;
-                }
+                        _personImage.SetPersonImage(WeightType.Normal, IsMale ? 0 : 1);
+                        break;
+                    }
+                case < 18.5:
+                    {
+                        BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
+
+                        string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
+                        lbl_tipscontent.Content = tip;
+
+                        _currentWeightType = 0;
+
+                        _personImage.SetPersonImage(WeightType.Low, IsMale ? 0 : 1);
+                        break;
+                    }
+                case >= 25:
+                    {
+                        BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
+
+                        string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
+                        lbl_tipscontent.Content = tip;
+
+                        _currentWeightType = 2;
+
+                        _personImage.SetPersonImage(WeightType.High, IsMale ? 0 : 1);
+                        break;
+                    }
             }
             _loadDatabase.LoadOrSaveUsersDatabase(_name, _gender, _age, _weight, _height, bmi);
         }
@@ -143,21 +148,24 @@ public partial class MainWindow
         }
     }
 
-    private void cb_male_Checked(object sender, RoutedEventArgs e) {
+    private void cb_male_Checked(object sender, RoutedEventArgs e)
+    {
         // This is checking if male is checked and unsets female to be safe
         if (cb_male.IsChecked != true) return;
         IsMale = true;
         cb_female.IsChecked = false;
     }
 
-    private void cb_female_Checked(object sender, RoutedEventArgs e) {
+    private void cb_female_Checked(object sender, RoutedEventArgs e)
+    {
         // This is checking if female is checked and unsets male to be safe
         if (cb_female.IsChecked != true) return;
         IsMale = false;
         cb_male.IsChecked = false;
     }
 
-    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
         if (lb_users.SelectedItem == null) return;
         _currentName = lb_users.SelectedItem.ToString();
         if (_currentName != null) _loadData.LoadUsersOnSelectionChanged(_currentName);
@@ -197,7 +205,7 @@ public partial class MainWindow
     {
         ClearInputFields();
     }
-    
+
     // Validation functions
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
@@ -214,5 +222,29 @@ public partial class MainWindow
     {
         Regex regex = new Regex("[^a-zA-Z]+");
         e.Handled = regex.IsMatch(e.Text);
+    }
+
+    private void CloseWindow(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void DragWindow(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
+            this.DragMove();
+    }
+
+    private void MatchWindowSizetoScreen(MainWindow window)
+    {
+        // If no window is provided, use the current instance
+        if (window == null)
+        {
+            window = this;
+        }
+
+        // Resize the window to 50% of its current size
+        window.Width = SystemParameters.PrimaryScreenWidth / 2.5;
+        window.Height = SystemParameters.PrimaryScreenHeight / 2.5;
     }
 }
