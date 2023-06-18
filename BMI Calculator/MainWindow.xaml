@@ -8,6 +8,7 @@
         Height="500" 
         Width="670"
         WindowStyle="None"
+        ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True"
         >
