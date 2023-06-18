@@ -31,6 +31,7 @@ public partial class MainWindow
 
     public MainWindow()
     {
+        MatchWindowSizetoScreen(this);
         _loadData = new(this);
         _personImage = new(this);
         BmiHandler = new(this);
@@ -232,5 +233,18 @@ public partial class MainWindow
     {
         if (e.ChangedButton == MouseButton.Left)
             this.DragMove();
+    }
+
+    private void MatchWindowSizetoScreen(MainWindow window)
+    {
+        // If no window is provided, use the current instance
+        if (window == null)
+        {
+            window = this;
+        }
+
+        // Resize the window to 50% of its current size
+        window.Width = SystemParameters.PrimaryScreenWidth / 2.5;
+        window.Height = SystemParameters.PrimaryScreenHeight / 2.5;
     }
 }

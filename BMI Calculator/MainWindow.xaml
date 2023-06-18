@@ -5,10 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BMI_Calculator"
         mc:Ignorable="d"
-        Height="500" 
-        Width="670"
         WindowStyle="None"
-        ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True"
         >
@@ -283,8 +280,6 @@
                Grid.RowSpan="8"
                HorizontalAlignment="Center" 
                VerticalAlignment="Center"/>
-
-
 
         <!--#endregion-->
 
