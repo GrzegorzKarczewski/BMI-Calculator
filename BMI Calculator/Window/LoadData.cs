@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Globalization;
 
-namespace BMI_Calculator.Window; 
+namespace BMI_Calculator.Window;
 
-public class LoadData {
+public class LoadData
+{
     private static MainWindow _mainWindow;
     private readonly PersonImage _personImage = new(_mainWindow);
 
-    public LoadData(MainWindow mainWindow) {
+    public LoadData(MainWindow mainWindow)
+    {
         _mainWindow = mainWindow;
     }
 
@@ -31,7 +33,7 @@ public class LoadData {
 
     public void LoadUsersOnSelectionChanged(string name)
     {
-        UserRepository userRepository = new UserRepository(MainWindow.ConnectionString);
+        UserRepository userRepository = new(MainWindow.ConnectionString);
         UserData user = userRepository.GetUserByName(name);
 
         if (user != null)
@@ -46,37 +48,41 @@ public class LoadData {
             _mainWindow.tb_weight.Text = Math.Round(user.Weight, 1).ToString(CultureInfo.InvariantCulture);
             _mainWindow.tb_height.Text = user.Height.ToString();
             _mainWindow.lbl_result.Content = bmi;
-            
+
             {
-                switch (bmi) {
-                    case > 18.5 and < 24.9: {
-                        _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
-                    
-                        string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
-                        _mainWindow.lbl_tipscontent.Content = tip;
+                switch (bmi)
+                {
+                    case > 18.5 and < 24.9:
+                        {
+                            _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Normal);
 
-                        _personImage.SetPersonImage(WeightType.Normal, _mainWindow.IsMale ? 0 : 1);
-                        break;
-                    }
-                    case < 18.5: {
-                        _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
-                    
-                        string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
-                        _mainWindow.lbl_tipscontent.Content = tip;
+                            string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Normal);
+                            _mainWindow.lbl_tipscontent.Content = tip;
 
-                        _personImage.SetPersonImage(WeightType.Low, _mainWindow.IsMale ? 0 : 1);
-                        break;
-                    }
-                    case >= 25: {
-                        _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
-                    
-                        string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
-                        _mainWindow.lbl_tipscontent.Content = tip;
+                            _personImage.SetPersonImage(WeightType.Normal, _mainWindow.IsMale ? 0 : 1);
+                            break;
+                        }
+                    case < 18.5:
+                        {
+                            _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.Low);
 
-                        _personImage.SetPersonImage(WeightType.High, _mainWindow.IsMale ? 0 : 1);
+                            string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.Low);
+                            _mainWindow.lbl_tipscontent.Content = tip;
 
-                        break;
-                    }
+                            _personImage.SetPersonImage(WeightType.Low, _mainWindow.IsMale ? 0 : 1);
+                            break;
+                        }
+                    case >= 25:
+                        {
+                            _mainWindow.BmiHandler.ChangeLabelBMIScoreStyle(WeightType.High);
+
+                            string tip = BMI_Calculator.Window.BmiHandler.GiveTipsForBmi(WeightType.High);
+                            _mainWindow.lbl_tipscontent.Content = tip;
+
+                            _personImage.SetPersonImage(WeightType.High, _mainWindow.IsMale ? 0 : 1);
+
+                            break;
+                        }
                 }
             }
         }

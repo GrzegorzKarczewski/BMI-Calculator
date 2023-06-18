@@ -1,24 +1,26 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Media;
 using System.Windows;
-using Newtonsoft.Json;
+using System.Windows.Media;
 
-namespace BMI_Calculator.Window; 
+namespace BMI_Calculator.Window;
 
-public class BmiHandler {
+public class BmiHandler
+{
     private readonly MainWindow _mainWindow;
-    
-    public BmiHandler(MainWindow mainWindow) {
+
+    public BmiHandler(MainWindow mainWindow)
+    {
         _mainWindow = mainWindow;
     }
-    
+
     public static double CalculateBmi(double weight, double height)
     {
-        double bmi = 0;
-        bmi = (weight / height) / height * 10000;  // bmi formula 
-        
+
+        double bmi = (weight / height) / height * 10000;  // bmi formula 
+
         return Math.Round(bmi, 1);
     }
 
@@ -38,14 +40,15 @@ public class BmiHandler {
         }
         catch (IOException e)
         {
-            //MessageBox.Show(e.ToString());
+            MessageBox.Show(e.ToString());
         }
-        finally {
+        finally
+        {
             json ??= "Try to eat Healthy!";
         }
 
         BMITips tips = JsonConvert.DeserializeObject<BMITips>(json);
-        
+
         string bmiCategory = weightType switch
         {
             WeightType.Low => "underweight_tips",
@@ -55,12 +58,12 @@ public class BmiHandler {
         };
         List<string> selectedTipsList = (List<string>)typeof(BMITips).GetProperty(bmiCategory).GetValue(tips);
 
-        Random random = new Random();
+        Random random = new();
         int randomIndex = random.Next(0, selectedTipsList.Count);
         string randomTip = selectedTipsList[randomIndex];
         return randomTip;
     }
-    
+
     public void ChangeLabelBMIScoreStyle(WeightType weightType)
     {
 

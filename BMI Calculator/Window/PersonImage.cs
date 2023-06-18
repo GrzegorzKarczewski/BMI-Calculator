@@ -2,12 +2,14 @@
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace BMI_Calculator.Window; 
+namespace BMI_Calculator.Window;
 
-public class PersonImage {
+public class PersonImage
+{
     private static MainWindow _mainWindow;
 
-    public PersonImage(MainWindow mainWindow) {
+    public PersonImage(MainWindow mainWindow)
+    {
         _mainWindow = mainWindow;
     }
 
@@ -25,7 +27,7 @@ public class PersonImage {
             case WeightType.Low:
                 if (gender == 0)
                 {
-                    BitmapImage bitmap = new BitmapImage();
+                    BitmapImage bitmap = new();
                     bitmap.BeginInit();
 
                     string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_skinny.png");
@@ -49,8 +51,9 @@ public class PersonImage {
 
                 return;
             case WeightType.Normal:
-                if (gender == 0) {
-                    BitmapImage bitmap = new BitmapImage();
+                if (gender == 0)
+                {
+                    BitmapImage bitmap = new();
                     bitmap.BeginInit();
 
                     string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "male_regular.png");
@@ -98,5 +101,9 @@ public class PersonImage {
                 }
                 return;
         }
+    }
+    public void RemovePersonImage()
+    {
+        _mainWindow.genderImage.Source = null;
     }
 }

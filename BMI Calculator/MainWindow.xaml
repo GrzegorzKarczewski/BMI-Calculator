@@ -160,7 +160,7 @@
                   Name="cb_male" 
                   HorizontalAlignment="Left"   
                   VerticalAlignment="Center" 
-                  Checked="cb_male_Checked" 
+                  Checked="Cb_male_Checked" 
                   BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                   Margin="0,0,5,0"   
                       />
@@ -168,7 +168,7 @@
                   Name="cb_female" 
                   HorizontalAlignment="Right" 
                   VerticalAlignment="Center" 
-                  Checked="cb_female_Checked" 
+                  Checked="Cb_female_Checked" 
                   BorderBrush="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"/>
 
         </StackPanel>
@@ -263,6 +263,8 @@
                     Grid.Row="5"
                     Grid.RowSpan="6"
                     HorizontalAlignment="Center"
+                    MinWidth="200"
+                    MinHeight="50"
                     >
             <Label  Content="Your Result:" 
                 />
@@ -275,6 +277,7 @@
         
 
         <Image Name ="genderImage"
+               MinWidth="150"
                Grid.Column="2"
                Grid.Row="3"
                Grid.RowSpan="8"

@@ -148,7 +148,7 @@ public partial class MainWindow
         }
     }
 
-    private void cb_male_Checked(object sender, RoutedEventArgs e)
+    private void Cb_male_Checked(object sender, RoutedEventArgs e)
     {
         // This is checking if male is checked and unsets female to be safe
         if (cb_male.IsChecked != true) return;
@@ -156,7 +156,7 @@ public partial class MainWindow
         cb_female.IsChecked = false;
     }
 
-    private void cb_female_Checked(object sender, RoutedEventArgs e)
+    private void Cb_female_Checked(object sender, RoutedEventArgs e)
     {
         // This is checking if female is checked and unsets male to be safe
         if (cb_female.IsChecked != true) return;
@@ -174,7 +174,7 @@ public partial class MainWindow
     private void DeleteUser_ButtonClick(object sender, RoutedEventArgs e)
     {
         string name = _currentName; // currentName should be always storing currently checked user on the list
-        UserRepository userRepository = new UserRepository(ConnectionString);
+        UserRepository userRepository = new(ConnectionString);
         bool success = userRepository.RemoveUserByName(name);
 
         if (success)
@@ -199,28 +199,39 @@ public partial class MainWindow
         // clearing checkboxes
         cb_female.IsChecked = false;
         cb_male.IsChecked = false;
+
+    }
+    private void ClearResultElements()
+    {
+        // clearing result label
+        lbl_result.Content = string.Empty;
+        // removing tips from window
+        lbl_tipscontent.Content = string.Empty;
+        // Removing person image from window
+        _personImage.RemovePersonImage();
     }
 
     private void Button_ClearFields(object sender, RoutedEventArgs e)
     {
         ClearInputFields();
+        ClearResultElements();
     }
 
     // Validation functions
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
-        Regex regex = new Regex("[^0-9]+");
+        Regex regex = new("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
     private void NumberValidationTextBoxAllowComma(object sender, TextCompositionEventArgs e)
     {
-        Regex regex = new Regex("[^0-9.]+");
+        Regex regex = new("[^0-9.]+");
         e.Handled = regex.IsMatch(e.Text);
     }
 
     private void ValidationTextBoxLettersOnly(object sender, TextCompositionEventArgs e)
     {
-        Regex regex = new Regex("[^a-zA-Z]+");
+        Regex regex = new("[^a-zA-Z]+");
         e.Handled = regex.IsMatch(e.Text);
     }
 
@@ -238,10 +249,7 @@ public partial class MainWindow
     private void MatchWindowSizetoScreen(MainWindow window)
     {
         // If no window is provided, use the current instance
-        if (window == null)
-        {
-            window = this;
-        }
+        window ??= this;
 
         // Resize the window to 50% of its current size
         window.Width = SystemParameters.PrimaryScreenWidth / 2.5;
